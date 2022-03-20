@@ -1,0 +1,16 @@
+
+
+도시공원 json
+https://www.data.go.kr/data/15012890/standard.do
+
+도서관 json
+https://www.data.go.kr/data/15013109/standard.do#
+
+학교 json
+https://www.data.go.kr/data/15021148/standard.do
+
+대규모 점포 csv
+https://www.data.go.kr/data/15045013/fileData.do
+
+영화관 csv
+https://www.data.go.kr/data/15045008/fileData.do
