@@ -46,17 +46,18 @@ def save_data(apiNum = 0):
             saved_data.append(delete_delta(temp_data))
         else:
             saved_data.append(temp_data)
-
+    # {"data" : [,,]}
     saved_data = sum(saved_data, [])
     print(len(saved_data))
 
     json_data['data'] = saved_data
-    with open('data'+str(apiNum)+'.json', 'w', encoding='utf-8') as f:
+    with open('./json/competitionData'+str(apiNum)+'.json', 'w', encoding='utf-8') as f:
         f.write(json.dumps(json_data, ensure_ascii=False))
 
 
 if __name__ == '__main__':
-    save_data(4)
+    save_data(0)
+
 
 
 
