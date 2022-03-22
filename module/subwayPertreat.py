@@ -13,7 +13,7 @@ def subwayPer(location=location, file_name=file_name, json_name=json_name):
 
     df = pd.DataFrame(json_file['data'])
     subway = df.loc[:,['역번호', '역사명', '노선명', '역위도', '역경도', '역사 도로명주소']]
-    subway.columns  = ['subway_code', 'stn_name', 'route_name', 'lat', 'lon', 'road_add']
+    subway.columns  = ['subway_code', 'stn_name', 'route_name', 'lat', 'lon', 'place']
 
     json_data = subway.to_json(location+json_name, orient = 'table', indent=4, force_ascii=False)
 
@@ -22,7 +22,7 @@ def subwayPer(location=location, file_name=file_name, json_name=json_name):
 
     for data in json_file['data']:
         if data['lon'] == None:
-            loca_dict = getLocation.kakao_location(data['road_add'])
+            loca_dict = getLocation.kakao_location(data['place'])
             data['lon'] = loca_dict['lon']
             data['lat'] = loca_dict['lat']
 
