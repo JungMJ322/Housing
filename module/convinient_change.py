@@ -12,22 +12,77 @@ def bus_change():
             if current == i[1]:
                 continue
             temp_dict = {}
-            temp_dict['bus_code'] = i[0]
+            temp_dict['bus_code'] = count
             temp_dict['stn_name'] = i[1]
             temp_dict['lat'] = i[5]
             temp_dict['lot'] = i[6]
             current = i[1]
             # print(temp_dict)
             temp_list.append(temp_dict)
+            count += 1
 
-        save_file('bus_stop', 'busStop', temp_list)
+        savefile('bus_stop', 'busStop', temp_list)
 
 
-def save_file(json_key, filename, data):
+def mart_change():
+    with open("../data/대형점포_영화관_공원_학교_도서관/전국대규모점포.csv", 'r', encoding='cp949') as f:
+        rdr = csv.reader(f)
+        temp_list = []
+        count = 0
+        for i in rdr:
+            temp_dict = {}
+            try:
+                if i[8] != "영업/정상" or ((len(i[18]) < 5) and (len(i[18]))) != 0:
+                    continue
+                if i[18] == '' and i[19] == '':
+                    continue
+                elif i[18] == '':
+                    coordi = kakao_location(i[19])
+                else:
+                    coordi = kakao_location(i[18])
+            except IndexError:
+                continue
+
+            temp_dict['mart_code'] = count
+            temp_dict['start_date'] = i[5]
+            temp_dict['mart_name'] = i[21]
+            temp_dict['lat'] = coordi['lat']
+            temp_dict['lot'] = coordi['lon']
+            temp_list.append(temp_dict)
+            count += 1
+
+        savefile("martData", "mart", temp_list)
+
+
+def park_change():
+    with open("../data/대형점포_영화관_공원_학교_도서관/전국도시공원정보표준데이터.json", 'r', encoding='utf-8') as f:
+        rdr = json.load(f)
+        temp_list = []
+        count = 1
+        for i in rdr['records']:
+            temp_dict = {}
+            temp_dict['park_id'] = count
+            temp_dict['park_name'] = i['공원명']
+            temp_dict['park_type'] = i['공원구분']
+            temp_dict['lat'] = i['위도']
+            temp_dict['lot'] = i['경도']
+            temp_dict['start_date'] = i['지정고시일']
+            if i['소재지지번주소'] == '':
+                temp_dict['place'] = i['소재지도로명주소']
+            elif i['소재지도로명주소'] == '':
+                temp_dict['place'] = i['소재지지번주소']
+            else:
+                continue
+            count += 1
+            temp_list.append(temp_dict)
+
+        savefile("park", "park", temp_list)
+
+def savefile(json_key, filename, data):
     with open("./json/"+filename+".json", 'w', encoding='utf-8') as f:
         temp_dict = {json_key: data[1:]}
         f.write(json.dumps(temp_dict, ensure_ascii=False))
 
 
 if __name__ == "__main__":
-    pass
+    park_change()
