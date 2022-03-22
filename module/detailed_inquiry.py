@@ -41,6 +41,7 @@ api_names = [
 
 location = './json/'
 
+# 필요없어짐
 def date_comp(first_date, second_date):
     date1 = time.strptime(first_date, "%Y-%m-%d")
     date2 = time.strptime(second_date, "%Y-%m-%d")
