@@ -17,10 +17,10 @@ def kakao_location(add):
     url = api_add + '?query=' + add
     headers = {"Authorization": f"KakaoAK {api_key}"}
     query = {'query': add}
-    result_json = json.loads(str(requests.get(url, headers=headers, data=query).text))
+    result_json = json.loads(str(requests.get(url, headers=headers).text))
 
     result_json = dict(result_json)
-    print(len(result_json['documents']))
+    # print(len(result_json['documents']))
 
     if len(result_json['documents']) == 0:
         cnt = add.find('(')
@@ -69,7 +69,7 @@ def kakao_location(add):
         dict_fail = {'lon': None, 'lat':None, 'b_code': None}
         return dict_fail
 
-    print(result_json)
+    # print(result_json)
 
     addr = result_json['documents'][0]['address']
 
