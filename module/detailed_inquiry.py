@@ -65,7 +65,7 @@ def getDetailedAPI(api_name=api_names[0], location=location):
         json.dump(datas, file, indent=4, ensure_ascii=False)
 
 
-
+# 특정 날짜 이후의 데이터 삭제 / 필요없어짐
 def del_date(api_name=api_names[0], location=location):
     with open((location+api_name[3:6]+api_name[-3:]+'.json'), 'r', encoding='utf8') as file:
         json_file = json.load(file)
