@@ -51,7 +51,7 @@ def mart_change():
             temp_list.append(temp_dict)
             count += 1
 
-        savefile("martData", "mart", temp_list)
+        savefile("martData", "mart", temp_list[1:])
 
 
 def park_change():
@@ -78,9 +78,28 @@ def park_change():
 
         savefile("park", "park", temp_list)
 
+
+def school_change():
+    with open("../data/대형점포_영화관_공원_학교_도서관/전국초중등학교위치표준데이터.json", 'r', encoding='utf-8') as f:
+        rdr = json.load(f)
+        temp_list = []
+        count = 1
+        for i in rdr['records']:
+            temp_dict = {}
+            temp_dict['school_id'] = count
+            temp_dict['school_name'] = i['학교명']
+            temp_dict['school_kind'] = i['학교급구분']
+            temp_dict['start_date'] = i['설립일자']
+            temp_dict['lat'] = i['위도']
+            temp_dict['lot'] = i['경도']
+            temp_dict['place'] = i['소재지지번주소']
+            temp_list.append(temp_dict)
+            count += 1
+        savefile("school", "school", temp_list)
+
 def savefile(json_key, filename, data):
     with open("./json/"+filename+".json", 'w', encoding='utf-8') as f:
-        temp_dict = {json_key: data[1:]}
+        temp_dict = {json_key: data}
         f.write(json.dumps(temp_dict, ensure_ascii=False))
 
 
