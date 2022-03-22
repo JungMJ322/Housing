@@ -3,7 +3,7 @@ import csv
 from getLocation import kakao_location
 
 def bus_change():
-    with open("../data/지하철_버스/bus.csv", 'r', encoding='cp949') as f:
+    with open("../data/TransportData/bus.csv", 'r', encoding='cp949') as f:
         rdr = csv.reader(f)
         count = 0
         temp_list = []
@@ -25,7 +25,7 @@ def bus_change():
 
 
 def mart_change():
-    with open("../data/대형점포_영화관_공원_학교_도서관/전국대규모점포.csv", 'r', encoding='cp949') as f:
+    with open("../data/InfraData/mart_raw.csv", 'r', encoding='cp949') as f:
         rdr = csv.reader(f)
         temp_list = []
         count = 0
@@ -55,7 +55,7 @@ def mart_change():
 
 
 def park_change():
-    with open("../data/대형점포_영화관_공원_학교_도서관/전국도시공원정보표준데이터.json", 'r', encoding='utf-8') as f:
+    with open("../data/InfraData/park_raw.json", 'r', encoding='utf-8') as f:
         rdr = json.load(f)
         temp_list = []
         count = 1
@@ -80,7 +80,7 @@ def park_change():
 
 
 def school_change():
-    with open("../data/대형점포_영화관_공원_학교_도서관/전국초중등학교위치표준데이터.json", 'r', encoding='utf-8') as f:
+    with open("../data/InfraData/school_raw.json", 'r', encoding='utf-8') as f:
         rdr = json.load(f)
         temp_list = []
         count = 1
