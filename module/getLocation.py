@@ -1,10 +1,10 @@
 # kakao map API
 # detailed에서 생성한 json파일의 'HSSPLY_ADRES'를 add로 입력
-# kakao_location(add)에서 {'lat': 위도, 'lot': 경도, 'b_code': 법정동}
-
+# kakao_location(add)에서 {'lat': 위도, 'lot': 경도, 'b_code': 법정동} 추출
+# append_location()으로 json 파일에 위경도, 법정동 코드 항목 추가
 import requests
 import json
-import putLocaGetBCode
+import putLocaGetBCode          # 사용자 모듈
 
 
 # api => https://developers.kakao.com/product/map
@@ -12,34 +12,48 @@ import putLocaGetBCode
 api_key = '3ede87edc2f779bef86eca021e732474'
 api_add = 'https://dapi.kakao.com/v2/local/search/address.json'
 
+# 저장 위치
 location = './json/'
 
+# kakao API를 이용해 주소의 lon, lat, b_code를 dict의 형태로 retrun
 def kakao_location(add):
+    # api 설정
     url = api_add# + '?query=' + add
     headers = {"Authorization": f"KakaoAK {api_key}"}
     query = {'query': add}
+
+    # api result
     result_json = json.loads(str(requests.get(url, headers=headers, params=query).text))
 
     result_json = dict(result_json)
-    # print(result_json)
 
+    # api로 주소의 data를 받았는데 data가 없는 경우
     if len(result_json['documents']) == 0:
+        # '충청남도 공주시 금흥동 ....'이라면
+        # '공주시 금흥동' 으로 검색하도록
         add1 = add.split(' ')
         query = {'query': add1[1] + ' ' + add1[2]}
         result_json = json.loads(str(requests.get(url, headers=headers, params=query).text))
 
+    # 위의 방법으로 검색에 실패했을 때
+    # '()'주소에 괄호가 있다면 그 괄호안의 내용으로 검색
     if len(result_json['documents']) == 0:
         cnt1 = add.find('(')
         cnt2 = add.find(')')
         query = {'query': add[cnt1+1:cnt2]}
         result_json = json.loads(str(requests.get(url, headers=headers, params=query).text))
 
+    # 위의 두 방법 모두 실패했을 때
+    # kakao API로 검색할 수 없는 주소라고 판단하고 좌표값과 법정동코드를 NULL값으로
     if len(result_json['documents']) == 0:
         dict_fail = {'lon': None, 'lat': None, 'b_code': None}
         return dict_fail
 
     addr = result_json['documents'][0]['address']
 
+    # 주소를 검색했는데 도로명주소만 데이터를 제공하고,
+    # 도,시,동으로는 데이터를 제공하지 않는 경우
+    # 좌표값(lot, lat)만 받아와 putLocaGetBCode.get_bcode()함수로 좌표를 이용해 법정동코드(b_code)를 받아옴
     if addr == None:
         addr = result_json['documents']
         loca = dict()
@@ -48,6 +62,7 @@ def kakao_location(add):
         location = dict(putLocaGetBCode.get_bcode(loca))
         return location
 
+    # 검색이 제대로 된경우 좌표값과 법정동코드 리턴
     result = dict()
     result['lat'] = addr['y']
     result['lon'] = addr['x']
@@ -57,6 +72,7 @@ def kakao_location(add):
 
 
 def append_location(file_name='APTail.json', location=location):
+    # json파일 읽어오기
     with open((location+file_name), 'r', encoding='utf8') as f:
         json_file = json.load(f)
 
@@ -64,7 +80,7 @@ def append_location(file_name='APTail.json', location=location):
     json_datas = json_dict['data']
 
     # 'HSSPLY_ADRES' 주소
-    # for data in json_datas:
+    # json 파일의 항목들에서 주소를 가지고와 kakao_location()함수로 좌표값과 법정동코드를 리턴받음
     for data in json_datas:
         add = data['HSSPLY_ADRES']
         # print(add)
@@ -75,6 +91,7 @@ def append_location(file_name='APTail.json', location=location):
         data['lon'] = loca['lon']
         data['place_code'] = loca['b_code']
 
+    # json에 추가한 내용 저장
     with open((location+file_name), 'w', encoding='utf8') as f:
         json.dump(json_datas, f, indent=4, ensure_ascii=False)
 

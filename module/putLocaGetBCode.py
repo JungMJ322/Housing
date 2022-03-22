@@ -1,4 +1,4 @@
-# 좌표를 입력해서 b_code(법정동 코드)를 retrun해 주도록 하는 함수
+# 좌표를 입력 받아 b_code(법정동 코드)를 retrun해 주도록 하는 함수
 import json
 import requests
 
@@ -6,14 +6,19 @@ import requests
 api_key = '3ede87edc2f779bef86eca021e732474'
 api_add = 'https://dapi.kakao.com/v2/local/geo/coord2regioncode.json'
 
+
 def get_bcode(loca):
+    # api 설정
     url = api_add
     headers = {"Authorization": f"KakaoAK {api_key}"}
     query = loca
+
+    # api 결과 받기
     result_json = json.loads(str(requests.get(url, headers=headers, params=query).text))
 
     result_dict = dict(result_json)
 
+    # 좌표값 법정동 코드 dict만들어서 return
     location = dict()
     location['lat'] = loca['y']
     location['lon'] = loca['x']
