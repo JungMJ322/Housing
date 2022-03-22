@@ -4,7 +4,6 @@ import json
 def create_code_dict():
     with open('../data/sold_cost/area_code.txt', 'r', encoding='euc-kr') as f:
         rdr = csv.reader(f, delimiter='\t')
-        count = 0
         code_dict = {}
         for row in rdr:
             code_dict[row[1]] = row[0]
@@ -22,7 +21,7 @@ def save_json():
             temp['place'] = i[0]
             temp['area_grade'] = str(int(float(i[5]) // 10)) + '단위'
             try:
-                temp['area_code'] = code_dict[i[0]]
+                temp['place_code'] = code_dict[i[0]]
             except KeyError:
                 temp['area_code'] = 'unknown'
             temp['month'] = i[6]

@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 
 def find_gugun(si_name):
     url = "https://www.7-eleven.co.kr/library/asp/StoreGetGugun.asp"
-    data = {"Sido": si_name, "selBane":"storeLayGu"}
+    data = {"Sido": si_name, "selBane": "storeLayGu"}
     res = requests.post(url, data=data)
     return_list = []
 

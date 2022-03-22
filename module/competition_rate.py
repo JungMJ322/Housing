@@ -1,5 +1,6 @@
 import requests
 import json
+import math
 
 serviceKey = "atBg7rbptorSzUtwV/MjumAmZg36BgCXqwY503dOtogkbgA/4XV3qGXXutHfW4LxKo7eVk7oX3UYXjICS68n+g=="
 url = "https://api.odcloud.kr/api/ApplyhomeInfoCmpetRtSvc/v1/"
@@ -48,7 +49,9 @@ def save_data(apiNum = 0):
             saved_data.append(temp_data)
     # {"data" : [,,]}
     saved_data = sum(saved_data, [])
-    print(len(saved_data))
+
+    for i in saved_data:
+        i['area_grade'] = str(round(float((i.pop("HOUSE_TY"))[0:-1])) // 10) + '단위'
 
     json_data['data'] = saved_data
     with open('./json/competitionData'+str(apiNum)+'.json', 'w', encoding='utf-8') as f:
