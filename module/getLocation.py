@@ -4,6 +4,7 @@
 
 import requests
 import json
+import putLocaGetBCode
 
 
 # api => https://developers.kakao.com/product/map
@@ -14,64 +15,38 @@ api_add = 'https://dapi.kakao.com/v2/local/search/address.json'
 location = './json/'
 
 def kakao_location(add):
-    url = api_add + '?query=' + add
+    url = api_add# + '?query=' + add
     headers = {"Authorization": f"KakaoAK {api_key}"}
     query = {'query': add}
-    result_json = json.loads(str(requests.get(url, headers=headers).text))
+    result_json = json.loads(str(requests.get(url, headers=headers, params=query).text))
 
     result_json = dict(result_json)
-    # print(len(result_json['documents']))
-
-    if len(result_json['documents']) == 0:
-        cnt = add.find('(')
-        # cnt2
-        url = api_add + '?query=' + add[cnt+1:cnt+4]
-        result_json = json.loads(str(requests.get(url, headers=headers).text))
-
-        if cnt == -1:
-            url = api_add + '?query=' + add
-            result_json = json.loads(str(requests.get(url, headers=headers).text))
-
-    if len(result_json['documents']) == 0:
-        cnt = add.find('길')
-        url = api_add + '?query=' + add[0:cnt+1]
-        result_json = json.loads(str(requests.get(url, headers=headers).text))
-
-        if cnt == -1:
-            url = api_add + '?query=' + add
-            result_json = json.loads(str(requests.get(url, headers=headers).text))
-
-    if len(result_json['documents']) == 0:
-        cnt = add.find('로')
-        url = api_add + '?query=' + add[0:cnt+1]
-        result_json = json.loads(str(requests.get(url, headers=headers).text))
-
-        if cnt == -1:
-            url = api_add + '?query=' + add
-            result_json = json.loads(str(requests.get(url, headers=headers).text))
-
-    if len(result_json['documents']) == 0:
-        cnt = add.find('동')
-        url = api_add + '?query=' + add[0:cnt+1]
-        result_json = json.loads(str(requests.get(url, headers=headers).text))
-
     # print(result_json)
 
-    if list(result_json.keys())[0] == 'errorType':
-        dict_fail = {'lon': None, 'lat': None, 'b_code': None}
-        return dict_fail
+    if len(result_json['documents']) == 0:
+        add1 = add.split(' ')
+        query = {'query': add1[1] + ' ' + add1[2]}
+        result_json = json.loads(str(requests.get(url, headers=headers, params=query).text))
+
+    if len(result_json['documents']) == 0:
+        cnt1 = add.find('(')
+        cnt2 = add.find(')')
+        query = {'query': add[cnt1+1:cnt2]}
+        result_json = json.loads(str(requests.get(url, headers=headers, params=query).text))
 
     if len(result_json['documents']) == 0:
         dict_fail = {'lon': None, 'lat': None, 'b_code': None}
         return dict_fail
-
-    if result_json['documents'][0]['address'] == None:
-        dict_fail = {'lon': None, 'lat':None, 'b_code': None}
-        return dict_fail
-
-    # print(result_json)
 
     addr = result_json['documents'][0]['address']
+
+    if addr == None:
+        addr = result_json['documents']
+        loca = dict()
+        loca['x'] = addr[0]['x']
+        loca['y'] = addr[0]['y']
+        location = dict(putLocaGetBCode.get_bcode(loca))
+        return location
 
     result = dict()
     result['lat'] = addr['y']
@@ -92,22 +67,23 @@ def append_location(file_name='APTail.json', location=location):
     # for data in json_datas:
     for data in json_datas:
         add = data['HSSPLY_ADRES']
-        print(add)
+        # print(add)
 
         loca = kakao_location(add)
 
         data['lat'] = loca['lat']
         data['lon'] = loca['lon']
-        data['b_code'] = loca['b_code']
+        data['place_code'] = loca['b_code']
 
     with open((location+file_name), 'w', encoding='utf8') as f:
         json.dump(json_datas, f, indent=4, ensure_ascii=False)
 
 
 if __name__ == '__main__':
-    # add = '인천광역시 서구 청라사파이어로'
-    # print(add)
-    # kakao_loca = kakao_location(add)
+    # add = '충청남도 공주시 한적2길 51-14'
+    # add1 = '공주시 한적2길'
+    # # print(add)
+    # kakao_loca = kakao_location(add1)
     # print(kakao_loca)
 
     append_location()
