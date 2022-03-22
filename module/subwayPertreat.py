@@ -8,6 +8,8 @@ file_name = 'subway.json'
 json_name = 'subway2.json'
 
 def subwayPer(location=location, file_name=file_name, json_name=json_name):
+    xlsxToJson.getXlsxToJson()
+
     with open((location + file_name), 'r', encoding='utf8') as f:
         json_file = json.load(f)
 
@@ -30,5 +32,4 @@ def subwayPer(location=location, file_name=file_name, json_name=json_name):
         json.dump(json_file, f, indent=4, ensure_ascii=False)
 
 if __name__ == '__main__':
-    xlsxToJson.getXlsxToJson()
     subwayPer()
