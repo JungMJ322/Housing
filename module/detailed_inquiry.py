@@ -23,7 +23,7 @@
 import requests
 import json
 import time
-
+import getLocation
 
 # api => https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15098547
 # api 주소, 키
@@ -40,13 +40,6 @@ api_names = [
 ]
 
 location = '../data/json/'
-
-# 필요없어짐
-def date_comp(first_date, second_date):
-    date1 = time.strptime(first_date, "%Y-%m-%d")
-    date2 = time.strptime(second_date, "%Y-%m-%d")
-
-    return date1 < date2
 
 # 사용할 api 이름, 저장 경로
 def getDetailedAPI(api_name=api_names[0], location=location):
@@ -88,8 +81,41 @@ def del_date(api_name=api_names[0], location=location):
     with open((location + api_name[3:6] + api_name[-3:] + '.json'), 'w', encoding='utf8') as file:
         json.dump(datas, file, indent=4, ensure_ascii=False)
 
+# 필요없어짐
+def date_comp(first_date, second_date):
+    date1 = time.strptime(first_date, "%Y-%m-%d")
+    date2 = time.strptime(second_date, "%Y-%m-%d")
+
+    return date1 < date2
+
+def append_location(file_name='APTail.json', location=location):
+    # json파일 읽어오기
+    with open((location+file_name), 'r', encoding='utf8') as f:
+        json_file = json.load(f)
+
+    # print(json_file)
+    json_dict = dict(json_file)
+    json_datas = json_dict['data']
+
+    # 'HSSPLY_ADRES' 주소
+    # json 파일의 항목들에서 주소를 가지고와 kakao_location()함수로 좌표값과 법정동코드를 리턴받음
+    for data in json_datas:
+        add = data['HSSPLY_ADRES']
+        # print(add)
+
+        loca = getLocation.kakao_location(add)
+
+        data['lat'] = loca['lat']
+        data['lon'] = loca['lon']
+        data['place_code'] = loca['b_code']
+
+
+    # json에 추가한 내용 저장
+    with open((location+file_name), 'w', encoding='utf8') as f:
+        json.dump(json_datas, f, indent=4, ensure_ascii=False)
+
 
 
 if __name__ == '__main__':
     getDetailedAPI()
-    # del_date()
+    append_location()
