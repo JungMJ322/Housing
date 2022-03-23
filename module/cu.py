@@ -37,15 +37,15 @@ def crawling():
 
     return cu_list
 
-def js_save(cu_list):
+def js_save():
+    cu_list = crawling()
     cu_json={}
     cu_json['cu']=cu_list
-    with open('./json/cu.json', 'w', encoding='utf-8') as f:
+    with open('../data/json/cu.json', 'w', encoding='utf-8') as f:
         f.write(json.dumps(cu_json, ensure_ascii=False))
 
 
 
 if __name__=='__main__':
-    cu=crawling()
-    js_save(cu)
-    print(len(cu))
+    js_save()
+
