@@ -39,10 +39,9 @@ def crawling() :
 
 def data_save(name, juso):
     dict_list = []
-    for_json = {}
     for i in range (len(name)-1):
         dict = {'sname' : name[i], 'place' : juso[i]}
         dict_list.append(dict)
-    for_json['GS25'] = dict_list
+        for_json = {dict_list}
     with open('../data/json/GS25.json', 'w', encoding="utf-8") as make_file:
-        make_file.write(json.dumps(for_json,ensure_ascii=False))
+        make_file.write(json.dumps(for_json ,ensure_ascii=False))

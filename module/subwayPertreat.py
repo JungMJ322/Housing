@@ -29,7 +29,7 @@ def subwayPer(location=location, file_name=file_name, json_name=json_name):
             data['lat'] = loca_dict['lat']
 
     with open((location + json_name), 'w', encoding='utf8') as f:
-        json.dump(json_file, f, indent=4, ensure_ascii=False)
+        json.dump(json_file['data'], f, indent=4, ensure_ascii=False)
 
 if __name__ == '__main__':
     subwayPer()
