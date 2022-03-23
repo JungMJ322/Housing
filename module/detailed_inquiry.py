@@ -39,7 +39,7 @@ api_names = [
     'getRemndrLttotPblancMdl'
 ]
 
-location = '../data/json/'
+location = './json/'
 
 # 필요없어짐
 def date_comp(first_date, second_date):
@@ -61,6 +61,8 @@ def getDetailedAPI(api_name=api_names[0], location=location):
     resp = requests.get(url)
     datas = resp.json()
 
+    file_name = (location+api_name[3:6]+api_name[-3:]+'.json')
+    print(file_name)
     # 파일 저장
     with open((location+api_name[3:6]+api_name[-3:]+'.json'), 'w', encoding='utf8') as file:
         json.dump(datas, file, indent=4, ensure_ascii=False)
@@ -82,6 +84,7 @@ def del_date(api_name=api_names[0], location=location):
 
     for i in del_index:
         del datas['data'][i]
+
 
     # 파일 저장
     with open((location + api_name[3:6] + api_name[-3:] + '.json'), 'w', encoding='utf8') as file:

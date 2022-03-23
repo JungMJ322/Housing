@@ -13,7 +13,7 @@ api_key = '3ede87edc2f779bef86eca021e732474'
 api_add = 'https://dapi.kakao.com/v2/local/search/address.json'
 
 # 저장 위치
-location = '../data/json/'
+location = './json/'
 
 # kakao API를 이용해 주소의 lon, lat, b_code를 dict의 형태로 retrun
 def kakao_location(add):
@@ -96,14 +96,14 @@ def append_location(file_name='APTail.json', location=location):
         json.dump(json_datas, f, indent=4, ensure_ascii=False)
 
 
-if __name__ == '__main__':
-    # add = '충청남도 공주시 한적2길 51-14'
-    # add1 = '공주시 한적2길'
-    # # print(add)
-    # kakao_loca = kakao_location(add1)
-    # print(kakao_loca)
-
-    append_location()
+# if __name__ == '__main__':
+#     # add = '충청남도 공주시 한적2길 51-14'
+#     # add1 = '공주시 한적2길'
+#     # # print(add)
+#     # kakao_loca = kakao_location(add1)
+#     # print(kakao_loca)
+#
+#     append_location()
 
 
 
