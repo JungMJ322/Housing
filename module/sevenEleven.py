@@ -59,10 +59,10 @@ def data_save():
             temp = find_store(i, j)
             if temp is not None:
                 total_list.append(temp)
-    for_json['sevenEleven'] = sum(total_list, [])
+    total_list = sum(total_list, [])
 
     with open('../data/json/sevenEleven.json', 'w', encoding='utf-8') as f:
-        f.write(json.dumps(for_json, ensure_ascii=False))
+        f.write(json.dumps(total_list, ensure_ascii=False))
 
 
 if __name__ == '__main__':

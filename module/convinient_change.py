@@ -99,8 +99,8 @@ def school_change():
 
 def savefile(json_key, filename, data):
     with open("../data/json/"+filename+".json", 'w', encoding='utf-8') as f:
-        temp_dict = {json_key: data}
-        f.write(json.dumps(temp_dict, ensure_ascii=False))
+
+        f.write(json.dumps(data, ensure_ascii=False))
 
 
 if __name__ == "__main__":
