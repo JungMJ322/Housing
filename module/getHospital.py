@@ -10,7 +10,7 @@ import xmltodict
 
 api_add = 'http://apis.data.go.kr/B552657/HsptlAsembySearchService/getHsptlMdcncFullDown'
 api_key = '?serviceKey=jVKpVOT7kMRWzMIqSZbUMTByhcmYH1qvPSCXu%2FwXFtNlDKCdQcchWibsqysFadWPnIOSGsB4%2BchzqJTyw%2BybuQ%3D%3D'
-location = './json/'
+location = '../data/json/'
 file_name = 'hospital.json'
 
 def getHospital(file_name=file_name, location=location):

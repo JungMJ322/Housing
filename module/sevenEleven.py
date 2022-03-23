@@ -61,7 +61,7 @@ def data_save():
                 total_list.append(temp)
     for_json['sevenEleven'] = sum(total_list, [])
 
-    with open('./json/sevenEleven.json', 'w', encoding='utf-8') as f:
+    with open('../data/json/sevenEleven.json', 'w', encoding='utf-8') as f:
         f.write(json.dumps(for_json, ensure_ascii=False))
 
 

@@ -44,5 +44,5 @@ def data_save(name, juso):
         dict = {'sname' : name[i], 'place' : juso[i]}
         dict_list.append(dict)
     for_json['GS25'] = dict_list
-    with open('GS25.json', 'w', encoding="utf-8") as make_file:
+    with open('../data/GS25.json', 'w', encoding="utf-8") as make_file:
         make_file.write(json.dumps(for_json,ensure_ascii=False))

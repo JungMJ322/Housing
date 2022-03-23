@@ -31,7 +31,7 @@ def save_json():
         month = temp['month']
         save_data[month] = temp_list
 
-    with open('./json/sold_data'+str(month)+'.json', 'w', encoding='utf-8') as f:
+    with open('../data/json/sold_data'+str(month)+'.json', 'w', encoding='utf-8') as f:
         f.write(json.dumps(save_data, ensure_ascii=False))
 
 if __name__ == "__main__":

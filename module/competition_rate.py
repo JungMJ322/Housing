@@ -54,7 +54,7 @@ def save_data(apiNum = 0):
         i['area_grade'] = str(round(float((i.pop("HOUSE_TY"))[0:-1])) // 10) + '단위'
 
     json_data['data'] = saved_data
-    with open('./json/competitionData'+str(apiNum)+'.json', 'w', encoding='utf-8') as f:
+    with open('../data/json/competitionData'+str(apiNum)+'.json', 'w', encoding='utf-8') as f:
         f.write(json.dumps(json_data, ensure_ascii=False))
 
 

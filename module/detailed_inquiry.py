@@ -84,7 +84,7 @@ def del_date(api_name=api_names[0], location=location):
         del datas['data'][i]
 
     # 파일 저장
-    with open((location + api_name[3:6] + api_name[-3:] + '.json'), 'w', encoding='utf8') as file:
+    with open(('../data/json/' + location + api_name[3:6] + api_name[-3:] + '.json'), 'w', encoding='utf8') as file:
         json.dump(datas, file, indent=4, ensure_ascii=False)
 
 

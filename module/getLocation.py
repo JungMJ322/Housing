@@ -13,7 +13,7 @@ api_key = '3ede87edc2f779bef86eca021e732474'
 api_add = 'https://dapi.kakao.com/v2/local/search/address.json'
 
 # 저장 위치
-location = './json/'
+location = '../data/json/'
 
 # kakao API를 이용해 주소의 lon, lat, b_code를 dict의 형태로 retrun
 def kakao_location(add):

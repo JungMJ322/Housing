@@ -3,7 +3,7 @@ import json
 import getLocation
 import xlsxToJson
 
-location = './json/'
+location = '../data/json/'
 file_name = 'subway.json'
 json_name = 'subway2.json'
 

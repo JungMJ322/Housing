@@ -1,6 +1,6 @@
 import pandas as pd
 
-location = './json/'
+location = '../data/json/'
 xlocation= '../data/TransportData/'
 file_name = 'subway.xlsx'
 json_name = 'subway.json'
