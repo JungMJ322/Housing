@@ -55,7 +55,7 @@ def getDetailedAPI(api_name=api_names[0], location=location):
     datas = resp.json()
 
     # 파일 저장
-    with open((location+api_name[3:6]+api_name[-3:]+'.json'), 'w', encoding='utf8') as file:
+    with open((location+'detail'+'.json'), 'w', encoding='utf8') as file:
         json.dump(datas, file, indent=4, ensure_ascii=False)
 
 
@@ -89,7 +89,7 @@ def date_comp(first_date, second_date):
     return date1 < date2
 
 
-def append_location(file_name='APTail.json', location=location):
+def append_location(file_name='detail.json', location=location):
     # json파일 읽어오기
     with open((location+file_name), 'r', encoding='utf8') as f:
         json_file = json.load(f)
