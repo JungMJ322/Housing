@@ -12,7 +12,7 @@ def bus_change():
             if current == i[1]:
                 continue
             temp_dict = {}
-            temp_dict['bus_code'] = count
+            temp_dict['id'] = count
             temp_dict['stn_name'] = i[1]
             temp_dict['lat'] = i[5]
             temp_dict['lot'] = i[6]
@@ -43,7 +43,7 @@ def mart_change():
             except IndexError:
                 continue
 
-            temp_dict['mart_code'] = count
+            temp_dict['id'] = count
             temp_dict['start_date'] = i[5]
             temp_dict['mart_name'] = i[21]
             temp_dict['lat'] = coordi['lat']
@@ -61,7 +61,7 @@ def park_change():
         count = 1
         for i in rdr['records']:
             temp_dict = {}
-            temp_dict['park_id'] = count
+            temp_dict['id'] = count
             temp_dict['park_name'] = i['공원명']
             temp_dict['park_type'] = i['공원구분']
             temp_dict['lat'] = i['위도']
@@ -86,7 +86,7 @@ def school_change():
         count = 1
         for i in rdr['records']:
             temp_dict = {}
-            temp_dict['school_id'] = count
+            temp_dict['id'] = count
             temp_dict['school_name'] = i['학교명']
             temp_dict['school_kind'] = i['학교급구분']
             temp_dict['start_date'] = i['설립일자']
