@@ -47,7 +47,7 @@ def mart_change():
             temp_dict['start_date'] = i[5]
             temp_dict['mart_name'] = i[21]
             temp_dict['lat'] = coordi['lat']
-            temp_dict['lot'] = coordi['lon']
+            temp_dict['lot'] = coordi['lot']
             temp_list.append(temp_dict)
             count += 1
 
@@ -104,4 +104,8 @@ def savefile(json_key, filename, data):
 
 
 if __name__ == "__main__":
+    bus_change()
     mart_change()
+    park_change()
+    school_change()
+

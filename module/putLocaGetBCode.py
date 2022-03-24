@@ -3,7 +3,7 @@ import json
 import requests
 
 # api => https://developers.kakao.com/product/map
-api_key = '3ede87edc2f779bef86eca021e732474'
+api_key = 'e126277d90cde2cd49d01f2697c761b8'
 api_add = 'https://dapi.kakao.com/v2/local/geo/coord2regioncode.json'
 
 
@@ -21,7 +21,7 @@ def get_bcode(loca):
     # 좌표값 법정동 코드 dict만들어서 return
     location = dict()
     location['lat'] = loca['y']
-    location['lon'] = loca['x']
+    location['lot'] = loca['x']
     location['b_code'] = result_dict['documents'][0]['code']
 
     return location
