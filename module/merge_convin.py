@@ -13,7 +13,7 @@ def convin_change(count_relay, file_name):
                 loc = kakao_location(i['place'])
             except:
                 continue
-            i['convin_id'] = count
+            i['id'] = count
             i['lat'] = loc['lat']
             i['lot'] = loc['lon']
             total_list.append(i)
