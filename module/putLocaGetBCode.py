@@ -3,6 +3,10 @@ import json
 import requests
 
 # api => https://developers.kakao.com/product/map
+<<<<<<< HEAD
+=======
+# api_key = '3ede87edc2f779bef86eca021e732474'
+>>>>>>> 5d3d13684a9348cc6178b7ce8069a4c8fca2c624
 api_key = 'e126277d90cde2cd49d01f2697c761b8'
 api_add = 'https://dapi.kakao.com/v2/local/geo/coord2regioncode.json'
 
