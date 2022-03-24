@@ -9,7 +9,8 @@ import putLocaGetBCode          # 사용자 모듈
 
 # api => https://developers.kakao.com/product/map
 # api 주소, 키
-api_key = '3ede87edc2f779bef86eca021e732474'
+# api_key = '3ede87edc2f779bef86eca021e732474'
+api_key = 'e126277d90cde2cd49d01f2697c761b8'
 api_add = 'https://dapi.kakao.com/v2/local/search/address.json'
 
 # 저장 위치
@@ -26,6 +27,7 @@ def kakao_location(add):
     result_json = json.loads(str(requests.get(url, headers=headers, params=query).text))
 
     result_json = dict(result_json)
+    # print(result_json)
 
     # api로 주소의 data를 받았는데 data가 없는 경우
     if len(result_json['documents']) == 0:
