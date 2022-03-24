@@ -57,6 +57,7 @@ def mart_change():
 def park_change():
     with open("../data/InfraData/park_raw.json", 'r', encoding='utf-8') as f:
         rdr = json.load(f)
+        print(rdr)
         temp_list = []
         count = 1
         for i in rdr['records']:
@@ -64,12 +65,12 @@ def park_change():
             temp_dict['id'] = count
             temp_dict['park_name'] = i['공원명']
             temp_dict['park_type'] = i['공원구분']
-            if i['위도'] == '':
-                temp_dict['lat'] = None
-                temp_dict['lot'] = None
-            else:
+            if i['위도']:
                 temp_dict['lat'] = i['위도']
                 temp_dict['lot'] = i['경도']
+            else:
+                temp_dict['lat'] = None
+                temp_dict['lot'] = None
             temp_dict['start_date'] = i['지정고시일']
             if i['소재지지번주소'] == '':
                 temp_dict['place'] = i['소재지도로명주소']
@@ -103,7 +104,6 @@ def school_change():
 
 def savefile(json_key, filename, data):
     with open("../data/json/"+filename+".json", 'w', encoding='utf-8') as f:
-
         f.write(json.dumps(data, ensure_ascii=False))
 
 
