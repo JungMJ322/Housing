@@ -104,4 +104,4 @@ def savefile(json_key, filename, data):
 
 
 if __name__ == "__main__":
-    park_change()
+    mart_change()

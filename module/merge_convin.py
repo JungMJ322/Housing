@@ -11,14 +11,14 @@ def convin_change(count_relay, file_name):
         for i in rdr:
             try:
                 loc = kakao_location(i['place'])
-            except KeyError:
+            except:
                 continue
             i['convin_id'] = count
             i['lat'] = loc['lat']
             i['lot'] = loc['lon']
             total_list.append(i)
             count += 1
-        return count_relay, total_list
+        return count, total_list
 
 
 def convin_merge():

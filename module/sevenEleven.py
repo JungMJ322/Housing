@@ -43,7 +43,7 @@ def extract_data(data):
         temp_dict = dict()
         temp = i.find_all('span')
         temp_dict['sname'] = temp[0].get_text()[0:-3].strip()
-        temp_dict['place'] = temp[1].get_text()
+        temp_dict['place'] = temp[1].get_text().replace(u"\xa0", u' ').strip()
         return_list.append(temp_dict)
 
     return return_list
@@ -60,7 +60,7 @@ def data_save():
             if temp is not None:
                 total_list.append(temp)
     total_list = sum(total_list, [])
-
+    # print(total_list)
     with open('../data/json/sevenEleven.json', 'w', encoding='utf-8') as f:
         f.write(json.dumps(total_list, ensure_ascii=False))
 
