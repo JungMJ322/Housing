@@ -1,7 +1,5 @@
 from django.shortcuts import render,redirect
-# from .models import
-
-
+#from .models import *
 
 def index(request):
 

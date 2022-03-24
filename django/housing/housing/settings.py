@@ -20,12 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=*^z_x(d7am_)z)*rbm-4)vmc6&!p8!dyig5xfsv1%yi&bob%('
+SECRET_KEY = 'django-insecure-gnt3nlvfrso#yx#-wr@oh9hm$%%o=qh=m8o3&b1#p&_#=thu8l'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']  # aws ip 확인되면 넣어주기 '123.456.789.000' 스트링으로
+ALLOWED_HOSTS = ['0.0.0.0'] # aws ip 붙이거나 * ?
 
 
 # Application definition
@@ -54,7 +54,7 @@ ROOT_URLCONF = 'housing.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR/'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'housing.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'test', # 연동할 MySQL의 데이터베이스 이름
+        'NAME': 'mysql', # 연동할 MySQL의 데이터베이스 이름
         'USER': 'root', # DB 접속 계정명
         'PASSWORD': '1234', # 해당 DB 접속 계정 비밀번호
         'HOST': 'localhost', # 실제 DB 주소
