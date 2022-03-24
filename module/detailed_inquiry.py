@@ -56,7 +56,7 @@ def getDetailedAPI(api_name=api_names[0], location=location):
 
     # 파일 저장
     with open((location+'detail'+'.json'), 'w', encoding='utf8') as file:
-        json.dump(datas, file, indent=4, ensure_ascii=False)
+        json.dump(datas, file, ensure_ascii=False)
 
 
 # 특정 날짜 이후의 데이터 삭제 / 필요없어짐
@@ -78,7 +78,7 @@ def del_date(api_name=api_names[0], location=location):
 
     # 파일 저장
     with open((location + api_name[3:6] + api_name[-3:] + '.json'), 'w', encoding='utf8') as file:
-        json.dump(datas, file, indent=4, ensure_ascii=False)
+        json.dump(datas, file, ensure_ascii=False)
 
 
 # 필요없어짐
@@ -107,13 +107,13 @@ def append_location(file_name='detail.json', location=location):
         loca = getLocation.kakao_location(add)
 
         data['lat'] = loca['lat']
-        data['lon'] = loca['lon']
+        data['lot'] = loca['lot']
         data['place_code'] = loca['b_code']
 
 
     # json에 추가한 내용 저장
     with open((location+file_name), 'w', encoding='utf8') as f:
-        json.dump(json_datas, f, indent=4, ensure_ascii=False)
+        json.dump(json_datas, f, ensure_ascii=False)
 
 
 

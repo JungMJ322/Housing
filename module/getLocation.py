@@ -15,7 +15,7 @@ api_add = 'https://dapi.kakao.com/v2/local/search/address.json'
 # 저장 위치
 location = '../data/json/'
 
-# kakao API를 이용해 주소의 lon, lat, b_code를 dict의 형태로 retrun
+# kakao API를 이용해 주소의 lot, lat, b_code를 dict의 형태로 retrun
 def kakao_location(add):
     # api 설정
     url = api_add# + '?query=' + add
@@ -46,7 +46,7 @@ def kakao_location(add):
     # 위의 두 방법 모두 실패했을 때
     # kakao API로 검색할 수 없는 주소라고 판단하고 좌표값과 법정동코드를 NULL값으로
     if len(result_json['documents']) == 0:
-        dict_fail = {'lon': None, 'lat': None, 'b_code': None}
+        dict_fail = {'lot': None, 'lat': None, 'b_code': None}
         return dict_fail
 
     addr = result_json['documents'][0]['address']
@@ -65,7 +65,7 @@ def kakao_location(add):
     # 검색이 제대로 된경우 좌표값과 법정동코드 리턴
     result = dict()
     result['lat'] = addr['y']
-    result['lon'] = addr['x']
+    result['lot'] = addr['x']
     result['b_code'] = addr['b_code']
 
     return result

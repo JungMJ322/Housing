@@ -22,14 +22,17 @@ def subwayPer(location=location, file_name=file_name, json_name=json_name):
     with open((location+json_name), 'r', encoding='utf8') as f:
         json_file = json.load(f)
 
+    cnt = 1
     for data in json_file['data']:
-        if data['lon'] == None:
+        if data['lot'] == None:
             loca_dict = getLocation.kakao_location(data['place'])
-            data['lon'] = loca_dict['lon']
+            data['lot'] = loca_dict['lot']
             data['lat'] = loca_dict['lat']
+            data['id'] = cnt
+            cnt = cnt + 1
 
     with open((location + json_name), 'w', encoding='utf8') as f:
-        json.dump(json_file['data'], f, indent=4, ensure_ascii=False)
+        json.dump(json_file['data'], f, ensure_ascii=False)
 
 if __name__ == '__main__':
     subwayPer()
