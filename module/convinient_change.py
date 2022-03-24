@@ -21,7 +21,7 @@ def bus_change():
             temp_list.append(temp_dict)
             count += 1
 
-        savefile('bus_stop', 'busStop', temp_list)
+        savefile('bus_stop', 'busStop', temp_list[1:])
 
 
 def mart_change():
@@ -57,7 +57,6 @@ def mart_change():
 def park_change():
     with open("../data/InfraData/park_raw.json", 'r', encoding='utf-8') as f:
         rdr = json.load(f)
-        print(rdr)
         temp_list = []
         count = 1
         for i in rdr['records']:
@@ -65,19 +64,28 @@ def park_change():
             temp_dict['id'] = count
             temp_dict['park_name'] = i['공원명']
             temp_dict['park_type'] = i['공원구분']
-            if i['위도']:
-                temp_dict['lat'] = i['위도']
-                temp_dict['lot'] = i['경도']
-            else:
-                temp_dict['lat'] = None
-                temp_dict['lot'] = None
             temp_dict['start_date'] = i['지정고시일']
+
             if i['소재지지번주소'] == '':
                 temp_dict['place'] = i['소재지도로명주소']
             elif i['소재지도로명주소'] == '':
                 temp_dict['place'] = i['소재지지번주소']
             else:
                 continue
+
+            if (len(i["위도"]) == 0) or (len(i["경도"]) == 0):
+                try:
+                    loc = kakao_location(temp_dict['place'])
+                except:
+                    continue
+                temp_dict['lat'] = loc['lat']
+                temp_dict['lot'] = loc['lot']
+            else:
+                temp_dict['lat'] = i['위도']
+                temp_dict['lot'] = i['경도']
+
+            temp_dict['start_date'] = i['지정고시일']
+
             count += 1
             temp_list.append(temp_dict)
 
@@ -108,8 +116,6 @@ def savefile(json_key, filename, data):
 
 
 if __name__ == "__main__":
-    # bus_change()
-    # mart_change()
     park_change()
-    # school_change()
+
 
