@@ -9,7 +9,7 @@ spark = SparkSession.builder.master('local[1]').appName('getInfra').getOrCreate(
 client = MongoClient('localhost', 27017)
 db = client['test']
 
-infra_json_list = ['school', 'subway2', 'park', 'mart', 'bus', 'convinient']
+infra_json_list = ['school', 'subway2', 'park', 'mart', 'busStop']
 
 def makeMongoSet(infra=infra_json_list[0]):
 

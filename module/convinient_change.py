@@ -64,8 +64,12 @@ def park_change():
             temp_dict['id'] = count
             temp_dict['park_name'] = i['공원명']
             temp_dict['park_type'] = i['공원구분']
-            temp_dict['lat'] = i['위도']
-            temp_dict['lot'] = i['경도']
+            if i['위도'] == '':
+                temp_dict['lat'] = None
+                temp_dict['lot'] = None
+            else:
+                temp_dict['lat'] = i['위도']
+                temp_dict['lot'] = i['경도']
             temp_dict['start_date'] = i['지정고시일']
             if i['소재지지번주소'] == '':
                 temp_dict['place'] = i['소재지도로명주소']
@@ -104,8 +108,8 @@ def savefile(json_key, filename, data):
 
 
 if __name__ == "__main__":
-    bus_change()
-    mart_change()
+    # bus_change()
+    # mart_change()
     park_change()
-    school_change()
+    # school_change()
 
