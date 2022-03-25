@@ -15,7 +15,7 @@ def convin_change(count_relay, file_name):
                 continue
             i['id'] = count
             i['lat'] = loc['lat']
-            i['lot'] = loc['lon']
+            i['lot'] = loc['lot']
             total_list.append(i)
             count += 1
         return count, total_list

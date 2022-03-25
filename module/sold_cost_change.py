@@ -29,16 +29,16 @@ def save_json():
                 try:
                     temp['area_code'] = code_dict[i[0]]
                 except KeyError:
-                    temp['area_code'] = 'unknown'
+                    del temp
                 temp['month'] = i[6]
-                temp['cost'] = i[8]
+                temp['cost'] = int(i[8].replace(",",""))
                 temp_list.append(temp)
 
             month = temp['month']
             save_data[month] = temp_list
 
-        with open(str(month)+'.json', 'w', encoding='utf-8') as f:
-            f.write(json.dumps(save_data, ensure_ascii=False))
+        with open(str(month)+'.json', 'w', encoding='utf-8') as f1:
+            f1.write(json.dumps(temp_list, ensure_ascii=False))
 
     for i in range(1, 13):
         with open("../data/sold_cost/21." + str(i) + ".csv", "r", encoding='euc-kr') as f:
@@ -54,16 +54,16 @@ def save_json():
                 try:
                     temp['area_code'] = code_dict[i[0]]
                 except KeyError:
-                    temp['area_code'] = 'unknown'
+                    del temp
                 temp['month'] = i[6]
-                temp['cost'] = i[8]
+                temp['cost'] = int(i[8].replace(",",""))
                 temp_list.append(temp)
 
             month = temp['month']
             save_data[month] = temp_list
 
-        with open(str(month)+'.json', 'w', encoding='utf-8') as f:
-            f.write(json.dumps(save_data, ensure_ascii=False))
+        with open(str(month)+'.json', 'w', encoding='utf-8') as f2:
+            f2.write(json.dumps(temp_list, ensure_ascii=False))
 
     for i in range(1, 3):
         with open("../data/sold_cost/22." + str(i) + ".csv", "r", encoding='euc-kr') as f:
@@ -79,16 +79,23 @@ def save_json():
                 try:
                     temp['area_code'] = code_dict[i[0]]
                 except KeyError:
-                    temp['area_code'] = 'unknown'
+                    del temp
                 temp['month'] = i[6]
-                temp['cost'] = i[8]
+                temp['cost'] = int(i[8].replace(",",""))
                 temp_list.append(temp)
 
             month = temp['month']
             save_data[month] = temp_list
 
-        with open(str(month)+'.json', 'w', encoding='utf-8') as f:
-            f.write(json.dumps(save_data, ensure_ascii=False))
+        with open(str(month)+'.json', 'w', encoding='utf-8') as f3:
+            f3.write(json.dumps(temp_list, ensure_ascii=False))
+
+    data1 = json.load(f1)
+    data2 = json.load(f2)
+    data3 = json.load(f3)
+
+    with open("../data/sold_cost/sold_cost_data.json", "w") as sold_cost_data:
+        json.dump(data1+data2+data3, sold_cost_data, ensure_ascii=False)
 
 if __name__ == "__main__":
     save_json()

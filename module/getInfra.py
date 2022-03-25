@@ -3,24 +3,35 @@ from bson import SON
 import pandas as pd
 import pyspark
 from pyspark.sql import SparkSession
+import json
 
 spark = SparkSession.builder.master('local[1]').appName('getInfra').getOrCreate()
 
 client = MongoClient('localhost', 27017)
 db = client['test']
 
-infra_json_list = ['school', 'subway2', 'park', 'mart', 'busStop']
+infra_json_list = ['school', 'subway2', 'mart', 'park']
+
+user = 'root'
+password = '1234'
+url = 'jdbc:mysql://localhost:3306/Housing'
+driver = 'com.mysql.cj.jdbc.Driver'
+dbtable='infra'
 
 def makeMongoSet(infra=infra_json_list[0]):
 
     infra_file = spark.read.json(f'/housing/data/{infra}.json')
+    infra_file.createOrReplaceTempView(infra)
 
-    infra_lat = infra_file.select('lat').rdd.flatMap(lambda x: x).collect()
-    infra_lot = infra_file.select('lot').rdd.flatMap(lambda x: x).collect()
-    infra_id = infra_file.select('school_id').rdd.flatMap(lambda x: x).collect()
+    sql = f'select id, lat, lot from {infra} where lat is not NULL or lat != ""'
+    infra_file2 = spark.sql(sql)
+    
+    infra_lat = infra_file2.select('lat').rdd.flatMap(lambda x: x).collect()
+    infra_lot = infra_file2.select('lot').rdd.flatMap(lambda x: x).collect()
+    infra_id = infra_file2.select('id').rdd.flatMap(lambda x: x).collect()
 
     geo_list = list()
-    for i in range(len(infra_lat)):
+    for i in range(len(infra_id)):
         geo_dict = dict()
         geo_dict['id'] = infra_id[i]
         coordinates = [float(infra_lot[i]), float(infra_lat[i])]
@@ -65,24 +76,44 @@ def getInfraLoca(detail, infra=infra_json_list[0]):
     for i in range(len(detail['id'])):
         infra_loca = infra_mongo.find({'location': {'$near': SON([('$geometry', SON([('type', 'Point'), ('coordinates', [float(detail['lot'][i]), float(detail['lat'][i])])])), ('$maxDistance', 1000)])}})
         
+        row_dict = dict()
         row_list = list()
         for doc in infra_loca:
             row_list.append(doc['id'])
-        
-        info_list.append(row_list)
+
+        row_dict['id'] = row_list
+        info_list.append(json.dumps(row_dict))
 
     return info_list
 
 if __name__ == '__main__':
     detail = detailData()
 
-    makeMongoSet()
+    # makeMongoSet(infra_json_list[0])
+    # loca = getInfraLoca(detail, infra_json_list[0])
 
-    loca = getInfraLoca(detail)
+    loca = list()
+    for data in infra_json_list:
+        makeMongoSet(data)
+        row = getInfraLoca(detail, data)
+
+        
+        loca.append(row)
+
+    # df = pd.DataFrame({
+    #     'HOUSE_MANAGE_NO': detail['id'],
+    #     'infra': loca
+    # })
 
     df = pd.DataFrame({
         'HOUSE_MANAGE_NO': detail['id'],
-        'school': loca
+        infra_json_list[0]: loca[0],
+        'subway': loca[1],
+        infra_json_list[2] : loca[2],
+        infra_json_list[3] : loca[3]
     })
 
     print(df)
+
+    df_spark = spark.createDataFrame(df)
+    df_spark.write.jdbc(url, dbtable, "overwrite", properties={"driver":driver, "user":user, "password":password})
