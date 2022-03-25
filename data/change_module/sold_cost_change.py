@@ -6,7 +6,7 @@ spark = SparkSession.builder.master('local[1]').appName('sold_cost').getOrCreate
 
 
 def create_code_dict():
-    with open('../data/hadoop_upload/sold_cost/area_code.txt', 'r', encoding='euc-kr') as f:
+    with open('../../data/hadoop_upload/sold_cost/area_code.txt', 'r', encoding='euc-kr') as f:
         rdr = csv.reader(f, delimiter='\t')
         code_dict = {}
 
