@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-gnt3nlvfrso#yx#-wr@oh9hm$%%o=qh=m8o3&b1#p&_#=thu8l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0'] # aws ip 붙이거나 * ?
+ALLOWED_HOSTS = ['*'] # aws ip 붙이거나 * ?
 
 
 # Application definition
