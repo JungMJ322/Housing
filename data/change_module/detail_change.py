@@ -21,7 +21,7 @@ def change_detail():
         temp_dict['SUPPLY_SIZE'] = i['TOT_SUPLY_HSHLDCO']
         temp_dict['PLACE_CODE'] = i['place_code']
         temp_dict['LAT'] = i['lat']
-        temp_dict['LOT'] = i['lon']
+        temp_dict['LOT'] = i['lot']
         temp_dict['START_RECEIPT'] = i['RCEPT_BGNDE']
         temp_dict['BUILD_COMP'] = i['BSNS_MBY_NM']
         temp_dict['SPECLT_RDN_EARTH_AT'] = i['SPECLT_RDN_EARTH_AT']
