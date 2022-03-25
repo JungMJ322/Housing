@@ -64,7 +64,7 @@ def mart_change():
 
 
 def park_change():
-    data = spark.read.json("/Housing/data/hadoop_upload/park_raw.json")
+    data = spark.read.json("/Housing/data/hadoop_upload/park_raw.json", encoding='utf-8')
     data_coll = data.collect()
     rdr = list()
     for i in data_coll:
@@ -106,7 +106,7 @@ def park_change():
 
 
 def school_change():
-    data = spark.read.json("/Housing/data/hadoop_upload/school_raw.json")
+    data = spark.read.json("/Housing/data/hadoop_upload/school_raw.json", encoding='utf-8')
     data_coll = data.collect()
     rdr = list()
     for i in data_coll:
