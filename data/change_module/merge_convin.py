@@ -1,24 +1,30 @@
 import json
 from getLocation import kakao_location
 from convinient_change import savefile
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.master('local[1]').appName('convinient').getOrCreate()
 
 
 def convin_change(count_relay, file_name):
-    with open("../data/json/" + file_name,'r', encoding="utf-8") as f:
-        rdr = json.load(f)
-        count = count_relay
-        total_list = []
-        for i in rdr:
-            try:
-                loc = kakao_location(i['place'])
-            except:
-                continue
-            i['id'] = count
-            i['lat'] = loc['lat']
-            i['lot'] = loc['lot']
-            total_list.append(i)
-            count += 1
-        return count, total_list
+    data = spark.read.json("/Housing/data/hadoop_upload/"+file_name)
+    data_coll = data.collect()
+    rdr = list()
+    for i in data_coll:
+        rdr.append(i.asDict())
+    count = count_relay
+    total_list = []
+    for i in rdr:
+        try:
+            loc = kakao_location(i['place'])
+        except:
+            continue
+        i['id'] = count
+        i['lat'] = loc['lat']
+        i['lot'] = loc['lot']
+        total_list.append(i)
+        count += 1
+    return count, total_list
 
 
 def convin_merge():

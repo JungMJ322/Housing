@@ -16,76 +16,89 @@ def create_code_dict():
 
 def save_json():
     for i in range(1, 13):
-        with open("../data/sold_cost/20." + str(i) + ".csv", "r", encoding='euc-kr') as f:
-            code_dict = create_code_dict()
-            rdr = csv.reader(f)
-            temp_list = []
-            save_data = {}
+        # with open("../data/sold_cost/20." + str(i) + ".csv", "r", encoding='euc-kr') as f:
+        #     rdr = csv.reader(f)
+        data = spark.read.json("/Housing/data/hadoop_upload/20."+str(i)+".csv", encoding="cp949", header=True)
+        data_coll = data.collect()
+        rdr = list()
+        for j in data_coll:
+            rdr.append(j.asDict())
 
-            for i in rdr:
-                temp = dict()
-                temp['place'] = i[0]
-                temp['area_grade'] = str(int(float(i[5]) // 10)) + '단위'
-                try:
-                    temp['area_code'] = code_dict[i[0]]
-                except KeyError:
-                    del temp
-                temp['month'] = i[6]
-                temp['cost'] = int(i[8].replace(",",""))
-                temp_list.append(temp)
+        code_dict = create_code_dict()
+        temp_list = []
+        save_data = {}
 
-            month = temp['month']
-            save_data[month] = temp_list
+        for i in rdr:
+            temp = dict()
+            temp['place'] = i[0]
+            temp['area_grade'] = str(int(float(i[5]) // 10)) + '단위'
+            try:
+                temp['area_code'] = code_dict[i[0]]
+            except KeyError:
+                del temp
+            temp['month'] = i[6]
+            temp['cost'] = int(i[8].replace(",",""))
+            temp_list.append(temp)
+
+        month = temp['month']
+        save_data[month] = temp_list
 
         with open(str(month)+'.json', 'w', encoding='utf-8') as f1:
             f1.write(json.dumps(temp_list, ensure_ascii=False))
 
     for i in range(1, 13):
-        with open("../data/sold_cost/21." + str(i) + ".csv", "r", encoding='euc-kr') as f:
-            code_dict = create_code_dict()
-            rdr = csv.reader(f)
-            temp_list = []
-            save_data = {}
+        data = spark.read.json("/Housing/data/hadoop_upload/21."+str(i)+".csv", encoding="cp949", header=True)
+        data_coll = data.collect()
+        rdr = list()
+        for j in data_coll:
+            rdr.append(j.asDict())
 
-            for i in rdr:
-                temp = dict()
-                temp['place'] = i[0]
-                temp['area_grade'] = str(int(float(i[5]) // 10)) + '단위'
-                try:
-                    temp['area_code'] = code_dict[i[0]]
-                except KeyError:
-                    del temp
-                temp['month'] = i[6]
-                temp['cost'] = int(i[8].replace(",",""))
-                temp_list.append(temp)
+        code_dict = create_code_dict()
+        temp_list = []
+        save_data = {}
 
-            month = temp['month']
-            save_data[month] = temp_list
+        for i in rdr:
+            temp = dict()
+            temp['place'] = i[0]
+            temp['area_grade'] = str(int(float(i[5]) // 10)) + '단위'
+            try:
+                temp['area_code'] = code_dict[i[0]]
+            except KeyError:
+                del temp
+            temp['month'] = i[6]
+            temp['cost'] = int(i[8].replace(",",""))
+            temp_list.append(temp)
+
+        month = temp['month']
+        save_data[month] = temp_list
 
         with open(str(month)+'.json', 'w', encoding='utf-8') as f2:
             f2.write(json.dumps(temp_list, ensure_ascii=False))
 
     for i in range(1, 3):
-        with open("../data/sold_cost/22." + str(i) + ".csv", "r", encoding='euc-kr') as f:
-            code_dict = create_code_dict()
-            rdr = csv.reader(f)
-            temp_list = []
-            save_data = {}
+        data = spark.read.json("/Housing/data/hadoop_upload/22."+str(i)+".csv", encoding="cp949", header=True)
+        data_coll = data.collect()
+        rdr = list()
+        for j in data_coll:
+            rdr.append(j.asDict())
+        code_dict = create_code_dict()
+        temp_list = []
+        save_data = {}
 
-            for i in rdr:
-                temp = dict()
-                temp['place'] = i[0]
-                temp['area_grade'] = str(int(float(i[5]) // 10)) + '단위'
-                try:
-                    temp['area_code'] = code_dict[i[0]]
-                except KeyError:
-                    del temp
-                temp['month'] = i[6]
-                temp['cost'] = int(i[8].replace(",",""))
-                temp_list.append(temp)
+        for i in rdr:
+            temp = dict()
+            temp['place'] = i[0]
+            temp['area_grade'] = str(int(float(i[5]) // 10)) + '단위'
+            try:
+                temp['area_code'] = code_dict[i[0]]
+            except KeyError:
+                del temp
+            temp['month'] = i[6]
+            temp['cost'] = int(i[8].replace(",",""))
+            temp_list.append(temp)
 
-            month = temp['month']
-            save_data[month] = temp_list
+        month = temp['month']
+        save_data[month] = temp_list
 
         with open(str(month)+'.json', 'w', encoding='utf-8') as f3:
             f3.write(json.dumps(temp_list, ensure_ascii=False))
