@@ -94,7 +94,7 @@ def save_json():
     data2 = json.load(f2)
     data3 = json.load(f3)
 
-    with open("../data/sold_cost/sold_cost_data", "w") as sold_cost_data:
+    with open("../data/sold_cost/sold_cost_data.json", "w") as sold_cost_data:
         json.dump(data1+data2+data3, sold_cost_data, ensure_ascii=False)
 
 if __name__ == "__main__":
