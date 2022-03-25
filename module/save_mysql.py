@@ -11,4 +11,5 @@ def save_mysql(filename, table_name):
     url="jdbc:mysql://localhost:3306/Housing"
     driver = "com.mysql.cj.jdbc.Driver"
     dbtable = table_name
-    rdr.write.jdbc(url, dbtable, "append", properties={"driver": driver, "user": user, "password": password})
+    df_spark = spark.createDataFrame(rdr)
+    df_spark.write.jdbc(url, dbtable, "append", properties={"driver": driver, "user": user, "password": password})
