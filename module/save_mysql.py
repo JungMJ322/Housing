@@ -1,17 +1,14 @@
-user = "root"
-password="1234"
-url = "jdbc:mysql://localhost:3306/mysql"
-driver = "com.mysql.cj.jdbc.Driver"
-
-get_url = "/Housing/data/json/"
-
-detail = spark.read.json(get_url+"detail.json")
-competition = spark.read.json(get_url+"competition.json")
-convinient = spark.read.josn(get_url+"convinient.json")
-park = spark.read.json(get_url+"park.json")
-subway = spark.read.json(get_url+"subway2.json")
-school = spark.read.json(get_url+"school.json")
-mart = spark.read.json(get_url+"mart.json")
-bus = spark.read.json(get_url+"bus.json")
+from pyspark.sql import SparkSession
+import json
+spark = SparkSession.builder.master('local[1]').appName('jsonToMysql').getOrCreate()
 
 
+def save_mysql(filename, table_name):
+    with open("/home/wovlf139/Housing/data/json/"+filename, "r", encoding='utf-8') as f:
+        rdr = json.load(f)
+    user = "root"
+    password = "1234"
+    url="jdbc:mysql://localhost:3306/Housing"
+    driver = "com.mysql.cj.jdbc.Driver"
+    dbtable = table_name
+    rdr.write.jdbc(url, dbtable, "append", properties={"driver": driver, "user": user, "password": password})
