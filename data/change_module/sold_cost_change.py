@@ -1,6 +1,7 @@
 import csv
 import json
 from pyspark.sql import SparkSession
+import pyspark.sql.functions as F
 
 spark = SparkSession.builder.master('local[1]').appName('sold_cost').getOrCreate()
 
@@ -81,13 +82,14 @@ def save_json():
             temp_list.append(temp)
 
     df_data = spark.createDataFrame(temp_list)
-
+    df_data.createOrReplaceTempView("df_data")
+    data_for_save = df_data.groupBy('area_code', 'area_grade', 'month').agg(F.avg(F.col('cost')).alias('mean_cost'))
     user = "root"
     password = "1234"
     url = "jdbc:mysql://localhost:3306/Housing"
     driver = "com.mysql.cj.jdbc.Driver"
     dbtable = "sold_cost_mean"
-    df_data.write.jdbc(url, dbtable, "append", properties={"driver": driver, "user": user, "password": password})
+    data_for_save.write.jdbc(url, dbtable, "append", properties={"driver": driver, "user": user, "password": password})
 
 
 if __name__ == "__main__":
