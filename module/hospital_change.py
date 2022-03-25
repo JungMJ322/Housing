@@ -5,7 +5,8 @@ def hospital_change():
     with open("../data/json/hospital.json", 'r', encoding='utf-8') as f:
         rdr = json.load(f)
         temp_list = []
-        for i in rdr['hospital']:
+        count = 0
+        for i in rdr:
             temp_dict = {}
             temp_dict['place'] = i['dutyAddr']
             temp_dict['duty_code'] = i['dutyDiv']
@@ -15,7 +16,7 @@ def hospital_change():
             temp_dict['lat'] = i['wgs84Lat']
             temp_dict['lot'] = i['wgs84Lon']
             temp_list.append(temp_dict)
-
+            count += 1
         savefile("hospital_change", temp_list)
 
 def savefile(filename, data):
