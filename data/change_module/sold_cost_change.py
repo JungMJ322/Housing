@@ -31,7 +31,7 @@ def save_json():
         for j in rdr:
             temp = dict()
             temp['place'] = j["시군구"]
-            temp['area_grade'] = str(int(float(j[5]) // 10)) + '단위'
+            temp['area_grade'] = str(int(float(j["전용면적(㎡)"]) // 10)) + '단위'
             try:
                 temp['area_code'] = code_dict[j["시군구"]]
             except KeyError:
@@ -51,7 +51,7 @@ def save_json():
         for j in rdr:
             temp = dict()
             temp['place'] = j["시군구"]
-            temp['area_grade'] = str(int(float(j[5]) // 10)) + '단위'
+            temp['area_grade'] = str(int(float(j["전용면적(㎡)"]) // 10)) + '단위'
             try:
                 temp['area_code'] = code_dict[j["시군구"]]
             except KeyError:
@@ -71,7 +71,7 @@ def save_json():
         for j in rdr:
             temp = dict()
             temp['place'] = j["시군구"]
-            temp['area_grade'] = str(int(float(j[5]) // 10)) + '단위'
+            temp['area_grade'] = str(int(float(j["전용면적(㎡)"]) // 10)) + '단위'
             try:
                 temp['area_code'] = code_dict[j["시군구"]]
             except KeyError:
