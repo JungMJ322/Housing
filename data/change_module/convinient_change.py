@@ -6,7 +6,7 @@ from pyspark.sql import SparkSession
 spark = SparkSession.builder.master('local[1]').appName('convin_change').getOrCreate()
 
 def bus_change():
-    data = spark.read.json("/Housing/data/hadoop_upload/bus.csv", encoding="cp949", header=True)
+    data = spark.read.csv("/Housing/data/hadoop_upload/bus.csv", encoding="cp949", header=True)
     data_coll = data.collect()
     rdr = list()
     for i in data_coll:
@@ -15,14 +15,14 @@ def bus_change():
     temp_list = []
     current = None
     for i in rdr:
-        if current == i[1]:
+        if current == i["정류장 명칭"]:
             continue
         temp_dict = {}
         temp_dict['id'] = count
-        temp_dict['stn_name'] = i[1]
-        temp_dict['lat'] = i[5]
-        temp_dict['lot'] = i[6]
-        current = i[1]
+        temp_dict['stn_name'] = i["정류장 명칭"]
+        temp_dict['lat'] = i["위도"]
+        temp_dict['lot'] = i["경도"]
+        current = i["정류장 명칭"]
         # print(temp_dict)
         temp_list.append(temp_dict)
         count += 1
@@ -31,7 +31,7 @@ def bus_change():
 
 
 def mart_change():
-    data = spark.read.json("/Housing/data/hadoop_upload/mart_raw.csv", encoding="cp949", header=True)
+    data = spark.read.csv("/Housing/data/hadoop_upload/mart_raw.csv", encoding="cp949", header=True)
     data_coll = data.collect()
     rdr = list()
     for i in data_coll:
@@ -41,20 +41,20 @@ def mart_change():
     for i in rdr:
         temp_dict = {}
         try:
-            if i[8] != "영업/정상" or ((len(i[18]) < 5) and (len(i[18]))) != 0:
+            if (len(i['영업상태명']) != "영업/정상") or ((len(i["소재지전체주소"]) < 5) and (len(i["도로명전체주소"]) < 5)):
                 continue
-            if i[18] == '' and i[19] == '':
+            if i["소재지전체주소"] == '' and i["도로명전체주소"] == '':
                 continue
-            elif i[18] == '':
-                coordi = kakao_location(i[19])
+            elif i["소재지전체주소"] == '':
+                coordi = kakao_location(i["도로명전체주소"])
             else:
-                coordi = kakao_location(i[18])
+                coordi = kakao_location(i["소재지전체주소"])
         except IndexError:
             continue
 
         temp_dict['id'] = count
-        temp_dict['start_date'] = i[5]
-        temp_dict['mart_name'] = i[21]
+        temp_dict['start_date'] = i["인허가일자"]
+        temp_dict['mart_name'] = i["사업장명"]
         temp_dict['lat'] = coordi['lat']
         temp_dict['lot'] = coordi['lot']
         temp_list.append(temp_dict)
