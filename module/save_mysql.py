@@ -4,8 +4,7 @@ spark = SparkSession.builder.master('local[1]').appName('jsonToMysql').getOrCrea
 
 
 def save_mysql(filename, table_name):
-    with open("../data/json/"+filename, "r", encoding='utf-8') as f:
-        rdr = json.load(f)
+    rdr = spark.read.format('json').option("multiline", "true").json(f'/housing/data/json/{filename}')
     user = "root"
     password = "1234"
     url="jdbc:mysql://localhost:3306/Housing"
