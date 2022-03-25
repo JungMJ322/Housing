@@ -41,7 +41,7 @@ def mart_change():
     for i in rdr:
         temp_dict = {}
         try:
-            if i[8] != "영업/정상" or ((len(i[18]) < 5) and (len(i[18]))) != 0:
+            if i[8] != "영업/정상" or ((len(i[18]) < 5) and (len(i[19]) < 5)):
                 continue
             if i[18] == '' and i[19] == '':
                 continue
