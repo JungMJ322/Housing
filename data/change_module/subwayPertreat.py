@@ -26,7 +26,6 @@ def subwayPer(location=location, file_name=file_name, json_name=json_name):
     for data in json_file:
         json_dict = dict()
         json_dict['id'] = cnt
-        json_dict['subway_code'] = data['역번호']
         json_dict['stn_name'] = data['역사명']
         json_dict['route_name'] = data['노선명']
         if data['역경도'] == None:
