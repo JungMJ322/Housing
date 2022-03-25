@@ -72,7 +72,7 @@ def park_change():
 
     temp_list = []
     count = 1
-    for i in rdr['records']:
+    for i in rdr:
         temp_dict = {}
         temp_dict['id'] = count
         temp_dict['park_name'] = i['공원명']
@@ -114,7 +114,7 @@ def school_change():
 
     temp_list = []
     count = 1
-    for i in rdr['records']:
+    for i in rdr:
         temp_dict = {}
         temp_dict['id'] = count
         temp_dict['school_name'] = i['학교명']
