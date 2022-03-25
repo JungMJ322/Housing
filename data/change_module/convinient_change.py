@@ -6,7 +6,7 @@ from pyspark.sql import SparkSession
 spark = SparkSession.builder.master('local[1]').appName('convin_change').getOrCreate()
 
 def bus_change():
-    data = spark.read.json("/Housing/data/hadoop_upload/bus.csv", encoding="cp949", header=True)
+    data = spark.read.csv("/Housing/data/hadoop_upload/bus.csv", encoding="cp949", header=True)
     data_coll = data.collect()
     rdr = list()
     for i in data_coll:
@@ -31,7 +31,7 @@ def bus_change():
 
 
 def mart_change():
-    data = spark.read.json("/Housing/data/hadoop_upload/mart_raw.csv", encoding="cp949", header=True)
+    data = spark.read.csv("/Housing/data/hadoop_upload/mart_raw.csv", encoding="cp949", header=True)
     data_coll = data.collect()
     rdr = list()
     for i in data_coll:
