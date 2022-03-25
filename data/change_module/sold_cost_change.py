@@ -33,7 +33,7 @@ def save_json():
             temp['place'] = j["시군구"]
             temp['area_grade'] = str(int(float(j["전용면적(㎡)"]) // 10)) + '단위'
             try:
-                temp['area_code'] = code_dict[j["시군구"]]
+                temp['place_code'] = code_dict[j["시군구"]]
             except KeyError:
                 continue
             temp['month'] = j["계약년월"]
@@ -53,7 +53,7 @@ def save_json():
             temp['place'] = j["시군구"]
             temp['area_grade'] = str(int(float(j["전용면적(㎡)"]) // 10)) + '단위'
             try:
-                temp['area_code'] = code_dict[j["시군구"]]
+                temp['place_code'] = code_dict[j["시군구"]]
             except KeyError:
                 continue
             temp['month'] = j["계약년월"]
@@ -73,7 +73,7 @@ def save_json():
             temp['place'] = j["시군구"]
             temp['area_grade'] = str(int(float(j["전용면적(㎡)"]) // 10)) + '단위'
             try:
-                temp['area_code'] = code_dict[j["시군구"]]
+                temp['place_code'] = code_dict[j["시군구"]]
             except KeyError:
                 continue
             temp['month'] = j["계약년월"]
