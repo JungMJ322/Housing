@@ -28,7 +28,6 @@ def getHospital(file_name=file_name, location=location):
 
     cnt_list = list(range(1, cnt, 100))
     cnt_list.append(cnt)
-    print(cnt_list)
 
     hospital_list = list()
     for i in cnt_list:
@@ -43,6 +42,6 @@ def getHospital(file_name=file_name, location=location):
     with open((location+file_name), 'w', encoding='utf8') as f:
         json.dump(hospital_list, f, indent=4, ensure_ascii=False)
 
-# if __name__ == '__main__':
-#     getHospital()
-#
+if __name__ == '__main__':
+    getHospital()
+
