@@ -15,14 +15,14 @@ def bus_change():
     temp_list = []
     current = None
     for i in rdr:
-        if current == i[1]:
+        if current == i["정류장 명칭"]:
             continue
         temp_dict = {}
         temp_dict['id'] = count
-        temp_dict['stn_name'] = i[1]
-        temp_dict['lat'] = i[5]
-        temp_dict['lot'] = i[6]
-        current = i[1]
+        temp_dict['stn_name'] = i["정류장 명칭"]
+        temp_dict['lat'] = i["위도"]
+        temp_dict['lot'] = i["경도"]
+        current = i["정류장 명칭"]
         # print(temp_dict)
         temp_list.append(temp_dict)
         count += 1
