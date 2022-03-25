@@ -41,20 +41,20 @@ def mart_change():
     for i in rdr:
         temp_dict = {}
         try:
-            if (len(i[8]) != 5) or ((len(i[18]) < 5) and (len(i[19]) < 5)):
+            if (len(i['영업상태명']) != "영업/정상") or ((len(i["소재지전체주소"]) < 5) and (len(i["도로명전체주소"]) < 5)):
                 continue
-            if i[18] == '' and i[19] == '':
+            if i["소재지전체주소"] == '' and i["도로명전체주소"] == '':
                 continue
-            elif i[18] == '':
-                coordi = kakao_location(i[19])
+            elif i["소재지전체주소"] == '':
+                coordi = kakao_location(i["도로명전체주소"])
             else:
-                coordi = kakao_location(i[18])
+                coordi = kakao_location(i["소재지전체주소"])
         except IndexError:
             continue
 
         temp_dict['id'] = count
-        temp_dict['start_date'] = i[5]
-        temp_dict['mart_name'] = i[21]
+        temp_dict['start_date'] = i["인허가일자"]
+        temp_dict['mart_name'] = i["사업장명"]
         temp_dict['lat'] = coordi['lat']
         temp_dict['lot'] = coordi['lot']
         temp_list.append(temp_dict)
