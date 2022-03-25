@@ -40,11 +40,8 @@ def getHospital(file_name=file_name, location=location):
         hospital_list.extend(dict2_soup['response']['body']['items']['item'])
         # print(i)
 
-    hospital_dict = dict()
-    hospital_dict['hospital'] = hospital_list
-
     with open((location+file_name), 'w', encoding='utf8') as f:
-        json.dump(hospital_dict, f, indent=4, ensure_ascii=False)
+        json.dump(hospital_list, f, indent=4, ensure_ascii=False)
 
 # if __name__ == '__main__':
 #     getHospital()
