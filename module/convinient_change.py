@@ -2,6 +2,8 @@ import json
 import csv
 from getLocation import kakao_location
 
+
+
 def bus_change():
     with open("../data/TransportData/bus.csv", 'r', encoding='cp949') as f:
         rdr = csv.reader(f)
@@ -21,7 +23,7 @@ def bus_change():
             temp_list.append(temp_dict)
             count += 1
 
-        savefile('bus_stop', 'busStop', temp_list[1:])
+    savefile('bus_stop', 'busStop', temp_list[1:])
 
 
 def mart_change():
