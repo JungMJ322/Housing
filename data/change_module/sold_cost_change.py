@@ -20,7 +20,7 @@ def save_json():
     temp_list = []
 
     for i in range(1, 13):
-        data = spark.read.csv("/Housing/data/hadoop_upload/sold_cost/21."+str(i)+".csv", encoding="cp949")
+        data = spark.read.csv("/Housing/data/hadoop_upload/sold_cost/21."+str(i)+".csv", encoding="cp949", header=True)
         data_coll = data.collect()
         rdr = list()
 
@@ -30,18 +30,18 @@ def save_json():
 
         for j in rdr:
             temp = dict()
-            temp['place'] = j[0]
+            temp['place'] = j["시군구"]
             temp['area_grade'] = str(int(float(j[5]) // 10)) + '단위'
             try:
-                temp['area_code'] = code_dict[j[0]]
+                temp['area_code'] = code_dict[j["시군구"]]
             except KeyError:
                 continue
-            temp['month'] = j[6]
-            temp['cost'] = int(j[8].replace(",", ""))
+            temp['month'] = j["계약년월"]
+            temp['cost'] = int(j["거래금액(만원)"].replace(",", ""))
             temp_list.append(temp)
 
     for i in range(1, 13):
-        data = spark.read.csv("/Housing/data/hadoop_upload/sold_cost/20."+str(i)+".csv", encoding="cp949")
+        data = spark.read.csv("/Housing/data/hadoop_upload/sold_cost/20."+str(i)+".csv", encoding="cp949", header=True)
         data_coll = data.collect()
         rdr = list()
 
@@ -50,18 +50,18 @@ def save_json():
 
         for j in rdr:
             temp = dict()
-            temp['place'] = j[0]
+            temp['place'] = j["시군구"]
             temp['area_grade'] = str(int(float(j[5]) // 10)) + '단위'
             try:
-                temp['area_code'] = code_dict[j[0]]
+                temp['area_code'] = code_dict[j["시군구"]]
             except KeyError:
                 continue
-            temp['month'] = j[6]
-            temp['cost'] = int(j[8].replace(",", ""))
+            temp['month'] = j["계약년월"]
+            temp['cost'] = int(j["거래금액(만원)"].replace(",", ""))
             temp_list.append(temp)
 
     for i in range(1, 3):
-        data = spark.read.csv("/Housing/data/hadoop_upload/sold_cost/22." + str(i) + ".csv", encoding="cp949")
+        data = spark.read.csv("/Housing/data/hadoop_upload/sold_cost/22." + str(i) + ".csv", encoding="cp949", header=True)
         data_coll = data.collect()
         rdr = list()
 
@@ -70,14 +70,14 @@ def save_json():
 
         for j in rdr:
             temp = dict()
-            temp['place'] = j[0]
+            temp['place'] = j["시군구"]
             temp['area_grade'] = str(int(float(j[5]) // 10)) + '단위'
             try:
-                temp['area_code'] = code_dict[j[0]]
+                temp['area_code'] = code_dict[j["시군구"]]
             except KeyError:
                 continue
-            temp['month'] = j[6]
-            temp['cost'] = int(j[8].replace(",", ""))
+            temp['month'] = j["계약년월"]
+            temp['cost'] = int(j["거래금액(만원)"].replace(",", ""))
             temp_list.append(temp)
 
     df_data = spark.createDataFrame(temp_list)
