@@ -13,3 +13,6 @@ def save_mysql(filename, table_name):
     dbtable = table_name
     df_spark = spark.createDataFrame(rdr)
     df_spark.write.jdbc(url, dbtable, "append", properties={"driver": driver, "user": user, "password": password})
+
+if __name__ == '__main__':
+    save_mysql('park.json', 'park')
