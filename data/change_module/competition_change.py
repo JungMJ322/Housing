@@ -5,7 +5,7 @@ from pyspark.sql import SparkSession
 spark = SparkSession.builder.master('local[1]').appName('compet').getOrCreate()
 
 def compet_change():
-    data = spark.read.json("/Housing/data/hadoop_upload/competitionData0")
+    data = spark.read.json("/Housing/data/hadoop_upload/competitionData0.json")
     data_coll = data.collect()
     rdr = list()
     for i in data_coll:
