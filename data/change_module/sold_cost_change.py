@@ -82,7 +82,7 @@ def save_json():
 
     df_data = spark.createDataFrame(temp_list)
     df_data.createOrReplaceTempView("df_data")
-    data_for_save = df_data.groupBy('area_code', 'area_grade', 'month').agg(F.avg(F.col('cost')).alias('mean_cost'))
+    data_for_save = df_data.groupBy('place_code', 'area_grade', 'month').agg(F.avg(F.col('cost')).alias('mean_cost'))
     user = "root"
     password = "1234"
     url = "jdbc:mysql://localhost:3306/Housing"
