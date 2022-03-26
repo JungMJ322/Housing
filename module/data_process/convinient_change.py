@@ -42,6 +42,8 @@ def mart_change():
     for i in rdr:
         temp_dict = {}
         try:
+            if ((i["소재지전체주소"] != None) or (i["도로명전체주소"] != None)):
+                continue
             if (len(i['영업상태명']) != 5) or ((len(i["소재지전체주소"]) < 5) and (len(i["도로명전체주소"]) < 5)):
                 continue
             if i["소재지전체주소"] == '' and i["도로명전체주소"] == '':
