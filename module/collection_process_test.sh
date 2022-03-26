@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-export HERE=$(dirname $(realpath $0))
+HERE=$(dirname $(dirname $SCRIPT_DIR))
+echo $HERE
 
 hdfs dfs -mkdir /Housing
 sleep 5
