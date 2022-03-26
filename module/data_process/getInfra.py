@@ -8,7 +8,7 @@ import json
 spark = SparkSession.builder.master('local[1]').appName('getInfra').getOrCreate()
 
 client = MongoClient('localhost', 27017)
-db = client['test']
+db = client['Housing']
 
 infra_json_list = ['school', 'subway2', 'mart', 'park']
 
