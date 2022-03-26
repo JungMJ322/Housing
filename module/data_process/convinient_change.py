@@ -44,9 +44,13 @@ def mart_change():
         try:
             if ((i["소재지전체주소"] == None) and (i["도로명전체주소"] == None)):
                 continue
+            if (i["소재지전체주소"] is None):
+                i["소재지전체주소"] = "호"
+            if (i["도로명전체주소"] is None):
+                i["도로명전체주소"] = '호'
             if (len(i['영업상태명']) != 5) or ((len(i["소재지전체주소"]) < 5) and (len(i["도로명전체주소"]) < 5)):
                 continue
-            elif i["소재지전체주소"] == '':
+            elif i["소재지전체주소"] == '호':
                 coordi = kakao_location(i["도로명전체주소"])
             else:
                 coordi = kakao_location(i["소재지전체주소"])
