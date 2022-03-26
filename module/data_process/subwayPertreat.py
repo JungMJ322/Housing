@@ -7,7 +7,7 @@ import save_mysql
 
 spark = SparkSession.builder.master('local[1]').appName('getInfra').getOrCreate()
 
-location = '../output_json/'
+location = '../../data/output_json/'
 file_name = 'subway.json'
 json_name = 'subway2.json'
 
