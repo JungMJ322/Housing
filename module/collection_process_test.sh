@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-HERE=$(dirname $(realpath $0))
+export HERE=$(dirname $(realpath $0))
 
 hdfs dfs -mkdir /Housing
 sleep 5
