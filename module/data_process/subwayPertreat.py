@@ -13,7 +13,7 @@ json_name = 'subway2.json'
 
 def subwayPer(location=location, file_name=file_name, json_name=json_name):
 
-    df_json = spark.read.json('/housing/data/'+file_name, encoding='utf8')
+    df_json = spark.read.json('/Housing/data/hadoop_upload/'+file_name, encoding='utf8')
     df_json.createOrReplaceTempView('subway')
     
     df_json3 = df_json.collect()

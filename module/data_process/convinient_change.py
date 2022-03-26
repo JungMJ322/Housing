@@ -132,7 +132,7 @@ def school_change():
     save_mysql.save_list_to_db(temp_list, "school")
 
 def savefile(json_key, filename, data):
-    with open("../output_json/"+filename+".json", 'w', encoding='utf-8') as f:
+    with open("../../data/output_json/"+filename+".json", 'w', encoding='utf-8') as f:
         f.write(json.dumps(data, ensure_ascii=False))
 
 

@@ -1,7 +1,7 @@
 import pandas as pd
 
 location = '../../data/hadoop_upload/'
-xlocation= '../data/TransportData/'
+xlocation= '../../data/TransportData/'
 file_name = 'subway.xlsx'
 json_name = 'subway.json'
 
