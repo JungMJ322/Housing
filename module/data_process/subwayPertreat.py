@@ -40,10 +40,12 @@ def subwayPer(location=location, file_name=file_name, json_name=json_name):
         cnt = cnt + 1
         json_file2.append(json_dict)
 
+    save_mysql.save_list_to_db(json_file2, "subway")
+    
     with open((location + json_name), 'w', encoding='utf8') as f:
         json.dump(json_file2, f, ensure_ascii=False)
 
-    save_mysql.save_list_to_db(json_file2, "subway")
+    
 
 
 if __name__ == '__main__':
