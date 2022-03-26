@@ -133,9 +133,6 @@ def savefile(json_key, filename, data):
 
 
 if __name__ == "__main__":
-    bus_change()
-    mart_change()
     park_change()
-    school_change()
 
 
