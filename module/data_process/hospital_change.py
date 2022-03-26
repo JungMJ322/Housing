@@ -1,6 +1,7 @@
 import csv
 import json
 from pyspark.sql import SparkSession
+import save_mysql
 
 spark = SparkSession.builder.master('local[1]').appName('hosp_change').getOrCreate()
 
@@ -26,6 +27,7 @@ def hospital_change():
         count += 1
 
         savefile("hospital", temp_list)
+        save_mysql.save_list_to_db(temp_list, "hospital")
 
 def savefile(filename, data):
     with open("../output_json/"+filename+".json", 'w', encoding='utf-8') as f:

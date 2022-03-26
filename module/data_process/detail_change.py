@@ -1,6 +1,7 @@
 import json
 from convinient_change import savefile
 from pyspark.sql import SparkSession
+import save_mysql
 
 spark = SparkSession.builder.master('local[1]').appName('detail_change').getOrCreate()
 
@@ -32,7 +33,7 @@ def change_detail():
     data1 = list(map(dict, set(tuple(sorted(d.items())) for d in change_list)))
 
     savefile(" ", "detail_change", data1)
-
+    save_mysql.save_list_to_db(data1, "detail")
 
 if __name__ == "__main__":
     change_detail()

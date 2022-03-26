@@ -2,6 +2,7 @@ import json
 from getLocation import kakao_location
 from convinient_change import savefile
 from pyspark.sql import SparkSession
+import save_mysql
 
 spark = SparkSession.builder.master('local[1]').appName('convinient').getOrCreate()
 
@@ -37,6 +38,7 @@ def convin_merge():
     total_list.append(list_temp)
     total_list = sum(total_list, [])
     savefile("asd", "convinient", total_list)
+    save_mysql.save_list_to_db(total_list, "convinient")
 
 
 if __name__ == "__main__":

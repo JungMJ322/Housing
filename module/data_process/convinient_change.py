@@ -2,6 +2,7 @@ import json
 import csv
 from getLocation import kakao_location
 from pyspark.sql import SparkSession
+import save_mysql
 
 spark = SparkSession.builder.master('local[1]').appName('convin_change').getOrCreate()
 
@@ -28,7 +29,7 @@ def bus_change():
         count += 1
 
     savefile('bus_stop', 'busStop', temp_list[1:])
-
+    save_mysql.save_list_to_db(temp_list[1:], "busStop")
 
 def mart_change():
     data = spark.read.csv("/Housing/data/hadoop_upload/mart_raw.csv", encoding="cp949", header=True)
@@ -61,6 +62,7 @@ def mart_change():
         count += 1
 
     savefile("martData", "mart", temp_list[1:])
+    save_mysql.save_list_to_db(temp_list[1:], "mart")
 
 
 def park_change():
@@ -103,6 +105,7 @@ def park_change():
         temp_list.append(temp_dict)
 
     savefile("park", "park", temp_list)
+    save_mysql.save_list_to_db(temp_list, "park")
 
 
 def school_change():
@@ -126,6 +129,7 @@ def school_change():
         temp_list.append(temp_dict)
         count += 1
     savefile("school", "school", temp_list)
+    save_mysql.save_list_to_db(temp_list, "school")
 
 def savefile(json_key, filename, data):
     with open("../output_json/"+filename+".json", 'w', encoding='utf-8') as f:

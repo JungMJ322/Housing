@@ -3,6 +3,7 @@ import json
 import getLocation
 from pyspark.sql.functions import col
 from pyspark.sql import SparkSession
+import save_mysql
 
 spark = SparkSession.builder.master('local[1]').appName('getInfra').getOrCreate()
 
@@ -41,6 +42,9 @@ def subwayPer(location=location, file_name=file_name, json_name=json_name):
 
     with open((location + json_name), 'w', encoding='utf8') as f:
         json.dump(json_file2, f, ensure_ascii=False)
+
+    save_mysql.save_list_to_db(json_file2, "subway")
+
 
 if __name__ == '__main__':
     subwayPer()

@@ -1,6 +1,7 @@
 import json
 from convinient_change import savefile
 from pyspark.sql import SparkSession
+import save_mysql
 
 spark = SparkSession.builder.master('local[1]').appName('compet').getOrCreate()
 
@@ -26,7 +27,7 @@ def compet_change():
     total_list_changed = list(map(dict, set(tuple(sorted(d.items())) for d in total_list)))
 
     savefile(" ", "competition", total_list_changed)
-
+    save_mysql.save_list_to_db(total_list_changed, "competition")
 
 if __name__ == "__main__":
     compet_change()
