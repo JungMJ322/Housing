@@ -11,7 +11,7 @@ sleep(5)
 spark-submit HERE/data_collection/data_collection.py
 sleep(5)
 
-hdfs dfs -put /Home/wovlf139/Housing/data/hadoop_upload /Housing/data
+hdfs dfs -put HERE/../data/hadoop_upload /Housing/data
 sleep(5)
 
 spark-submit HERE/data_process/data_process.py
