@@ -3,10 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src = "../../static/jquery-3.6.0.min.js"></script>
+
+    <style>
+            #header{
+                width : 100%;
+                height : 10vh;
+                background-color: red;
+            }
+            #contentWrapper{
+                text-align: center;
+                width: 100%;
+                height: 80vh;
+                background-color: gray;
+            }
+            #footer{
+                width: 100%;
+                height: 10vh;
+                background-color: yellow;
+            }
+            #map{
+                position: relative;
+                display:inline-block;
+                background-color: white;
+                width: 60%;
+                height: 100%;
+            }
+            #test{
+                width: 30%;
+                height: 30%;
+                background-color: black;
+            }
+            #line{
+                width: 5px;
+                height: 5px;
+                background-color: black;
+            }
+
+    </style>
+    
+    <script>
+        $(function(){
+            let temp = 1
+            $("#map").click(function(){
+                if (temp == 1) {
+                    $(this).animate({
+                        width : "-=30%",
+                        height : "-=40%",
+                        right : "35%",
+                        top : "40%"
+                    }, 500)
+                    temp = 0}                
+            })
+            $("#test").click(function(){
+                $("#line").animate({
+                    height: "+=100%"
+                }, 1000)
+            })
+        })
+    </script>
 </head>
 <body>
+<div id = "header"></div>
 
-<h1> Cheer Up </h1>
 
+<div id = "contentWrapper">
+    <div id = "map">
+        <div id = "test"></div>
+    </div>
+    <div id = "line"></div>
+</div>
+
+<div id = "footer"></div>
 </body>
 </html>
