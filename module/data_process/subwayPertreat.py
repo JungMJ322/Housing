@@ -31,8 +31,12 @@ def subwayPer(location=location, file_name=file_name, json_name=json_name):
         json_dict['route_name'] = data['노선명']
         if data['역경도'] == None:
             loca_dict = getLocation.kakao_location(data['역사 도로명주소'])
-            json_dict['lot'] = loca_dict['lot']
-            json_dict['lat'] = loca_dict['lat']
+            if loca_dict['lat'] == None:
+                json_dict['lot'] = None
+                json_dict['lat'] = None
+            else:
+                json_dict['lot'] = float(loca_dict['lot'])
+                json_dict['lat'] = float(loca_dict['lat'])
         else:
             json_dict['lat'] = data['역위도']
             json_dict['lot'] = data['역경도']
