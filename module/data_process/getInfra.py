@@ -86,7 +86,7 @@ def getInfraLoca(detail, infra=infra_json_list[0]):
 
     return info_list
 
-def save_data():
+if __name__ == '__main__':
     detail = detailData()
 
     # makeMongoSet(infra_json_list[0])

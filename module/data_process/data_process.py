@@ -5,6 +5,7 @@ import hospital_change
 import merge_convin
 import sold_cost_change
 import subwayPertreat
+import getInfra
 
 
 if __name__ == "__main__":
@@ -18,3 +19,4 @@ if __name__ == "__main__":
     # merge_convin.convin_merge()
     # sold_cost_change.save_json()
     subwayPertreat.subwayPer()
+    getInfra.save_data()
