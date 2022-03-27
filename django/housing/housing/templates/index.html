@@ -1,9 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script src = "../../static/jquery-3.6.0.min.js"></script>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+
+
+
+    <!--<script src = "../../static/jquery-3.6.0.min.js"></script>-->
+    <script src = "../../static/geomap.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
 
     <style>
             #header{
@@ -22,7 +42,7 @@
                 height: 10vh;
                 background-color: yellow;
             }
-            #map{
+            #map_a518d850fb264e52a820cc71c7ed2b7f{
                 position: relative;
                 display:inline-block;
                 background-color: white;
@@ -41,11 +61,10 @@
             }
 
     </style>
-    
     <script>
         $(function(){
             let temp = 1
-            $("#map").click(function(){
+            $("#map_a518d850fb264e52a820cc71c7ed2b7f").click(function(){
                 if (temp == 1) {
                     $(this).animate({
                         width : "-=30%",
@@ -53,7 +72,7 @@
                         right : "35%",
                         top : "40%"
                     }, 500)
-                    temp = 0}                
+                    temp = 0}
             })
             $("#test").click(function(){
                 $("#line").animate({
@@ -62,18 +81,25 @@
             })
         })
     </script>
+
 </head>
 <body>
-<div id = "header"></div>
 
 
-<div id = "contentWrapper">
-    <div id = "map">
-        <div id = "test"></div>
-    </div>
-    <div id = "line"></div>
-</div>
+            <div id = "header"></div>
 
-<div id = "footer"></div>
+
+            <div id = "contentWrapper">
+                <div class="folium-map" id="map_a518d850fb264e52a820cc71c7ed2b7f" >
+                    <div id = "test"></div>
+                </div>
+            </div>
+
+            <div id = "line"></div>
+
+
+            <div id = "footer"></div>
+
 </body>
+
 </html>
