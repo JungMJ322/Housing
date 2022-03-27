@@ -29,7 +29,7 @@ def hospital_change():
     # savefile("hospital", temp_list)
     save_mysql.save_list_to_db(temp_list, "hospital")
     df_data = spark.createDataFrame(temp_list)
-    df_data.write.repartition(1).mode(SaveMode.Append).format('json').json("/Housing/data/output_json/hospital.json")
+    df_data.repartition(1).write.mode(SaveMode.Append).format('json').json("/Housing/data/output_json/hospital.json")
     
 
 def savefile(filename, data):
