@@ -20,7 +20,7 @@ dbtable='infra'
 
 def makeMongoSet(infra=infra_json_list[0]):
 
-    infra_file = spark.read.json(f'/Housing/data/output_json/{infra}.json/part*')
+    infra_file = spark.read.json(f'/Housing/data/output_json/{infra}.json/part-00000')
     infra_file.createOrReplaceTempView(infra)
 
     sql = f'select id, lat, lot from {infra} where lat is not NULL or lat != ""'
