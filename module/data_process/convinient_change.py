@@ -66,7 +66,8 @@ def mart_change():
 
     savefile("martData", "mart", temp_list[1:])
     save_mysql.save_list_to_db(temp_list[1:], "mart")
-    temp_list.repartition(1).write.json("/Housing/data/output_json/mart.json")
+    list_df = spark.createDataFrame(temp_list)
+    list_df.repartition(1).write.json("/Housing/data/output_json/mart.json")
 
 
 def park_change():
