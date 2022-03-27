@@ -105,10 +105,12 @@ def save_data():
 
     df = pd.DataFrame({
         'HOUSE_MANAGE_NO': detail['id'],
-        infra_json_list[0]: loca[0]
-        # 'subway': loca[1],
-        # infra_json_list[2] : loca[2],
-        # infra_json_list[3] : loca[3]
+        infra_json_list[0] : loca[0],
+        infra_json_list[1] : loca[1],
+        infra_json_list[2] : loca[2],
+        infra_json_list[3] : loca[3],
+        infra_json_list[4] : loca[4],
+        infra_json_list[5] : loca[5]
     })
 
     print(df)
