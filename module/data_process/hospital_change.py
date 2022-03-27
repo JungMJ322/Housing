@@ -26,7 +26,7 @@ def hospital_change():
         temp_list.append(temp_dict)
         count += 1
 
-    savefile("hospital", temp_list)
+    # savefile("hospital", temp_list)
     save_mysql.save_list_to_db(temp_list, "hospital")
     df_data = spark.createDataFrame(temp_list)
     df_data.repartition(1).write.json("/Housing/data/output_json/hospital.json")
