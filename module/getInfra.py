@@ -10,7 +10,7 @@ spark = SparkSession.builder.master('local[1]').appName('getInfra').getOrCreate(
 client = MongoClient('localhost', 27017)
 db = client['test']
 
-infra_json_list = ['school', 'subway2', 'mart', 'park']
+infra_json_list = ['school', 'subway', 'mart', 'park', 'hospital']
 
 user = 'root'
 password = '1234'
@@ -20,7 +20,7 @@ dbtable='infra'
 
 def makeMongoSet(infra=infra_json_list[0]):
 
-    infra_file = spark.read.json(f'/housing/data/{infra}.json')
+    infra_file = spark.read.json(f'/Housing/data/output_json/{infra}.json')
     infra_file.createOrReplaceTempView(infra)
 
     sql = f'select id, lat, lot from {infra} where lat is not NULL or lat != ""'
@@ -47,7 +47,7 @@ def makeMongoSet(infra=infra_json_list[0]):
 
 
 def detailData():
-    detail = spark.read.format('json').option("multiline", "true").json(f'/housing/data/detail.json')
+    detail = spark.read.format('json').option("multiline", "true").json(f'/Housing/data/output_json/detail.json')
     detail.createOrReplaceTempView('detail')
 
     sql = 'select HOUSE_MANAGE_NO, lat, lot from detail where lat is not NULL'
@@ -117,3 +117,7 @@ def save_data():
 
     df_spark = spark.createDataFrame(df)
     df_spark.write.jdbc(url, dbtable, "overwrite", properties={"driver":driver, "user":user, "password":password})
+
+
+    if __name__ == '__main__':
+        save_data()
