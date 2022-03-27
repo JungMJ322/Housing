@@ -29,8 +29,8 @@ def getHospital(file_name=file_name, location=location):
         dict_soup = xmltodict.parse(result.text)
         json_soup = json.dumps(dict_soup)
         dict2_soup = json.loads(json_soup)
-        print(i)
-        print(dict2_soup)
+        # print(i)
+        # print(dict2_soup)
         hospital_list.extend(list(dict2_soup['response']['body']['items']['item']))
         # print(i)
 
