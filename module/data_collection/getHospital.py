@@ -21,25 +21,17 @@ def getHospital(file_name=file_name, location=location):
     json_soup = json.dumps(dict_soup)
     dict2_soup = json.loads(json_soup)
     cnt = int(dict2_soup['response']['body']['totalCount'])
-    # print(cnt)
-    #
-    # list1 = [1, 2]
-    # print(list1 + dict2_soup['response']['body']['items']['item'])
-
-    cnt_list = list(range(1, cnt, 100))
-    cnt_list.append(cnt)
 
     hospital_list = list()
-    for i in cnt_list:
-        url = api_add + api_key + f'&pageNo={cnt_list}&numOfRows=100'
+    for i in range(1, (cnt//100)+2):
+        url = api_add + api_key + f'&pageNo={i}&numOfRows=100'
         result = requests.get(url)
         dict_soup = xmltodict.parse(result.text)
         json_soup = json.dumps(dict_soup)
         dict2_soup = json.loads(json_soup)
-        try:
-            hospital_list.extend(dict2_soup['response']['body']['items']['item'])
-        except TypeError:
-            continue
+        print(i)
+        print(dict2_soup)
+        hospital_list.extend(list(dict2_soup['response']['body']['items']['item']))
         # print(i)
 
     with open((location+file_name), 'w', encoding='utf8') as f:
