@@ -45,6 +45,8 @@ def subwayPer(location=location, file_name=file_name, json_name=json_name):
         json_file2.append(json_dict)
 
     save_mysql.save_list_to_db(json_file2, "subway")
+    df_data = spark.createDataFrame(json_file2)
+    df_data.repartition(1).write.format('json').json("/Housing/data/output_json/subway.json")
     
     with open((location + json_name), 'w', encoding='utf8') as f:
         json.dump(json_file2, f, ensure_ascii=False)

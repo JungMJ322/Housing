@@ -39,6 +39,8 @@ def convin_merge():
     total_list = sum(total_list, [])
     savefile("asd", "convinient", total_list)
     save_mysql.save_list_to_db(total_list, "convinient")
+    list_df = spark.createDataFrame(total_list)
+    list_df.repartition(1).write.format("json").json("/Housing/data/output_json/convinient.json")
 
 
 if __name__ == "__main__":

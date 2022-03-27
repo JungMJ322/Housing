@@ -15,7 +15,7 @@ if __name__ == "__main__":
     convinient_change.mart_change()
     convinient_change.school_change()
     detail_change.change_detail()
-    # hospital_change.hospital_change()
+    hospital_change.hospital_change()
     # merge_convin.convin_merge()
     # sold_cost_change.save_json()
     subwayPertreat.subwayPer()

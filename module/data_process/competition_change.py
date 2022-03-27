@@ -28,6 +28,9 @@ def compet_change():
 
     savefile(" ", "competition", total_list_changed)
     save_mysql.save_list_to_db(total_list_changed, "competition")
+    # list_df = spark.createDataFrame(total_list)
+    # total_list_changed.repartition(1).write.format("json").json("/Housing/data/output_json/sold_cost_mean.json")
+
 
 if __name__ == "__main__":
     compet_change()

@@ -36,7 +36,10 @@ def getHospital(file_name=file_name, location=location):
         dict_soup = xmltodict.parse(result.text)
         json_soup = json.dumps(dict_soup)
         dict2_soup = json.loads(json_soup)
-        hospital_list.extend(dict2_soup['response']['body']['items']['item'])
+        try:
+            hospital_list.extend(dict2_soup['response']['body']['items']['item'])
+        except TypeError:
+            continue
         # print(i)
 
     with open((location+file_name), 'w', encoding='utf8') as f:

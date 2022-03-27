@@ -91,5 +91,6 @@ def save_json():
     data_for_save.write.jdbc(url, dbtable, "append", properties={"driver": driver, "user": user, "password": password})
 
 
+
 if __name__ == "__main__":
     save_json()
