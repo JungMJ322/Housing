@@ -7,7 +7,11 @@ spark = SparkSession.builder.master('local[1]').appName('hosp_change').getOrCrea
 
 def hospital_change():
     data = spark.read.json("/Housing/data/hadoop_upload/hospital.json", encoding='utf-8')
-    data_coll = data.collect()
+    data.createOrReplaceTempView('hospital')
+    sql = 'select HOUSE_MANAGE_NO, lat, lot from hospital where wgs84Lat is not NULL'
+    data2 = spark.sql(sql)
+
+    data_coll = data2.collect()
     rdr = list()
     for i in data_coll:
         rdr.append(i.asDict())
