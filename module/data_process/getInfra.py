@@ -96,8 +96,6 @@ def save_data():
     for data in infra_json_list:
         makeMongoSet(data)
         row = getInfraLoca(detail, data)
-
-        
         loca.append(row)
 
     # df = pd.DataFrame({
@@ -108,9 +106,9 @@ def save_data():
     df = pd.DataFrame({
         'HOUSE_MANAGE_NO': detail['id'],
         infra_json_list[0]: loca[0],
-        'subway': loca[1],
-        infra_json_list[2] : loca[2],
-        infra_json_list[3] : loca[3]
+        # 'subway': loca[1],
+        # infra_json_list[2] : loca[2],
+        # infra_json_list[3] : loca[3]
     })
 
     print(df)
