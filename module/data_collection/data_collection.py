@@ -13,7 +13,7 @@ if __name__ == "__main__":
     detailed_inquiry.getDetailedAPI()
     detailed_inquiry.append_location()
     competition_rate.save_data()
-    # getHospital.getHospital()
+    getHospital.getHospital()
     # GS25.data_save(GS25.crawling())
     sevenEleven.data_save()
     xlsxToJson.getXlsxToJson()
