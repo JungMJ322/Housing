@@ -20,7 +20,7 @@ dbtable='infra'
 
 def makeMongoSet(infra=infra_json_list[0]):
 
-    infra_file = spark.read.json(f'/Housing/data/output_json/{infra}.json')
+    infra_file = spark.read.json(f'/Housing/data/output_json/{infra}.json/part*')
     infra_file.createOrReplaceTempView(infra)
 
     sql = f'select id, lat, lot from {infra} where lat is not NULL or lat != ""'
@@ -47,7 +47,7 @@ def makeMongoSet(infra=infra_json_list[0]):
 
 
 def detailData():
-    detail = spark.read.format('json').option("multiline", "true").json(f'/Housing/data/output_json/detail.json')
+    detail = spark.read.format('json').option("multiline", "true").json(f'/Housing/data/hadoop_upload/detail.json')
     detail.createOrReplaceTempView('detail')
 
     sql = 'select HOUSE_MANAGE_NO, lat, lot from detail where lat is not NULL'
