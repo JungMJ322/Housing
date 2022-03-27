@@ -10,7 +10,7 @@ spark = SparkSession.builder.master('local[1]').appName('getInfra').getOrCreate(
 client = MongoClient('localhost', 27017)
 db = client['test']
 
-infra_json_list = ['school', 'subway', 'mart', 'park', 'hospital']
+infra_json_list = ['hospital'] #'school', 'subway', 'mart', 'park', 
 
 user = 'root'
 password = '1234'
