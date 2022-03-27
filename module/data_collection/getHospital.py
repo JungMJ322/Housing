@@ -40,7 +40,7 @@ def getHospital(file_name=file_name, location=location):
         # print(i)
 
     with open((location+file_name), 'w', encoding='utf8') as f:
-        json.dump(hospital_list, f, indent=4, ensure_ascii=False)
+        json.dump(hospital_list, f, ensure_ascii=False)
 
 if __name__ == '__main__':
     getHospital()
