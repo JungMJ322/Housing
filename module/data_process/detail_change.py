@@ -34,6 +34,8 @@ def change_detail():
 
     savefile(" ", "detail_change", data1)
     save_mysql.save_list_to_db(data1, "detail")
+    # list_df = spark.createDataFrame(data1)
+    # list_df.repartition(1).write.format("json").json("/Housing/data/output_json/detail.json")
 
 if __name__ == "__main__":
     change_detail()
