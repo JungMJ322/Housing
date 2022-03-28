@@ -2,6 +2,7 @@ import csv
 import json
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
+import save_mysql
 
 spark = SparkSession.builder.master('local[1]').appName('sold_cost').getOrCreate()
 
@@ -10,10 +11,18 @@ def create_code_dict():
     with open('../../data/hadoop_upload/sold_cost/area_code.txt', 'r', encoding='euc-kr') as f:
         rdr = csv.reader(f, delimiter='\t')
         code_dict = {}
+        code_list = []
 
         for row in rdr:
             code_dict[row[1]] = row[0]
 
+        for row in rdr:
+            temp_dict = {}
+            temp_dict['place_code'] = row[0]
+            temp_dict['place'] = row[1]
+            code_list.append(temp_dict)
+
+        save_mysql.save_list_to_db(code_list, "place_code")
         return code_dict
 
 
