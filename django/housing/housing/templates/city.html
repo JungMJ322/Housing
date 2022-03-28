@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+
+        *{
+          margin: 0;
+          padding:0;
+        }
+
+        body {
+            font-family: plain,"Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-weight: 400;
+            color: #000;
+            font-size: 17px;
+        }
+        #home{
+            position:absolute;
+            display: inline-block;
+            font-size: 35px;
+            margin: 2px 2px 2px 15%;
+            color:#ccc
+        }
+        #contentWrapper{
+            text-align: center;
+            display:flex;
+            flex-direction: row;
+            width: 100%;
+            height: 100vh;
+            background-color: slategray;
+            padding: 0px 20px;
+        }
+
+        #map_{
+            position: relative;
+            display:inline-block;
+            background-color: white;
+            flex:1;
+            margin-top: 45px;
+            height: 93%;
+            border:1px solid #aaa;
+            border-radius: 10px;
+            margin: 45px 5px 0px 5px;
+        }
+
+        #board{
+            flex:2;
+            height: 100%;
+            
+        }
+        #databox{
+            height: 94%;
+        }
+        .box{
+            flex-direction:column;
+            height:100%;
+            margin: 0;
+            display: none;
+        }
+
+        .table{
+            flex:1;
+            display: flex;
+            flex-direction: row;
+            height:100%;
+        }
+        #t1{
+            margin-top: 0;
+        }
+        .data{
+            margin: 0px 5px 8px 5px;
+            border-radius: 10px;
+            flex:1;
+            background-color:ghostwhite;
+            text-align: center;
+            box-shadow:
+            0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+            0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+            0 12.5px 10px rgba(0, 0, 0, 0.06),
+            0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+            0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+            0 100px 80px rgba(0, 0, 0, 0.12)
+;
+        }
+
+        #footer{
+            width: 100%;
+            height: 5vh;
+            background-color: gray;
+        }
+
+
+        input[type="radio"] {display: none;}
+        input[type="radio"] + label {
+            display: inline-block;
+            margin:10px 0px 0px 0px;
+            padding: 5px 30px;
+            width: 200px;
+            background-color: #ccc;
+            color: black;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        input[type="radio"]:checked + label {background: ghostwhite ;color: #000;}
+
+
+        input[id="nav1"]:checked ~ .tab1 {display: flex;}
+        input[id="nav2"]:checked ~ .tab2 {display: flex;}
+        input[id="nav3"]:checked ~ .tab3 {display: flex;}
+
+
+    </style>
+
+</head>
+
+<body>
+    <div id="home"><a href="/"></a><ion-icon name="home-outline"></ion-icon></div>
+    <div id = "contentWrapper">
+
+        <div class="folium-map" id="map_" >지도를 넣어부까</div>
+        <div id ="board">
+            <div id="databox">
+                <input type="radio" id="nav1" name="tab" checked>
+                <label for="nav1">label1</label>
+                <input type="radio" id="nav2" name="tab">
+                <label for="nav2">label2</label>
+                <input type="radio" id="nav3" name="tab">
+                <label for="nav3">label3</label>
+
+                <div class="box tab1">
+                    <div class="table" id="t1">
+                        <div class="data" id="data1">plot</div>
+                    </div>
+                    <div class="table">
+                        <div class="data" id="data2">plot</div>
+                        <div class="data" id="data3">plot</div>
+                    </div>
+                    <div class="table">
+                        <div class="data" id="data4">plot</div>
+                    </div>
+                </div>
+                <div class="box tab2">
+                    <div class="table" id="t2">
+                        <div class="data" id="data5"></div>
+                        <div class="data" id="data6"></div>
+                    </div>
+                    <div class="table">
+                        
+                        <div class="data" id="data7"></div>
+                    </div>
+                    <div class="table">
+                        <div class="data" id="data8"></div>
+                        <div class="data" id="data9"></div>
+                    </div>
+                </div>
+                <div class="box tab3">
+                    <div class="table" id="t3">
+                        <div class="data" id="data10"></div>
+                        <div class="data" id="data11"></div>
+                        <div class="data" id="data12"></div>
+                    </div>
+                    <div class="table">
+                        <div class="data" id="data11"></div>
+                        <div class="data" id="data12"></div>
+                    </div>
+  
+                </div>
+            </div>    
+        </div>
+    </div>
+
+
+    <div id = "line"></div>
+
+
+    <div id = "footer"></div>
+
+
+
+    
+</body>
+</html>

@@ -1,105 +1,149 @@
 <!DOCTYPE html>
-
+<html lang="en">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-
-        <script>
-            L_NO_TOUCH = false;
-            L_DISABLE_3D = false;
-        </script>
-
-
-
-    <!--<script src = "../../static/jquery-3.6.0.min.js"></script>-->
-    <script src = "../../static/geomap.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
-
-    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
     <style>
-            #header{
-                width : 100%;
-                height : 10vh;
-                background-color: red;
-            }
-            #contentWrapper{
-                text-align: center;
-                width: 100%;
-                height: 80vh;
-                background-color: gray;
-            }
-            #footer{
-                width: 100%;
-                height: 10vh;
-                background-color: yellow;
-            }
-            #map_a518d850fb264e52a820cc71c7ed2b7f{
-                position: relative;
-                display:inline-block;
-                background-color: white;
-                width: 60%;
-                height: 100%;
-            }
-            #test{
-                width: 30%;
-                height: 30%;
-                background-color: black;
-            }
-            #line{
-                width: 5px;
-                height: 5px;
-                background-color: black;
-            }
+        #content{
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding-top: var(--ntp-one-google-bar-height);
+            position: relative;
+            
+            background: url(../../static/Wallpaper.jpg);
+        }
+        #logoBox{
+            height: 350px;
+            width:300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+        }
+        #logo {
+            text-align: center;
+            margin-top: 220px;
+            height: 100px;
+            width: 450px;
+            color: white;
+            font-size: 90px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        .dropdown{
+            position: relative;
+            margin-top: 3px;
+            width: 300px;
+            height: 50px;
+        }
+        .dropdown::before{
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border: 2px solid #333;
+            border-top: 2px solid #fff;
+            border-right: 2px solid #fff;
+            right: 20px;
+            top: 15px;
+            z-index: 10000;
+            transform: rotate(-45deg);
+            transform: 0.5s;
+            pointer-events: none;
+        }
+        .dropdown.active::before{
+            top: 22 px;
+            transform: rotate(-225deg);
+        }
+
+        .dropdown input{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            background: #fff;
+            border: none;
+            outline: none;
+            box-shadow: 0 5px 20px rgba(99,99,99,99.05);
+            padding: 12px 20px;
+            border-radius: 10px;
+        }
+        .dropdown .option{
+            position: absolute;
+            top: 70px;
+            width: 100%;
+            background: #fff;
+            box-shadow: 0 30px 30px rgba(0,0,0,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            display: none;
+        }
+        .dropdown.active .option{
+            display: block;
+        }
+
+
+        .dropdown .option div{
+            padding: 12px 20px;
+            cursor: pointer;
+        }
+        .dropdown .option div:hover{
+            background: #62baea;
+            color: #fff;
+        }
+        .dropdown .list{
+            position: relative;
+            top: 4px;
+            font-size: 1.2em;
+        }
+
+
 
     </style>
-    <script>
-        $(function(){
-            let temp = 1
-            $("#map_a518d850fb264e52a820cc71c7ed2b7f").click(function(){
-                if (temp == 1) {
-                    $(this).animate({
-                        width : "-=30%",
-                        height : "-=40%",
-                        right : "35%",
-                        top : "40%"
-                    }, 500)
-                    temp = 0}
-            })
-            $("#test").click(function(){
-                $("#line").animate({
-                    height: "+=100%"
-                }, 1000)
-            })
-        })
-    </script>
 
 </head>
 <body>
+    <div id="content">
+        <div id="logoBox">
+            <div id="logo"><ion-icon name="home-outline"></ion-icon><b> Googip  </b></div>
+        </div>
 
-
-            <div id = "header"></div>
-
-
-            <div id = "contentWrapper">
-                <div class="folium-map" id="map_a518d850fb264e52a820cc71c7ed2b7f" >
-                    <div id = "test"></div>
-                </div>
+        <div class="dropdown">
+            <input type="text" class="textBox" placeholder="시 도 선 택" readonly>
+            <div class="option">
+                <div onclick="show('Seoul')">Seoul</div>
+                <div onclick="show('Busan')">Busan</div>
+                <div onclick="show('Gwangju')">Gwangju</div>
+                <div onclick="show('Daegu')">Daegu</div>
+                <div onclick="show('Jeju')">Jeju</div>
             </div>
+        </div>
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
-            <div id = "line"></div>
+        <script>
+            function show(anything){
+                document.querySelector('.textBox').value =
+                anything;
+            }
+
+            let dropdown = document.querySelector('.dropdown');
+            dropdown.onclick = function(){
+                dropdown.classList.toggle('active');
+            }
+
+        </script>
+        
 
 
-            <div id = "footer"></div>
-
+    </div>
 </body>
 
 </html>
