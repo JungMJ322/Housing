@@ -26,7 +26,7 @@ if __name__ == "__main__":
     print(0)
     merge_convin.convin_merge()
     print(0)
-    # sold_cost_change.save_json()
+    sold_cost_change.save_json()
     print(0)
     subwayPertreat.subwayPer()
     print(0)
