@@ -27,7 +27,7 @@ def delete_delta(data):
     for i in data:
         if i['CMPET_RATE'] == "-":
             continue
-        if (i['CMPET_RATE'] is not None) and (i['CMPET_RATE'].find("△") > 0):
+        if (i['CMPET_RATE'] != None) and (i['CMPET_RATE'].find("△") > 0):
             i['CMPED_RATE'] = "lacked"
         temp_list.append(i)
     return temp_list
