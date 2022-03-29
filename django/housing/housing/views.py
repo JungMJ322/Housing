@@ -122,7 +122,11 @@ def load_sold_cost(sido, area_grade):  # sido, 면적 별 매매가 정보 날�
     return sorted_list
 
 
+def test():
+    print("패스")
+    pass
 
 def index(request):
-    # sigunmap('광주')
+    test()
     return render(request, 'index.html')
+
