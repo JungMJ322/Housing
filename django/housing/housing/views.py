@@ -45,7 +45,7 @@ def create_place_code_list(sido):
     return place_code_list
 
 
-def sido_competition(sido): # In : 시도 2글자  Out: min_val, max_val 두개값 리턴 min의 경우 lack이 있으면 lack 반환
+def sido_competition(sido): # 시도별 경쟁률 min max값 리턴 In : 시도 2글자  Out: min_val, max_val 두개값 리턴 min의 경우 lack이 있으면 lack 반환
     temp = load_detail_sido(sido)
     house_manage_list = []
     for i in temp:
