@@ -24,7 +24,7 @@ def create_code_dict():
             temp_dict['place'] = row[1]
             code_list.append(temp_dict)
 
-        save_mysql.save_list_to_db(code_list, "place_code")
+        save_mysql.save_list_to_db(code_list[1:], "place_code")
         return code_dict
 
 
