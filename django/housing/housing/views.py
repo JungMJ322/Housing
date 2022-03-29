@@ -26,9 +26,16 @@ def all_object_call(object_name):
 #     value_list = dict_list.values()
 #     for i in range(len(key_list)):
 
+def load_detail_sido(sido):
+    temp = Detail.objects.all().values()
+    temp_list=[]
+    for i in temp:
+        if i['address'].find(sido) != -1 and i['address'].find(sido) < 3:
+            temp_list.append(i)
+
+    return temp_list
 
 def index(request):
-    output = SoldCostMean.objects.filter(area_grade='3단위').filter(mean_cost=5200.0).values()
-    print(output)
-
+    temp = load_detail_sido("광주")
+    print(temp)
     return render(request, 'index.html')
