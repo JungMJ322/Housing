@@ -16,6 +16,8 @@ def create_code_dict():
         for row in rdr:
             code_dict[row[1]] = row[0]
 
+    with open('../../data/hadoop_upload/sold_cost/area_code.txt', 'r', encoding='euc-kr') as f:
+        rdr = csv.reader(f, delimiter='\t')
         for row in rdr:
             temp_dict = {}
             temp_dict['place_code'] = row[0]
@@ -102,4 +104,4 @@ def save_json():
 
 
 if __name__ == "__main__":
-    save_json()
+    create_code_dict()
