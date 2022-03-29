@@ -36,6 +36,6 @@ def load_detail_sido(sido):
     return temp_list
 
 def index(request):
-    temp = load_detail_sido("광주")
+    temp = load_detail_sido("울산")
     print(temp)
     return render(request, 'index.html')
