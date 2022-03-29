@@ -69,7 +69,7 @@ def mart_change():
     savefile("martData", "mart", temp_list[1:])
     save_mysql.save_list_to_db(temp_list[1:], "mart")
     list_df = spark.createDataFrame(temp_list)
-    list_df.repartition(1).write.mode('overwrite').json("/Housing/data/output_json/busStop.json")
+    list_df.repartition(1).write.mode('overwrite').json("/Housing/data/output_json/mart.json")
 
 
 def park_change():
@@ -114,7 +114,7 @@ def park_change():
     savefile("park", "park", temp_list)
     save_mysql.save_list_to_db(temp_list, "park")
     list_df = spark.createDataFrame(temp_list)
-    list_df.repartition(1).write.mode('overwrite').json("/Housing/data/output_json/busStop.json")
+    list_df.repartition(1).write.mode('overwrite').json("/Housing/data/output_json/park.json")
 
 
 def school_change():
@@ -140,7 +140,7 @@ def school_change():
     savefile("school", "school", temp_list)
     save_mysql.save_list_to_db(temp_list, "school")
     list_df = spark.createDataFrame(temp_list)
-    list_df.repartition(1).write.mode('overwrite').json("/Housing/data/output_json/busStop.json")
+    list_df.repartition(1).write.mode('overwrite').json("/Housing/data/output_json/school.json")
 def savefile(json_key, filename, data):
     with open("../../data/output_json/"+filename+".json", 'w', encoding='utf-8') as f:
         f.write(json.dumps(data, ensure_ascii=False))
