@@ -37,7 +37,7 @@ def load_detail_sido(sido): ## In = sido: 서울, 광주 etc.. / Out = sido 위�
 
 
 def create_place_code_list(sido):
-    place_code = PlaceCode.all().values()
+    place_code = PlaceCode.objects.all().values()
     place_code_list = []
     for i in place_code:
         if i['place'].find(sido) != -1 and i['place'].find(sido) < 3:
@@ -93,6 +93,32 @@ def find_infra_count(sido): # sido 별 각 infra 갯수, In : 시도이름, Out 
     return infra_count
 
 
+def sido_supply_size(sido): # sido 별 공급 규모 총합 / In : sido, Out : sum of supply_size
+    temp = load_detail_sido(sido)
+    supply_size = 0;
+    for i in temp:
+        supply_size += i['supply_size']
+
+    print(supply_size)
+    return supply_size
+
+def load_sold_cost(sido, area_grade): # sido, 면적 별 매매가 정보 날짜 오름차순 정리 In = sido, 면적 Out = 해당 data
+    place_code = create_place_code_list(sido)
+    place_code_list = []
+    for i in place_code:
+        place_code_list.append(i['place_code'])
+
+    temp = SoldCostMean.objects.all().values()
+    return_list = []
+    for i in temp:
+        if (i['place_code'] in place_code_list) and (i['area_grade'] == area_grade):
+            return_list.append(i)
+
+    sorted_list = sorted(return_list, key=lambda item: item['month'])
+
+    return sorted_list
+
+
 def index(request):
-    find_infra_count('광주')
+    print(load_sold_cost("서울", "5단위"))
     return render(request, 'index.html')
