@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Busstop, SoldCostMean, Detail, Hospital, Infra, Mart, Park, School, Subway
-
+from .map import *
 
 def extract_ByKeys(key_list, data):
     return_dict = {}
@@ -36,6 +36,5 @@ def load_detail_sido(sido):
     return temp_list
 
 def index(request):
-    temp = load_detail_sido("광주")
-    print(temp)
     return render(request, 'index.html')
+    sigunmap('광주')
