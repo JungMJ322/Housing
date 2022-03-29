@@ -81,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'Housing', # 연동할 MySQL의 데이터베이스 이름
         'USER': 'root', # DB 접속 계정명
-        'PASSWORD': 'apfjd112^^', # 해당 DB 접속 계정 비밀번호
+        'PASSWORD': '1234', # 해당 DB 접속 계정 비밀번호
         'HOST': 'localhost', # 실제 DB 주소
         'PORT': '3306', # 포트번호
     }
