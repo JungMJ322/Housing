@@ -71,12 +71,28 @@ def sido_competition(sido): # 시도별 경쟁률 min max값 리턴 In : 시도 
     return min_val, max_val
 
 
+def find_infra_count(sido): # sido 별 각 infra 갯수, In : 시도이름, Out : dict {"school":0, "subway":0, "mart":0, "park":0, "hospital":0, 'busstop':0, 'convinient': 0}꼴
+    detail_list = load_detail_sido(sido)
+    house_manage_list = []
+    infra_list = []
+    infra_count = {"school":0, "subway":0, "mart":0, "park":0, "hospital":0, 'busstop':0, 'convinient': 0}
+    for i in detail_list:
+        house_manage_list.append(i["house_manage_no"])
+    
+    infra = Infra.objects.all().values()
+    for i in infra:
+        if i['house_manage_no'] in house_manage_list:
+            infra_count['school'] += len(i['school'])
+            infra_count['subway'] += len(i['subway'])
+            infra_count['mart'] += len(i['mart'])
+            infra_count['park'] += len(i['park'])
+            infra_count['hospital'] += len(i['hospital'])
+            infra_count['busstop'] += len(i['busstop'])
+            infra_count['convinient'] += len(i['convinient'])
 
-
-
+    return infra_count
 
 
 def index(request):
-    a, b = sido_competition('광주')
-    print(a, b)
+    find_infra_count('광주')
     return render(request, 'index.html')
