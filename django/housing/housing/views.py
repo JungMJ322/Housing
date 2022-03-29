@@ -3,7 +3,6 @@ from .models import Busstop, SoldCostMean, Detail, Hospital, Infra, Mart, Park, 
 
 
 def extract_ByKeys(key_list, data):
-
     return_dict = {}
     count=0
     for j in key_list:
