@@ -21,13 +21,9 @@ def sigunmap(sido):
                    zoom_start=8)
     sido_cd = map_list[f'{sido}'][0]
 
-
-
-    geoSigun = '../status/sigun.json'
+    geoSigun = '../../static/sigun.json'
     with open(f'{geoSigun}', 'r', encoding="utf-8") as f:
         json_data = json.load(f)
-
-
 
     style = {
              'weight': 2,
