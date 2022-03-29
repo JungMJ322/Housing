@@ -108,6 +108,7 @@ def append_location(file_name='detail.json', location=location):
 
         if loca['lat'] == None:
             continue
+        
         data['lat'] = loca['lat']
         data['lot'] = loca['lot']
         data['place_code'] = loca['b_code']
