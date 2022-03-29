@@ -110,8 +110,8 @@ def save_data():
         infra_json_list[2] : loca[2],
         infra_json_list[3] : loca[3],
         infra_json_list[4] : loca[4],
-        infra_json_list[5] : loca[5]
-        # infra_json_list[5] : loca[5]
+        infra_json_list[5] : loca[5],
+        infra_json_list[6] : loca[6]
     })
 
     print(df)
