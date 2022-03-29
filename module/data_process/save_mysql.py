@@ -11,7 +11,7 @@ def save_mysql(filename, table_name):
     driver = "com.mysql.cj.jdbc.Driver"
     dbtable = table_name
     df_spark = spark.createDataFrame(rdr)
-    df_spark.write.jdbc(url, dbtable, "append", properties={"driver": driver, "user": user, "password": password})
+    df_spark.write.jdbc(url, dbtable, "overwrite", properties={"driver": driver, "user": user, "password": password})
 
 
 def save_list_to_db(list_data, table_name):
@@ -21,7 +21,7 @@ def save_list_to_db(list_data, table_name):
     url="jdbc:mysql://localhost:3306/Housing"
     driver = "com.mysql.cj.jdbc.Driver"
     dbtable = table_name
-    df_data.write.jdbc(url, dbtable, "append", properties={"driver": driver, "user": user, "password": password})
+    df_data.write.jdbc(url, dbtable, "overwrite", properties={"driver": driver, "user": user, "password": password})
 
 
 

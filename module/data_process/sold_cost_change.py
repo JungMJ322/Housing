@@ -97,7 +97,7 @@ def save_json():
     url = "jdbc:mysql://localhost:3306/Housing"
     driver = "com.mysql.cj.jdbc.Driver"
     dbtable = "sold_cost_mean"
-    data_for_save.write.jdbc(url, dbtable, "append", properties={"driver": driver, "user": user, "password": password})
+    data_for_save.write.jdbc(url, dbtable, "overwrite", properties={"driver": driver, "user": user, "password": password})
 
 
 
