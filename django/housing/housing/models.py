@@ -55,6 +55,7 @@ class Detail(models.Model):
         managed = False
         db_table = 'detail'
 
+
 class Convinient(models.Model):
     id = models.BigIntegerField(primary_key=True)
     lat = models.TextField(blank=True, null=True)
@@ -65,6 +66,7 @@ class Convinient(models.Model):
     class Meta:
         managed = False
         db_table = 'convinient'
+
 
 class Hospital(models.Model):
     dutyeryn_code = models.TextField(db_column='dutyEryn_code', blank=True, null=True)  # Field name made lowercase.
@@ -89,6 +91,7 @@ class Infra(models.Model):
     park = models.TextField(blank=True, null=True)
     hospital = models.TextField(blank=True, null=True)
     busstop = models.TextField(db_column='busStop', blank=True, null=True)  # Field name made lowercase.
+    convinient = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -157,3 +160,11 @@ class Subway(models.Model):
     class Meta:
         managed = False
         db_table = 'subway'
+
+class PlaceCode(models.Model):
+    place = models.TextField(blank=True, null=True)
+    place_code = models.TextField(primary_key=True)
+
+    class Meta:
+        managed = False
+        db_table = 'place_code'
