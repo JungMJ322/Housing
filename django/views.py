@@ -133,7 +133,6 @@ def getInfraSido(sido):
     return result
 
 
-
 def getSoldMean(sido):
     #[{name: '1~3', data: [얼마, 얼마, 얼마, 얼마]}, {name: 'n단위', data: [얼마, 얼마, 얼마, 얼마]},
     # {name: 'n단위', data: [얼마, 얼마, 얼마, 얼마]}]
@@ -170,6 +169,7 @@ def getSoldMean(sido):
     connection.close()
 
     return result
+
 
 def getSupplySize(sido):
     # sido 입력받으면 그 sido에
@@ -222,6 +222,93 @@ def getSupplySize(sido):
     return result
 
 
+def getSupplySize(sido):
+    # sido 입력받으면 그 sido에
+    # {gu_list:[1구, 2구, 3구], data:[1구 name개수, 2구 name개수, 3구 name개수]}
+    cursor = connection.cursor()
+    result = list()
+
+    name_dict = dict()
+    # 이름 중복되지 않도록 namelist만듬
+    strSql = f"""select address, supply_size from detail
+                where address like '{sido}%';"""
+    success = cursor.execute(strSql)
+    supply_names = list(cursor.fetchall())
+    print(supply_names)
+    # gu를 키로 갖는 gu_dict 초기화
+    for name in supply_names:
+        name = list(name)
+        gu = name[0].split()[1]
+        gu_find = gu.find('구')
+        gun_find = gu.find('군')
+        if gu_find > 0:
+            name_dict[gu[:gu_find + 1]] = 0
+        elif gun_find > 0:
+            name_dict[gu[:gun_find + 1]] = 0
+
+    name_list = list(name_dict.keys())
+
+    gu_dict = dict()
+    for name in name_list:
+        gu_dict[name] = 0
+
+    # 각각의 gu의 supply_sum
+    for supply in supply_names:
+        supply = list(supply)
+        gu = supply[0].split()[1]
+        gu_find = gu.find('구')
+        gun_find = gu.find('군')
+        if gu_find > 0:
+            gu_dict[gu[:gu_find + 1]] = gu_dict[gu[:gu_find + 1]] + supply[1]
+        elif gun_find > 0:
+            gu_dict[gu[:gun_find + 1]] = gu_dict[gu[:gun_find + 1]] + supply[1]
+
+    gu_dict2 = dict()
+    gu_dict2['gu_list'] = list(gu_dict.keys())
+    gu_dict2['data'] = list(gu_dict.values())
+    result.append(gu_dict2)
+
+    connection.commit()
+    connection.close()
+    return result
+
+
+def getQuarterSupply(sido):
+    #[{name: '1~3', data: [얼마, 얼마, 얼마, 얼마]}, {name: 'n단위', data: [얼마, 얼마, 얼마, 얼마]},
+    # {name: 'n단위', data: [얼마, 얼마, 얼마, 얼마]}]
+    cursor = connection.cursor()
+
+    quarters = [['01','02','03'], ['04','05','06'], ['07','08','09'], ['10','11','12']]
+    years = [20, 21, 22]
+
+    result = list()
+    sum_dict = dict()
+    sum_list = list()
+    for year in years:
+        for quarter in quarters:
+            strSql = f"""SELECT sum(supply_size)
+                        FROM detail
+                        WHERE (START_RECEIPT like '__{year}-{quarter[0]}%' or START_RECEIPT like '__{year}-{quarter[1]}%' 
+                                or START_RECEIPT like '__{year}-{quarter[2]}%')
+                        and ADDRESS like '{sido}%'"""
+            success = cursor.execute(strSql)
+            supply_size_sum = cursor.fetchall()
+            sum = supply_size_sum[0][0]
+            print(sum)
+            if sum == None:
+                sum_list.append(0)
+            else:
+                sum_list.append(int(sum))
+    sum_dict['name'] = sido
+    sum_dict['data'] = sum_list
+    result.append(sum_dict)
+
+    connection.commit()
+    connection.close()
+
+    return result
+
+
 def index(request):
     # temp = Infra.objects.all().values()
     # try:
@@ -241,10 +328,10 @@ def index(request):
     # rate_dict = getRate()
     # infra_dict = getInfra()
     # sold_mean = getSoldMean('대전')
-    infra_sido = getInfraSido('서울')
+    # infra_sido = getInfraSido('서울')
     # supply_size = getSupplySize('서울')
-
-    print(infra_sido)
+    quarter_supply = getQuarterSupply('서울')
+    print(quarter_supply)
 
     return render(request, 'index.html')
 
