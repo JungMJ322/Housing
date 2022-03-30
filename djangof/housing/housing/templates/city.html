@@ -31,7 +31,7 @@
                         allowPointSelect: true,
                         cursor: 'pointer',
                         dataLabels: {
-                            enabled: true,
+                            enabled: false,
                             format: '<b>{point.name}</b>: {point.percentage:.1f} %',
                             style: {
                                 color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
@@ -93,6 +93,7 @@
                             label: {
                                 connectorAllowed: false
                             }
+                            
                         }
                     },
                     series: data,
@@ -136,16 +137,25 @@
 
         function sido_json(data_dict) {
             ajax_module(data_dict).then((data) => {
-                    console.log(data)
-                    temp = make_line('매매가', '', ['2020-1q','2020-2q','2020-3q','2020-4q','2021-1q','2021-2q','2021-3q','2021-4q','2022-1q'],'sold_cost', data)
-                    $('#data5').highcharts(temp)
+                    if(data['type'] == 'first'){
+                        temp = make_pie(data['first'], 'Total Infra Rate')
+                        $('#data1').highcharts(temp)
+                    }
+                    if(data['type'] == 'second'){
+                        temp = make_line('매매가', '', ['2020-1q','2020-2q','2020-3q','2020-4q','2021-1q','2021-2q','2021-3q','2021-4q','2022-1q'],'sold_cost', data['first'])
+                        $('#data5').highcharts(temp)
+                    }
                 }).catch((data, error) => {
                     console.log(error)
             })
         }
 
         $(function(){
-            var data_dict = {'sidoname': '부산', 'tabNo':2}
+            temp = location.href.split("?")
+            data_sido = temp[1].split('=')
+            sido_name = decodeURI(data_sido[1])
+            console.log(sido_name)
+            var data_dict = {'sidoname': sido_name, 'tabNo': 1}
             sido_json(data_dict)
         })
     </script>
@@ -294,7 +304,7 @@
                                 {{ map|safe }}
                             </div>
                         </div>
-                        <div class="data" id="data1">plot</div>
+                        <div class="data" id="data1"></div>
                         <div class="data" id="data2">plot</div>
                     </div>
 

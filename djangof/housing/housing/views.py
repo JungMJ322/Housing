@@ -268,18 +268,30 @@ def sidomap(request):
     }
     return render(request, 'city.html', context)
 
+
 def ajax_return(request):
     if request.method == 'POST':
         request_list = []
         for temp, b in request.POST.items():
             request_list.append(b)
-        print(request_list)
+        sido = request.POST['sidoname']
+
+        if request_list[1] == '1':
+            temp = find_infra_count(sido)
+            return_first_tab = {'type':'first'}
+            return_first_tab['first'] = make_pie_chart_params(temp)
+            return_first_tab = json.dumps(return_first_tab, ensure_ascii=False)
+            return HttpResponse(return_first_tab)
+
         if request_list[1] == '2':
-            sido = request.POST['sidoname']
+            return_sec_tab = {'type': 'second'}
             json_data = getSoldMean(sido)
-            json_data = json.dumps(json_data, ensure_ascii=False)
-            print(json_data)
-            return HttpResponse(json_data)
+            for i in json_data:
+                i['data'] = i['data'][0:9]
+            return_sec_tab['first'] = json_data
+            return_sec_tab = json.dumps(return_sec_tab, ensure_ascii=False)
+            print(return_sec_tab)
+            return HttpResponse(return_sec_tab)
 
         else:
             return HttpResponse(1)
