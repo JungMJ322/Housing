@@ -46,7 +46,7 @@
         .dropdown{
             position: relative;
             margin-top: 3px;
-            width: 300px;
+            width: 250px;
             height: 50px;
             border-radius:10px;
             box-shadow: 0px 5px 20px rgba(99,99,99,99.05);
@@ -59,7 +59,7 @@
             border: 2px solid #333;
             border-top: 2px solid #fff;
             border-right: 2px solid #fff;
-            right: 70px;
+            right: 20px;
             top: 15px;
             transform: rotate(-45deg);
             z-index: 10000;
@@ -73,12 +73,13 @@
         }
         #inputbox{
             display:flex;
-            flex-direction: row;
-            z-index:1000;
+            flex-direction: column;
+
         }
         #button{
             width: 50px;
             height: 50px;
+            margin-top:2px;
             cursor: pointer;
             background: #fff;
             border: none;
@@ -89,7 +90,7 @@
         }
 
         #tb{
-            width: 300px;
+            width: 200px;
             height: 50px;
             cursor: pointer;
             background: #fff;
@@ -142,6 +143,10 @@
             top: 4px;
             font-size: 1.2em;
         }
+        .array{
+            display:flex;
+            flex-direction: row;
+        }
 
 
 
@@ -154,23 +159,25 @@
             <div id="logo"><ion-icon name="home-outline"></ion-icon></div>
         </div>
         <form action="/sido/" method="get">
-            <div class="dropdown">
-                <div id="inputbox">
-                    <input type="text" name="sido" id="tb" class="textBox" placeholder="시 도 선 택"  readonly>
-                    <button id="button" type="submit" formmethod="get"><i class="fa fa-search"></i></button>
+            <div class="array">
+                <div class="dropdown">
+                    <div id="inputbox">
+                        <input type="text" name="sido" id="tb" class="textBox" placeholder="시 도 선 택"  readonly>
+                        <div class="option">
+                            <div onclick="show('서울')">서울</div>
+                            <div onclick="show('부산')">부산</div>
+                            <div onclick="show('광주')">광주</div>
+                            <div onclick="show('대구')">대구</div>
+                            <div onclick="show('세종')">세종</div>
+                            <div onclick="show('인천')">인천</div>
+                            <div onclick="show('울산')">울산</div>
+                            <div onclick="show('대전')">대전</div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="option">
-                    <div onclick="show('서울')">서울</div>
-                    <div onclick="show('부산')">부산</div>
-                    <div onclick="show('광주')">광주</div>
-                    <div onclick="show('대구')">대구</div>
-                    <div onclick="show('세종')">세종</div>
-                    <div onclick="show('인천')">인천</div>
-                    <div onclick="show('울산')">울산</div>
-                    <div onclick="show('대전')">대전</div>
-                </div>
+                <button id="button" type="submit" formmethod="get"><i class="fa fa-search"></i></button>
             </div>
+
         </form>
 
 
