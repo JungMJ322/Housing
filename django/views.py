@@ -164,6 +164,50 @@ def getSoldMean(sido):
 
     return result
 
+def getSupplySize(sido):
+    # sido 입력받으면 그 sido에
+    # {gu_list:[1구, 2구, 3구], data:[1구 name개수, 2구 name개수, 3구 name개수]}
+    cursor = connection.cursor()
+    result = list()
+
+    name_dict = dict()
+    # 이름 중복되지 않도록 namelist만듬
+    strSql = f"""select address, supply_size from detail
+                where address like '{sido}%';"""
+    success = cursor.execute(strSql)
+    supply_names = list(cursor.fetchall())
+
+    # gu를 키로 갖는 gu_dict 초기화
+    for name in supply_names:
+        name = list(name)
+        gu = name[0].split()[1]
+        gu_find = gu.find('구')
+        if gu_find > 0:
+            name_dict[gu[:gu_find + 1]] = 0
+
+    name_list = list(name_dict.keys())
+
+    gu_dict = dict()
+    for name in name_list:
+        gu_dict[name] = 0
+
+    # 각각의 gu의 supply_sum
+    for supply in supply_names:
+        supply = list(supply)
+        gu = supply[0].split()[1]
+        gu_find = gu.find('구')
+        if gu_find > 0:
+            gu_dict[gu[:gu_find + 1]] = gu_dict[gu[:gu_find + 1]] + supply[1]
+
+    gu_dict2 = dict()
+    gu_dict2['gu_list'] = list(gu_dict.keys())
+    gu_dict2['data'] = list(gu_dict.values())
+    result.append(gu_dict2)
+
+    connection.commit()
+    connection.close()
+    return result
+
 
 def index(request):
     # temp = Infra.objects.all().values()
@@ -183,11 +227,11 @@ def index(request):
     #
     # rate_dict = getRate()
     # infra_dict = getInfra()
-    sold_mean = getSoldMean('대전')
+    # sold_mean = getSoldMean('대전')
     # infra_sido = getInfraSido('서울')
+    supply_size = getSupplySize('서울')
 
-
-    print(sold_mean)
+    print(supply_size)
 
     return render(request, 'index.html')
 
