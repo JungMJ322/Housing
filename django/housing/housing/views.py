@@ -4,6 +4,9 @@ from .map import *
 from django.http import HttpResponse, HttpResponseRedirect
 import json
 
+seven_sido_list = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종']
+
+
 def extract_ByKeys(key_list, data):
     return_dict = {}
     count = 0
@@ -108,7 +111,7 @@ def sido_supply_size(sido):  # sido 별 공급 규모 총합 / In : sido, Out : 
     temp = load_detail_sido(sido)
     supply_size = 0;
     for i in temp:
-        supply_size += i['supply_size']
+        supply_size += int(i['supply_size'])
 
     print(supply_size)
     return supply_size
@@ -131,7 +134,6 @@ def load_sold_cost(sido, area_grade):  # sido, 면적 별 매매가 정보 날�
     return sorted_list
 
 
-
 def make_pie_chart_params(dict_list):
     total = 0
     key_list = dict_list.keys()
@@ -146,25 +148,57 @@ def make_pie_chart_params(dict_list):
     series['data'] = data_list
     return series
 
+
+def make_bar_chart_params(dict_list):
+    temp_dict = {}
+    temp_dict['type'] = 'column'
+    temp_dict['colorByPoint'] = True
+    temp_dict['data'] = dict_list
+    temp_dict['showInLegend'] = False
+    return temp_dict
+
+
+def count_sido_hssply():
+    total_dict = {}
+    total_list = []
+    for i in seven_sido_list:
+        total_dict[i] = 0
+        temp = load_detail_sido(i)
+        for j in temp:
+            total_dict[i] += int(j['supply_size'])
+        total_list.append(total_dict[i])
+
+    return total_list
+
+
+def
+
+
 def index(request):
-    gu_count('서울')
     return render(request, 'index.html')
+
 
 def detail(request):
     return render(request, 'city.html')
 
 
-
-
 def ajax_return(request):
     if request.method == 'POST':
-        sido = request.POST['sidoname']
-        temp = find_infra_count(sido)
-        series = make_pie_chart_params(temp)
-        series = json.dumps(series, ensure_ascii=False)
-        return HttpResponse(series)
+        if request.POST['chart_kind'] == 'pie':
+            sido = request.POST['sidoname']
+            temp = find_infra_count(sido)
+            series = make_pie_chart_params(temp)
+            series = json.dumps(series, ensure_ascii=False)
+            return HttpResponse(series)
+        if request.POST['chart_kind'] == 'bar':
+            return_json = count_sido_hssply()
+            return_data = make_bar_chart_params(return_json)
+            return_data = json.dumps(return_data, ensure_ascii=False)
+            print(return_data)
+            return HttpResponse(return_data)
+
 
 
 def test_func(request):
-    print(sido_competition('서울'))
+    # print(sido_competition('서울'))
     return render(request, "test.html")

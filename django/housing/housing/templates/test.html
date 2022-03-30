@@ -44,10 +44,26 @@
         
     }
 
-    function make_bar() {
-        
+    function make_bar(chart_name, subtitle, categories, data) {
+        var title = {
+            text: chart_name
+        }
+        var subtitle = {
+            text: subtitle
+        }
+        var xAxis = {
+            categories: categories
+        }
+        var series = [data]
+        var json = {}
+        json.title = title
+        json.subtitle = subtitle
+        json.xAxis = xAxis
+        json.series = series
+        return json
     }
 
+    function make_line()
     function ajax_sido(sidoName) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
@@ -70,7 +86,8 @@
 
     function sido_json(sido, name) {
         ajax_sido(sido).then((data) => {
-            json = make_pie(data, name)
+            console.log(data)
+            json = make_bar('전국', '전국', ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종'], data)
             $("#container").highcharts(json)
         }).catch((data, error) => {
             console.log(error)
@@ -78,8 +95,9 @@
     }
 
     $(function(){
-        want_find = {'sidoname' : '부산'}
+        want_find = {'chart_kind' : 'bar', 'sidoname' : '부산'}
         sido_json(want_find, want_find.sidoname)
+
     })
 </script>
 </body>
