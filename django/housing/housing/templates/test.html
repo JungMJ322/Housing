@@ -26,8 +26,8 @@
                     allowPointSelect: true,
                     cursor: 'pointer',
                     dataLabels: {  
-                        enabled: false,
-                        format: '<b>{point.name}%</b>: {point.percentage:.1f} %',
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
                         style: {
                             color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                         }
@@ -151,23 +151,24 @@
     function sido_json(sido, name) {
         ajax_sido(sido).then((data) => {
             console.log(data)
-            x_data = [{
-                    name: 'test1',
-                    data: [4000,5000,5555,8888,9999,7777,5555,6666,4444]
-                    },
-                    {
-                    name: 'test2',
-                    data: [4120,5410,5755,8588,9499,7277,5155,6366,4744]
-                    },
-                    {
-                    name: 'test3',
-                    data: [4050,5100,5535,8288,9799,7757,5455,6636,4144]
-                    },
-                    {
-                    name: 'test4',
-                    data: [4700,5700,5855,8188,9399,7177,5255,6366,4944]
-                }]
-            json = make_line('전국', '전국', ['2020-1q','2020-2q','2020-3q','2020-4q', '2021-1q', '2021-2q', '2021-31q', '2021-4q', '2022-1q'], 'sold_cost', x_data)
+            // x_data = [{
+            //         name: 'test1',
+            //         data: [4000,5000,5555,8888,9999,7777,5555,6666,4444]
+            //         },
+            //         {
+            //         name: 'test2',
+            //         data: [4120,5410,5755,8588,9499,7277,5155,6366,4744]
+            //         },
+            //         {
+            //         name: 'test3',
+            //         data: [4050,5100,5535,8288,9799,7757,5455,6636,4144]
+            //         },
+            //         {
+            //         name: 'test4',
+            //         data: [4700,5700,5855,8188,9399,7177,5255,6366,4944]
+            //     }]
+            // json = make_line('전국', '전국', ['2020-1q','2020-2q','2020-3q','2020-4q', '2021-1q', '2021-2q', '2021-31q', '2021-4q', '2022-1q'], 'sold_cost', x_data)
+            json = make_pie(data, name)
             $("#container").highcharts(json)
         }).catch((data, error) => {
             console.log(error)
@@ -175,7 +176,7 @@
     }
 
     $(function(){
-        want_find = {'chart_kind' : 'bar', 'sidoname' : '부산'}
+        want_find = {'chart_kind' : 'pie', 'sidoname' : '부산'}
         sido_json(want_find, want_find.sidoname)
 
     })

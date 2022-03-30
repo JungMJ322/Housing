@@ -210,6 +210,27 @@ def count_sido_hssply():
     return total_list
 
 
+def find_type_percent(sido, table_kind, table_data):
+    temp_list = []
+    for i in table_data:
+        if i['place'].find(sido) != -1 and i['place'].find(sido) < 3:
+            temp_list.append(i)
+    temp_dict = {}
+    if table_kind == 'school':
+        for i in temp_list:
+            try:
+                temp_dict[i['school_kind']] += 1
+            except KeyError:
+                temp_dict[i['school_kind']] = 0
+    else:
+        for i in temp_list:
+            try:
+                temp_dict[i['park_type']] += 1
+            except KeyError:
+                temp_dict[i['park_type']] = 0
+
+    return temp_dict
+
 
 def index(request):
     return render(request, 'index.html')
@@ -223,9 +244,9 @@ def ajax_return(request):
     if request.method == 'POST':
         if request.POST['chart_kind'] == 'pie':
             sido = request.POST['sidoname']
-            temp = find_infra_count(sido)
-            series = make_pie_chart_params(temp)
-            series = json.dumps(series, ensure_ascii=False)
+            temp = find_type_percent('서울', 'park', Park.objects.all().values())
+            temp_return = make_pie_chart_params(temp)
+            series = json.dumps(temp_return, ensure_ascii=False)
             return HttpResponse(series)
         if request.POST['chart_kind'] == 'bar':
             return_json = count_sido_hssply()
@@ -238,5 +259,6 @@ def ajax_return(request):
 
 def test_func(request):
     # print(sido_competition('서울'))
-    getSoldMean()
+
+
     return render(request, "test.html")
