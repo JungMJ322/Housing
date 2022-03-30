@@ -250,7 +250,7 @@ def sidomap(request):
     center = map_list[f'{sido}'][1]
     m = folium.Map(location=center,
                    tiles='cartodbpositron',        #cartodbpositron
-                   zoom_start=10, width='100%', height='100%',)
+                   zoom_start=11, width='100%', height='100%',)
     h_list = load_detail_sido(sido)
 
     for h in h_list:
@@ -259,7 +259,7 @@ def sidomap(request):
             lng=float(h['lot'])
             tooltip=h['house_manage_no']
             color='blue' #E77E00
-            folium.CircleMarker(location=[lat, lng], tooltip=tooltip, radius= 8, color=color,fill=True,fill_opacity=0.4,stroke=False ).add_to(m)
+            folium.CircleMarker(location=[lat, lng], tooltip=tooltip, radius= 10, color=color,fill=True,fill_opacity=0.4,stroke=False ).add_to(m)
         except:
             pass
     map = m._repr_html_()
