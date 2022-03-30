@@ -92,8 +92,11 @@ def getInfraSido(sido):
 
             gu = convinient[0].split()[1]
             gu_find = gu.find('구')
+            gun_find = gu.find('군')
             if gu_find > 0:
                 name_dict[gu[:gu_find+1]] = 0
+            elif gun_find > 0:
+                name_dict[gu[:gun_find+1]] = 0
 
     name_list = list(name_dict.keys())
 
@@ -112,8 +115,12 @@ def getInfraSido(sido):
             convinient = list(convinient)
             gu = convinient[0].split()[1]
             gu_find = gu.find('구')
+            gun_find = gu.find('군')
             if gu_find > 0:
                 gu_dict[gu[:gu_find+1]] = gu_dict[gu[:gu_find+1]] + 1
+            elif gun_find > 0:
+                gu_dict[gu[:gun_find+1]] = gu_dict[gu[:gun_find+1]] + 1
+
 
         gu_dict2 = dict()
         gu_dict2['name'] = infra
@@ -228,10 +235,10 @@ def index(request):
     # rate_dict = getRate()
     # infra_dict = getInfra()
     # sold_mean = getSoldMean('대전')
-    # infra_sido = getInfraSido('서울')
-    supply_size = getSupplySize('서울')
+    infra_sido = getInfraSido('대구')
+    # supply_size = getSupplySize('서울')
 
-    print(supply_size)
+    print(infra_sido)
 
     return render(request, 'index.html')
 
