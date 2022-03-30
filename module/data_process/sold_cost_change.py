@@ -31,45 +31,45 @@ def create_code_dict():
 def save_json():
     temp_list = []
     code_dict = create_code_dict()
-    # for i in range(1, 13):
-    #     data = spark.read.csv("/Housing/data/hadoop_upload/sold_cost/21."+str(i)+".csv", encoding="cp949", header=True)
-    #     data_coll = data.collect()
-    #     rdr = list()
-    #
-    #     for j in data_coll:
-    #         rdr.append(j.asDict())
-    #
-    #     for j in rdr:
-    #         temp = dict()
-    #         temp['place'] = j["시군구"]
-    #         temp['area_grade'] = str(int(float(j["전용면적(㎡)"]) // 10)) + '단위'
-    #         try:
-    #             temp['place_code'] = code_dict[j["시군구"]]
-    #         except KeyError:
-    #             continue
-    #         temp['month'] = j["계약년월"]
-    #         temp['cost'] = int(j["거래금액(만원)"].replace(",", ""))
-    #         temp_list.append(temp)
-    #
-    # for i in range(1, 13):
-    #     data = spark.read.csv("/Housing/data/hadoop_upload/sold_cost/20."+str(i)+".csv", encoding="cp949", header=True)
-    #     data_coll = data.collect()
-    #     rdr = list()
-    #
-    #     for j in data_coll:
-    #         rdr.append(j.asDict())
-    #
-    #     for j in rdr:
-    #         temp = dict()
-    #         temp['place'] = j["시군구"]
-    #         temp['area_grade'] = str(int(float(j["전용면적(㎡)"]) // 10)) + '단위'
-    #         try:
-    #             temp['place_code'] = code_dict[j["시군구"]]
-    #         except KeyError:
-    #             continue
-    #         temp['month'] = j["계약년월"]
-    #         temp['cost'] = int(j["거래금액(만원)"].replace(",", ""))
-    #         temp_list.append(temp)
+    for i in range(1, 13):
+        data = spark.read.csv("/Housing/data/hadoop_upload/sold_cost/21."+str(i)+".csv", encoding="cp949", header=True)
+        data_coll = data.collect()
+        rdr = list()
+    
+        for j in data_coll:
+            rdr.append(j.asDict())
+    
+        for j in rdr:
+            temp = dict()
+            temp['place'] = j["시군구"]
+            temp['area_grade'] = str(int(float(j["전용면적(㎡)"]) // 10)) + '단위'
+            try:
+                temp['place_code'] = code_dict[j["시군구"]]
+            except KeyError:
+                continue
+            temp['month'] = j["계약년월"]
+            temp['cost'] = int(j["거래금액(만원)"].replace(",", ""))
+            temp_list.append(temp)
+    
+    for i in range(1, 13):
+        data = spark.read.csv("/Housing/data/hadoop_upload/sold_cost/20."+str(i)+".csv", encoding="cp949", header=True)
+        data_coll = data.collect()
+        rdr = list()
+    
+        for j in data_coll:
+            rdr.append(j.asDict())
+    
+        for j in rdr:
+            temp = dict()
+            temp['place'] = j["시군구"]
+            temp['area_grade'] = str(int(float(j["전용면적(㎡)"]) // 10)) + '단위'
+            try:
+                temp['place_code'] = code_dict[j["시군구"]]
+            except KeyError:
+                continue
+            temp['month'] = j["계약년월"]
+            temp['cost'] = int(j["거래금액(만원)"].replace(",", ""))
+            temp_list.append(temp)
 
     for i in range(1, 3):
         data = spark.read.csv("/Housing/data/hadoop_upload/sold_cost/22." + str(i) + ".csv", encoding="cp949", header=True)
