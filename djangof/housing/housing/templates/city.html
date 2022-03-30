@@ -195,7 +195,7 @@
             ajax_module(data_dict).then((data) => {
                     if(data['type'] == 'first'){
                         temp1 = make_pie(data['fst'], 'Total Infra Rate')
-                        $('#data1').highcharts(temp1)
+                        $('#data2').highcharts(temp1)
                         temp2 = make_bars('구별 infra 개수', '', data['snd_list'], 'test', data['snd_data'])
                         console.log(data['snd_list'], data['snd_data'])
                         Highcharts.chart('data3', temp2)
