@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Busstop, SoldCostMean, Detail, Hospital, Infra, Mart, Park, School, Subway, PlaceCode
+from .models import Busstop, SoldCostMean, Detail, Hospital, Infra, Mart, Park, School, Subway, PlaceCode, Competition
 
 import folium
 
@@ -131,7 +131,7 @@ def index(request):
 
 
 def sidomap(request):
-    sido= request.GET['sido']
+    sido = request.GET['sido']
 
     map_list = {"서울": [11, [37.53709816646034, 126.97901707971378]],
                 "인천": [28, [37.502878144962544, 126.60311587249441]],
@@ -143,16 +143,16 @@ def sidomap(request):
                 "부산": [26, [35.17289405279072, 129.03210838811316]]}
     center = map_list[f'{sido}'][1]
     m = folium.Map(location=center,
-                   tiles='Stamentoner',        #cartodbpositron
-                   zoom_start=10)
+                   tiles='cartodbpositron',        #cartodbpositron
+                   zoom_start=10, width='100%', height='100%',)
     h_list = load_detail_sido(sido)
 
     for h in h_list:
-        lat=float(h['lat'])
-        lng=float(h['lot'])
-        tooltip=h['house_manage_no']
-        color='blue' #E77E00
-        folium.CircleMarker(location=[lat,lng],tooltip=tooltip,radius= 8, color=color,fill=True,fill_opacity=0.7,stroke=False ).add_to(m)
+        lat = float(h['lat'])
+        lng = float(h['lot'])
+        tooltip = h['house_manage_no']
+        color = 'blue' #E77E00
+        folium.CircleMarker(location=[lat, lng], tooltip=tooltip, radius=8, color=color, fill=True, fill_opacity=0.7, stroke=False).add_to(m)
 
     map = m._repr_html_()
     context = {
