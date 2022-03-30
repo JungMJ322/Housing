@@ -322,6 +322,41 @@ def count_sido_hssply():
     return total_list
 
 
+def getQuarterSupply(sido):
+    #[{name: '1~3', data: [얼마, 얼마, 얼마, 얼마]}, {name: 'n단위', data: [얼마, 얼마, 얼마, 얼마]},
+    # {name: 'n단위', data: [얼마, 얼마, 얼마, 얼마]}]
+    cursor = connection.cursor()
+
+    quarters = [['01','02','03'], ['04','05','06'], ['07','08','09'], ['10','11','12']]
+    years = [20, 21, 22]
+
+    result = list()
+    sum_dict = dict()
+    sum_list = list()
+    for year in years:
+        for quarter in quarters:
+            strSql = f"""SELECT sum(supply_size)
+                        FROM detail
+                        WHERE (START_RECEIPT like '__{year}-{quarter[0]}%' or START_RECEIPT like '__{year}-{quarter[1]}%' 
+                                or START_RECEIPT like '__{year}-{quarter[2]}%')
+                        and ADDRESS like '{sido}%'"""
+            success = cursor.execute(strSql)
+            supply_size_sum = cursor.fetchall()
+            sum = supply_size_sum[0][0]
+            # print(sum)
+            if sum == None:
+                sum_list.append(0)
+            else:
+                sum_list.append(int(sum))
+    sum_dict['name'] = sido
+    sum_dict['data'] = sum_list
+    result.append(sum_dict)
+
+    connection.commit()
+    connection.close()
+
+    return result
+
 def find_type_percent(sido, table_kind, table_data):
     temp_list = []
     for i in table_data:
@@ -346,6 +381,7 @@ def find_type_percent(sido, table_kind, table_data):
 
 
 def index(request):
+
 
     # print(temp)
     return render(request, 'index.html')
@@ -426,14 +462,21 @@ def ajax_return(request):
             json_data = getSoldMean(sido)
             for i in json_data:
                 i['data'] = i['data'][0:9]
+            print(json_data)
             return_sec_tab['fst'] = json_data
 
             temp = getSupplySize(sido)
             list_temp = make_bar_chart_params(temp[0]['data'])
             temp[0]['data'] = list_temp
             return_sec_tab['snd'] = temp
-            return_sec_tab = json.dumps(return_sec_tab, ensure_ascii=False)
             # print(return_sec_tab)
+
+            temp_quarter = getQuarterSupply(sido)
+            print(temp_quarter)
+            temp_quarter[0]['data'] = temp_quarter[0]['data'][0:10]
+            return_sec_tab['trd'] = temp_quarter
+
+            return_sec_tab = json.dumps(return_sec_tab, ensure_ascii=False)
             return HttpResponse(return_sec_tab)
 
         else:
