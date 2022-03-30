@@ -275,17 +275,17 @@
         #mapbox{
             position: relative;
             background-color: white;
-            /* flex:1; */
+            flex:1;
             border:1px solid #aaa;
             border-radius: 10px;
-            margin:30px 5px 30px 5px;
+            margin:5px 5px 5px 5px;
             width: 400px;
             height: 400px;
         }
         #map{
-            /* margin-top:15px; */
             height:100%;
             width:100%;
+            overflow:hidden;
         }
         .box{
             flex-direction:column;
@@ -368,12 +368,12 @@
                 <div id="bar"></div>
                 <div class="box tab1">
                     <div class="table" id="t1">
+                        <div class="data" id="data1"></div>
                         <div id="mapbox">
                             <div class="folium-map" id="map">
                                 {{ map|safe }}
                             </div>
                         </div>
-                        <div class="data" id="data1"></div>
                         <div class="data" id="data2">plot</div>
                     </div>
 
