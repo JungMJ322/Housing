@@ -148,11 +148,14 @@ def sidomap(request):
     h_list = load_detail_sido(sido)
 
     for h in h_list:
-        lat=float(h['lat'])
-        lng=float(h['lot'])
-        tooltip=h['house_manage_no']
-        color='blue' #E77E00
-        folium.CircleMarker(location=[lat,lng],tooltip=tooltip,radius= 8, color=color,fill=True,fill_opacity=0.7,stroke=False ).add_to(m)
+        try:
+            lat=float(h['lat'])
+            lng=float(h['lot'])
+            tooltip=h['house_manage_no']
+            color='blue' #E77E00
+            folium.CircleMarker(location=[lat,lng],tooltip=tooltip,radius= 8, color=color,fill=True,fill_opacity=0.7,stroke=False ).add_to(m)
+        except:
+            pass
 
     map = m._repr_html_()
     context = {
