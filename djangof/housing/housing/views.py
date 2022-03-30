@@ -346,7 +346,8 @@ def find_type_percent(sido, table_kind, table_data):
 
 
 def index(request):
-    temp = getSupplySize('서울')
+    data = School.objects.all().values()
+    temp = find_type_percent('서울', 'school', data)
     print(temp)
     return render(request, 'index.html')
 
