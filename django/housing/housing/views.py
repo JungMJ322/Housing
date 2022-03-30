@@ -171,8 +171,6 @@ def count_sido_hssply():
     return total_list
 
 
-def
-
 
 def index(request):
     return render(request, 'index.html')
