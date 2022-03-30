@@ -83,8 +83,7 @@ def getInfraSido(sido):
     # 이름 중복되지 않도록 namelist만듬
     name_dict = dict()
     for infra in infra_list:
-        strSql = f"""select place from {infra}
-                            where place like '{sido}%' and place like '%구 %';"""
+        strSql = f"""select place from {infra} where place like '{sido}%';"""
         success = cursor.execute(strSql)
         convinient_list = list(cursor.fetchall())
         # gu를 키로 갖는 gu_dict 초기화
@@ -92,14 +91,15 @@ def getInfraSido(sido):
             convinient = list(convinient)
 
             gu = convinient[0].split()[1]
-            name_dict[gu] = 0
+            gu_find = gu.find('구')
+            if gu_find > 0:
+                name_dict[gu[:gu_find+1]] = 0
 
     name_list = list(name_dict.keys())
 
     # name_list에 따라 각각의 infra 카운트
     for infra in infra_list:
-        strSql = f"""select place from {infra}
-                    where place like '{sido}%' and place like '%구 %';"""
+        strSql = f"""select place from {infra} where place like '{sido}%';"""
         success = cursor.execute(strSql)
         convinient_list = list(cursor.fetchall())
 
@@ -111,7 +111,9 @@ def getInfraSido(sido):
         for convinient in convinient_list:
             convinient = list(convinient)
             gu = convinient[0].split()[1]
-            gu_dict[gu] = gu_dict[gu] + 1
+            gu_find = gu.find('구')
+            if gu_find > 0:
+                gu_dict[gu[:gu_find+1]] = gu_dict[gu[:gu_find+1]] + 1
 
         gu_dict2 = dict()
         gu_dict2['name'] = infra
@@ -133,6 +135,23 @@ def getSoldMean(sido):
     ranks = [[1,2,3], [4,5,6], [7,8,9], [10,11,12], [13,14,15], [16,17,18], [19,20,21]]
     quarters = [['01','02','03'], ['04','05','06'], ['07','08','09'], ['10','11','12']]
     years = [20, 21, 22]
+
+    # 이름 중복되지 않도록 namelist만듬
+    name_dict = dict()
+
+    strSql = f"""SELECT *
+                FROM sold_cost_mean join place_code on (sold_cost_mean.place_code = place_code.place_code)
+                where place like '{sido}%' and place like '%구 %';"""
+    success = cursor.execute(strSql)
+    convinient_list = list(cursor.fetchall())
+    # gu를 키로 갖는 gu_dict 초기화
+    for convinient in convinient_list:
+        convinient = list(convinient)
+
+        gu = convinient[0].split()[1]
+        name_dict[gu] = 0
+
+    name_list = list(name_dict.keys())
 
     result = list()
     for rank in ranks:
@@ -179,11 +198,13 @@ def index(request):
     #     connection.rollbak()
     #     print('얘 db랑 연결이 잘 안됐단다')
     #
-    # print(list(infra[0]))
     # rate_dict = getRate()
     # infra_dict = getInfra()
     # getSoldMean()
-    getInfraSido('서울')
+    infra_sido = getInfraSido('서울')
+
+
+    print(infra_sido)
 
     return render(request, 'index.html')
 
