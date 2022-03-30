@@ -122,6 +122,7 @@ def getSoldMean(sido):
     return result
 
 
+
 def find_infra_count(sido):  # sido 별 각 infra 갯수, In : 시도이름, Out : dict {"school":0, "subway":0, "mart":0, "park":0, "hospital":0, 'busstop':0, 'convinient': 0}꼴
     detail_list = load_detail_sido(sido)
     house_manage_list = []
@@ -196,7 +197,7 @@ def getInfraSido(sido):
     # 이름 중복되지 않도록 namelist만듬
     name_dict = dict()
     for infra in infra_list:
-        strSql = f"""select place from {infra} where place like '{sido}%';"""
+        strSql = f"""select place from {infra} where place like '{sido}%' and place not like '%도붕구%';"""
         success = cursor.execute(strSql)
         convinient_list = list(cursor.fetchall())
         # gu를 키로 갖는 gu_dict 초기화
@@ -205,14 +206,17 @@ def getInfraSido(sido):
 
             gu = convinient[0].split()[1]
             gu_find = gu.find('구')
+            gun_find = gu.find('군')
             if gu_find > 0:
                 name_dict[gu[:gu_find+1]] = 0
+            elif gun_find > 0:
+                name_dict[gu[:gun_find+1]] = 0
 
     name_list = list(name_dict.keys())
 
     # name_list에 따라 각각의 infra 카운트
     for infra in infra_list:
-        strSql = f"""select place from {infra} where place like '{sido}%';"""
+        strSql = f"""select place from {infra} where place like '{sido}%' and place not like '%도붕구%';"""
         success = cursor.execute(strSql)
         convinient_list = list(cursor.fetchall())
 
@@ -225,8 +229,12 @@ def getInfraSido(sido):
             convinient = list(convinient)
             gu = convinient[0].split()[1]
             gu_find = gu.find('구')
+            gun_find = gu.find('군')
             if gu_find > 0:
                 gu_dict[gu[:gu_find+1]] = gu_dict[gu[:gu_find+1]] + 1
+            elif gun_find > 0:
+                gu_dict[gu[:gun_find+1]] = gu_dict[gu[:gun_find+1]] + 1
+
 
         gu_dict2 = dict()
         gu_dict2['name'] = infra
@@ -237,6 +245,8 @@ def getInfraSido(sido):
     connection.commit()
     connection.close()
     return result
+
+
 
 
 def make_bar_chart_params(dict_list):
@@ -266,8 +276,11 @@ def getSupplySize(sido):
         name = list(name)
         gu = name[0].split()[1]
         gu_find = gu.find('구')
+        gun_find = gu.find('군')
         if gu_find > 0:
             name_dict[gu[:gu_find + 1]] = 0
+        elif gun_find > 0:
+            name_dict[gu[:gun_find + 1]] = 0
 
     name_list = list(name_dict.keys())
 
@@ -280,8 +293,11 @@ def getSupplySize(sido):
         supply = list(supply)
         gu = supply[0].split()[1]
         gu_find = gu.find('구')
+        gun_find = gu.find('군')
         if gu_find > 0:
             gu_dict[gu[:gu_find + 1]] = gu_dict[gu[:gu_find + 1]] + supply[1]
+        elif gun_find > 0:
+            gu_dict[gu[:gun_find + 1]] = gu_dict[gu[:gun_find + 1]] + supply[1]
 
     gu_dict2 = dict()
     gu_dict2['gu_list'] = list(gu_dict.keys())
@@ -330,7 +346,8 @@ def find_type_percent(sido, table_kind, table_data):
 
 
 def index(request):
-    temp = getInfraSido('서울')
+    temp = getSupplySize('서울')
+    print(temp)
     return render(request, 'index.html')
 
 
@@ -383,6 +400,8 @@ def ajax_return(request):
             list_temp = []
             for i in temp2:
                 temp_dict = {}
+                if i['name'] == '도붕구':
+                    continue
                 temp_dict['name'] = i['name']
                 temp_dict['data'] = i['data']
                 list_temp.append(temp_dict)
@@ -398,6 +417,7 @@ def ajax_return(request):
             for i in json_data:
                 i['data'] = i['data'][0:9]
             return_sec_tab['fst'] = json_data
+
             temp = getSupplySize(sido)
             list_temp = make_bar_chart_params(temp[0]['data'])
             temp[0]['data'] = list_temp

@@ -83,7 +83,7 @@ def getInfraSido(sido):
     # 이름 중복되지 않도록 namelist만듬
     name_dict = dict()
     for infra in infra_list:
-        strSql = f"""select place from {infra} where place like '{sido}%';"""
+        strSql = f"""select place from {infra} where place like '{sido}%' and place not like '%도붕구%';"""
         success = cursor.execute(strSql)
         convinient_list = list(cursor.fetchall())
         # gu를 키로 갖는 gu_dict 초기화
@@ -92,14 +92,17 @@ def getInfraSido(sido):
 
             gu = convinient[0].split()[1]
             gu_find = gu.find('구')
+            gun_find = gu.find('군')
             if gu_find > 0:
                 name_dict[gu[:gu_find+1]] = 0
+            elif gun_find > 0:
+                name_dict[gu[:gun_find+1]] = 0
 
     name_list = list(name_dict.keys())
 
     # name_list에 따라 각각의 infra 카운트
     for infra in infra_list:
-        strSql = f"""select place from {infra} where place like '{sido}%';"""
+        strSql = f"""select place from {infra} where place like '{sido}%' and place not like '%도붕구%';"""
         success = cursor.execute(strSql)
         convinient_list = list(cursor.fetchall())
 
@@ -112,8 +115,12 @@ def getInfraSido(sido):
             convinient = list(convinient)
             gu = convinient[0].split()[1]
             gu_find = gu.find('구')
+            gun_find = gu.find('군')
             if gu_find > 0:
                 gu_dict[gu[:gu_find+1]] = gu_dict[gu[:gu_find+1]] + 1
+            elif gun_find > 0:
+                gu_dict[gu[:gun_find+1]] = gu_dict[gu[:gun_find+1]] + 1
+
 
         gu_dict2 = dict()
         gu_dict2['name'] = infra
@@ -182,8 +189,11 @@ def getSupplySize(sido):
         name = list(name)
         gu = name[0].split()[1]
         gu_find = gu.find('구')
+        gun_find = gu.find('군')
         if gu_find > 0:
             name_dict[gu[:gu_find + 1]] = 0
+        elif gun_find > 0:
+            name_dict[gu[:gun_find + 1]] = 0
 
     name_list = list(name_dict.keys())
 
@@ -196,8 +206,11 @@ def getSupplySize(sido):
         supply = list(supply)
         gu = supply[0].split()[1]
         gu_find = gu.find('구')
+        gun_find = gu.find('군')
         if gu_find > 0:
             gu_dict[gu[:gu_find + 1]] = gu_dict[gu[:gu_find + 1]] + supply[1]
+        elif gun_find > 0:
+            gu_dict[gu[:gun_find + 1]] = gu_dict[gu[:gun_find + 1]] + supply[1]
 
     gu_dict2 = dict()
     gu_dict2['gu_list'] = list(gu_dict.keys())
@@ -228,10 +241,10 @@ def index(request):
     # rate_dict = getRate()
     # infra_dict = getInfra()
     # sold_mean = getSoldMean('대전')
-    # infra_sido = getInfraSido('서울')
-    supply_size = getSupplySize('서울')
+    infra_sido = getInfraSido('서울')
+    # supply_size = getSupplySize('서울')
 
-    print(supply_size)
+    print(infra_sido)
 
     return render(request, 'index.html')
 

@@ -36,7 +36,9 @@
                             style: {
                                 color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                             }
-                        }
+                        },
+                            showInLegend: true,
+                            innerSize:80
                     }
                 };
             var json = {}
@@ -195,10 +197,10 @@
             ajax_module(data_dict).then((data) => {
                     if(data['type'] == 'first'){
                         temp1 = make_pie(data['fst'], 'Total Infra Rate')
-                        $('#data1').highcharts(temp1)
+                        $('#data2').highcharts(temp1)
                         temp2 = make_bars('구별 infra 개수', '', data['snd_list'], 'test', data['snd_data'])
                         console.log(data['snd_list'], data['snd_data'])
-                        Highcharts.chart('data3', temp2)
+                        Highcharts.chart('data13', temp2)
                     }
                     if(data['type'] == 'second'){
                         temp = make_line('매매가', '', ['2020-1q','2020-2q','2020-3q','2020-4q','2021-1q','2021-2q','2021-3q','2021-4q','2022-1q'],'sold_cost', data['fst'])
