@@ -189,8 +189,11 @@ def getSupplySize(sido):
         name = list(name)
         gu = name[0].split()[1]
         gu_find = gu.find('구')
+        gun_find = gu.find('군')
         if gu_find > 0:
             name_dict[gu[:gu_find + 1]] = 0
+        elif gun_find > 0:
+            name_dict[gu[:gun_find + 1]] = 0
 
     name_list = list(name_dict.keys())
 
@@ -203,8 +206,11 @@ def getSupplySize(sido):
         supply = list(supply)
         gu = supply[0].split()[1]
         gu_find = gu.find('구')
+        gun_find = gu.find('군')
         if gu_find > 0:
             gu_dict[gu[:gu_find + 1]] = gu_dict[gu[:gu_find + 1]] + supply[1]
+        elif gun_find > 0:
+            gu_dict[gu[:gun_find + 1]] = gu_dict[gu[:gun_find + 1]] + supply[1]
 
     gu_dict2 = dict()
     gu_dict2['gu_list'] = list(gu_dict.keys())
