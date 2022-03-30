@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
 from .models import Busstop, SoldCostMean, Detail, Hospital, Infra, Mart, Park, School, Subway, PlaceCode, Competition
-
+from django.http import HttpResponse, HttpResponseRedirect
+import json
+from django.db import connection
 import folium
+seven_sido_list = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종']
 
 
 def extract_ByKeys(key_list, data):
@@ -36,6 +39,15 @@ def load_detail_sido(sido):  ## In = sido: 서울, 광주 etc.. / Out = sido 위
             temp_list.append(i)
 
     return temp_list
+
+def gu_count(sido):
+    detail_list = load_detail_sido(sido)
+    temp_list = []
+    count_dict = {}
+    for i in detail_list:
+        gu = i['address'].split(' ')[1]
+        temp_list.append(gu)
+    temp_list = list(set(temp_list))
 
 
 def create_place_code_list(sido):
@@ -72,9 +84,46 @@ def sido_competition(sido):  # 시도별 경쟁률 min max값 리턴 In : 시도
 
     return min_val, max_val
 
+def getSoldMean():
+    #[{name: '1~3', data: [얼마, 얼마, 얼마, 얼마]}, {name: 'n단위', data: [얼마, 얼마, 얼마, 얼마]},
+    # {name: 'n단위', data: [얼마, 얼마, 얼마, 얼마]}]
 
-def find_infra_count(
-        sido):  # sido 별 각 infra 갯수, In : 시도이름, Out : dict {"school":0, "subway":0, "mart":0, "park":0, "hospital":0, 'busstop':0, 'convinient': 0}꼴
+    cursor = connection.cursor()
+
+    ranks = [[1,2,3], [4,5,6], [7,8,9], [10,11,12], [13,14,15], [16,17,18], [19,20,21]]
+    quarters = [['01','02','03'], ['04','05','06'], ['07','08','09'], ['10','11','12']]
+    years = [20, 21, 22]
+
+    result = list()
+    for rank in ranks:
+        ran = f'{rank[0]}~{rank[2]}'
+        maen_dict = dict()
+        mean_list = list()
+        for year in years:
+            for quarter in quarters:
+                strSql = f"""SELECT avg(mean_cost)
+                            FROM sold_cost_mean 
+                            WHERE (area_grade like '{rank[0]}__' or area_grade like '{rank[1]}__' or area_grade like '{rank[2]}__' )
+                            and (month like '__{year}{quarter[0]}' or month like '__{year}{quarter[1]}' or month like '__{year}{quarter[2]}')"""
+                result = cursor.execute(strSql)
+                sold_mean = cursor.fetchall()
+                mean = sold_mean[0][0]
+                if mean == None:
+                    mean_list.append(0)
+                else:
+                    mean_list.append(round(mean, 2))
+        maen_dict['name'] = ran
+        maen_dict['data'] = mean_list
+        print(maen_dict)
+        # result.append(maen_dict)
+
+    connection.commit()
+    connection.close()
+
+    return result
+
+
+def find_infra_count(sido):  # sido 별 각 infra 갯수, In : 시도이름, Out : dict {"school":0, "subway":0, "mart":0, "park":0, "hospital":0, 'busstop':0, 'convinient': 0}꼴
     detail_list = load_detail_sido(sido)
     house_manage_list = []
     infra_list = []
@@ -100,7 +149,7 @@ def sido_supply_size(sido):  # sido 별 공급 규모 총합 / In : sido, Out : 
     temp = load_detail_sido(sido)
     supply_size = 0;
     for i in temp:
-        supply_size += i['supply_size']
+        supply_size += int(i['supply_size'])
 
     print(supply_size)
     return supply_size
@@ -122,6 +171,64 @@ def load_sold_cost(sido, area_grade):  # sido, 면적 별 매매가 정보 날�
 
     return sorted_list
 
+
+def make_pie_chart_params(dict_list):
+    total = 0
+    key_list = dict_list.keys()
+    series = {"type": 'pie', 'name': 'test'}
+    data_list = []
+    for i in key_list:
+        total += dict_list[i]
+    for i in key_list:
+        data_list.append([i, round((dict_list[i] / total) * 100, 1)])
+
+    print(data_list)
+    series['data'] = data_list
+    return series
+
+
+def make_bar_chart_params(dict_list):
+    temp_dict = {}
+    temp_dict['type'] = 'column'
+    temp_dict['colorByPoint'] = True
+    temp_dict['data'] = dict_list
+    temp_dict['showInLegend'] = False
+    return temp_dict
+
+
+def count_sido_hssply():
+    total_dict = {}
+    total_list = []
+    for i in seven_sido_list:
+        total_dict[i] = 0
+        temp = load_detail_sido(i)
+        for j in temp:
+            total_dict[i] += int(j['supply_size'])
+        total_list.append(total_dict[i])
+
+    return total_list
+
+
+def find_type_percent(sido, table_kind, table_data):
+    temp_list = []
+    for i in table_data:
+        if i['place'].find(sido) != -1 and i['place'].find(sido) < 3:
+            temp_list.append(i)
+    temp_dict = {}
+    if table_kind == 'school':
+        for i in temp_list:
+            try:
+                temp_dict[i['school_kind']] += 1
+            except KeyError:
+                temp_dict[i['school_kind']] = 0
+    else:
+        for i in temp_list:
+            try:
+                temp_dict[i['park_type']] += 1
+            except KeyError:
+                temp_dict[i['park_type']] = 0
+
+    return temp_dict
 
 
 
@@ -148,16 +255,34 @@ def sidomap(request):
     h_list = load_detail_sido(sido)
 
     for h in h_list:
-        lat = float(h['lat'])
-        lng = float(h['lot'])
-        tooltip = h['house_manage_no']
-        color = 'blue' #E77E00
-        folium.CircleMarker(location=[lat, lng], tooltip=tooltip, radius=8, color=color, fill=True, fill_opacity=0.7, stroke=False).add_to(m)
-
+        try:
+            lat = float(h['lat'])
+            lng=float(h['lot'])
+            tooltip=h['house_manage_no']
+            color='blue' #E77E00
+            folium.CircleMarker(location=[lat, lng], tooltip=tooltip, radius= 8, color=color,fill=True,fill_opacity=0.4,stroke=False ).add_to(m)
+        except:
+            pass
     map = m._repr_html_()
     context = {
         'map': map,
     }
     return render(request, 'city.html', context)
 
+def ajax_return(request):
+    if request.method == 'POST':
+        sido = request.POST['sidoname']
 
+
+        # if request.POST['chart_kind'] == 'pie':
+        #     sido = request.POST['sidoname']
+        #     temp = find_type_percent('서울', 'park', Park.objects.all().values())
+        #     temp_return = make_pie_chart_params(temp)
+        #     series = json.dumps(temp_return, ensure_ascii=False)
+        #     return HttpResponse(series)
+        # if request.POST['chart_kind'] == 'bar':
+        #     return_json = count_sido_hssply()
+        #     return_data = make_bar_chart_params(return_json)
+        #     return_data = json.dumps(return_data, ensure_ascii=False)
+        #     print(return_data)
+        #     return HttpResponse(return_data)
