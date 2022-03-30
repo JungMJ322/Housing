@@ -83,7 +83,7 @@ def getInfraSido(sido):
     # 이름 중복되지 않도록 namelist만듬
     name_dict = dict()
     for infra in infra_list:
-        strSql = f"""select place from {infra} where place like '{sido}%';"""
+        strSql = f"""select place from {infra} where place like '{sido}%' and place not like '%도붕구%';"""
         success = cursor.execute(strSql)
         convinient_list = list(cursor.fetchall())
         # gu를 키로 갖는 gu_dict 초기화
@@ -102,7 +102,7 @@ def getInfraSido(sido):
 
     # name_list에 따라 각각의 infra 카운트
     for infra in infra_list:
-        strSql = f"""select place from {infra} where place like '{sido}%';"""
+        strSql = f"""select place from {infra} where place like '{sido}%' and place not like '%도붕구%';"""
         success = cursor.execute(strSql)
         convinient_list = list(cursor.fetchall())
 
@@ -241,7 +241,7 @@ def index(request):
     # rate_dict = getRate()
     # infra_dict = getInfra()
     # sold_mean = getSoldMean('대전')
-    infra_sido = getInfraSido('대구')
+    infra_sido = getInfraSido('서울')
     # supply_size = getSupplySize('서울')
 
     print(infra_sido)
