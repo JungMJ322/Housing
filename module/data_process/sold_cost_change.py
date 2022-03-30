@@ -104,4 +104,4 @@ def save_json():
 
 
 if __name__ == "__main__":
-    create_code_dict()
+    save_json()
