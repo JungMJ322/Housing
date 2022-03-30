@@ -378,7 +378,36 @@ def find_type_percent(sido, table_kind, table_data):
 
     return temp_dict
 
+def getRateSido(sido):
+    # "CMPET_RATE": "lacked"
+    # 전체 데이터 개수를 구하고
+    # "lacked"개수를 구하고
+    # 경쟁률 있는 매물 개수 = (1) - (2)
+    # {'total': int, 'lack': int, 'non_lack': int}
+    cursor = connection.cursor()
 
+    strSql = f"""select count(*)
+                from competition join detail on (competition.house_manage_no = detail.house_manage_no)
+                where address like '{sido}%'
+                and compet_rate = 'lacked'"""
+    success = cursor.execute(strSql)
+    rate_lacked = cursor.fetchall()
+
+    strSql = f"""select count(*)
+                from competition join detail on (competition.house_manage_no = detail.house_manage_no)
+                where address like '{sido}%'"""
+    success = cursor.execute(strSql)
+    rate_all = cursor.fetchall()
+
+    connection.commit()
+    connection.close()
+
+    result = dict()
+    total = int(rate_all[0][0])
+    result['lacked'] = int(rate_lacked[0][0])
+    result['non_lacked'] = total - result['lacked']
+
+    return result
 
 def index(request):
 
@@ -472,9 +501,13 @@ def ajax_return(request):
             # print(return_sec_tab)
 
             temp_quarter = getQuarterSupply(sido)
-            print(temp_quarter)
+            # print(temp_quarter)
             temp_quarter[0]['data'] = temp_quarter[0]['data'][0:10]
             return_sec_tab['trd'] = temp_quarter
+
+            temp_half = getRateSido(sido)
+            temp_half_pie = make_pie_chart_params(temp_half)
+            return_sec_tab['fth'] = temp_half_pie
 
             return_sec_tab = json.dumps(return_sec_tab, ensure_ascii=False)
             return HttpResponse(return_sec_tab)
