@@ -50,6 +50,46 @@
             return json
             }
 
+            function make_half_pie(data, chartName){
+            var series = [data]
+            var chart = {
+                   plotBackgroundColor: null,
+                   plotBorderWidth: null,
+                   plotShadow: false
+            };
+            var title = {
+                  text: chartName
+            };
+            var tooltip = {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            };
+            var plotOptions = {
+                    pie: {
+                        dataLabels: {
+                            enabled: true,
+                            distance: -50,
+                            style: {
+                                fontWeight: 'bold',
+                                color: 'white'
+                            }
+                        },
+                        startAngle: -90,
+                        endAngle: 90,
+                        center: ['50%', '75%'],
+                        size: '110%',
+                        showInLegend: true,
+                        innerSize:80
+                    }
+                };
+            var json = {}
+            json.chart = chart;
+            json.title = title;
+            json.tooltip = tooltip;
+            json.plotOptions = plotOptions;
+            json.series = series
+            return json
+            }
+
         function make_bar(chart_name, subtitle, categories, data) {
             var title = {
                 text: chart_name
@@ -214,6 +254,8 @@
                         $('#data6').highcharts(temp_2)
                         temp_3 = make_line('House Supply of Quarters', '', ['2020-1q','2020-2q','2020-3q','2020-4q','2021-1q','2021-2q','2021-3q','2021-4q','2022-1q', '2022-2q'], 'Supply size', data['trd'])
                         $('#data3').highcharts(temp_3)
+                        temp_4 = make_half_pie(data['fth'], 'test')
+                        $('#data7').highcharts(temp_4)
                     }
                 }).catch((data, error) => {
                     console.log(error)
