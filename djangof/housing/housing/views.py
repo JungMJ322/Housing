@@ -80,7 +80,7 @@ def sido_competition(sido):  # 시도별 경쟁률 min max값 리턴 In : 시도
 
     max_val = max(compet_list)
 
-    print(compet_list)
+    # print(compet_list)
 
     return min_val, max_val
 
@@ -150,7 +150,7 @@ def sido_supply_size(sido):  # sido 별 공급 규모 총합 / In : sido, Out : 
     for i in temp:
         supply_size += int(i['supply_size'])
 
-    print(supply_size)
+    # print(supply_size)
     return supply_size
 
 
@@ -181,9 +181,62 @@ def make_pie_chart_params(dict_list):
     for i in key_list:
         data_list.append([i, round((dict_list[i] / total) * 100, 1)])
 
-    print(data_list)
+    # print(data_list)
     series['data'] = data_list
     return series
+
+
+def getInfraSido(sido):
+    # sido 입력받으면 그 sido에
+    # {name: 'park', gu_list:[1구, 2구, 3구], data:[1구 name개수, 2구 name개수, 3구 name개수]}
+    infra_list = ['school', 'subway', 'park', 'hospital', 'convinient']
+    cursor = connection.cursor()
+    result = list()
+
+    # 이름 중복되지 않도록 namelist만듬
+    name_dict = dict()
+    for infra in infra_list:
+        strSql = f"""select place from {infra} where place like '{sido}%';"""
+        success = cursor.execute(strSql)
+        convinient_list = list(cursor.fetchall())
+        # gu를 키로 갖는 gu_dict 초기화
+        for convinient in convinient_list:
+            convinient = list(convinient)
+
+            gu = convinient[0].split()[1]
+            gu_find = gu.find('구')
+            if gu_find > 0:
+                name_dict[gu[:gu_find+1]] = 0
+
+    name_list = list(name_dict.keys())
+
+    # name_list에 따라 각각의 infra 카운트
+    for infra in infra_list:
+        strSql = f"""select place from {infra} where place like '{sido}%';"""
+        success = cursor.execute(strSql)
+        convinient_list = list(cursor.fetchall())
+
+        gu_dict = dict()
+        for name in name_list:
+            gu_dict[name] = 0
+
+        # 각각의 gu cnt
+        for convinient in convinient_list:
+            convinient = list(convinient)
+            gu = convinient[0].split()[1]
+            gu_find = gu.find('구')
+            if gu_find > 0:
+                gu_dict[gu[:gu_find+1]] = gu_dict[gu[:gu_find+1]] + 1
+
+        gu_dict2 = dict()
+        gu_dict2['name'] = infra
+        gu_dict2['gu_list'] = list(gu_dict.keys())
+        gu_dict2['data'] = list(gu_dict.values())
+        result.append(gu_dict2)
+
+    connection.commit()
+    connection.close()
+    return result
 
 
 def make_bar_chart_params(dict_list):
@@ -193,6 +246,51 @@ def make_bar_chart_params(dict_list):
     temp_dict['data'] = dict_list
     temp_dict['showInLegend'] = False
     return temp_dict
+
+
+def getSupplySize(sido):
+    # sido 입력받으면 그 sido에
+    # {gu_list:[1구, 2구, 3구], data:[1구 name개수, 2구 name개수, 3구 name개수]}
+    cursor = connection.cursor()
+    result = list()
+
+    name_dict = dict()
+    # 이름 중복되지 않도록 namelist만듬
+    strSql = f"""select address, supply_size from detail
+                where address like '{sido}%';"""
+    success = cursor.execute(strSql)
+    supply_names = list(cursor.fetchall())
+
+    # gu를 키로 갖는 gu_dict 초기화
+    for name in supply_names:
+        name = list(name)
+        gu = name[0].split()[1]
+        gu_find = gu.find('구')
+        if gu_find > 0:
+            name_dict[gu[:gu_find + 1]] = 0
+
+    name_list = list(name_dict.keys())
+
+    gu_dict = dict()
+    for name in name_list:
+        gu_dict[name] = 0
+
+    # 각각의 gu의 supply_sum
+    for supply in supply_names:
+        supply = list(supply)
+        gu = supply[0].split()[1]
+        gu_find = gu.find('구')
+        if gu_find > 0:
+            gu_dict[gu[:gu_find + 1]] = gu_dict[gu[:gu_find + 1]] + supply[1]
+
+    gu_dict2 = dict()
+    gu_dict2['gu_list'] = list(gu_dict.keys())
+    gu_dict2['data'] = list(gu_dict.values())
+    result.append(gu_dict2)
+
+    connection.commit()
+    connection.close()
+    return result
 
 
 def count_sido_hssply():
@@ -232,7 +330,7 @@ def find_type_percent(sido, table_kind, table_data):
 
 
 def index(request):
-    print(getSoldMean('서울'))
+    temp = getInfraSido('서울')
     return render(request, 'index.html')
 
 
@@ -279,7 +377,18 @@ def ajax_return(request):
         if request_list[1] == '1':
             temp = find_infra_count(sido)
             return_first_tab = {'type':'first'}
-            return_first_tab['first'] = make_pie_chart_params(temp)
+            return_first_tab['fst'] = make_pie_chart_params(temp)
+
+            temp2 = getInfraSido(sido)
+            list_temp = []
+            for i in temp2:
+                temp_dict = {}
+                temp_dict['name'] = i['name']
+                temp_dict['data'] = i['data']
+                list_temp.append(temp_dict)
+
+            return_first_tab['snd_data'] = list_temp
+            return_first_tab['snd_list'] = temp2[0]['gu_list']
             return_first_tab = json.dumps(return_first_tab, ensure_ascii=False)
             return HttpResponse(return_first_tab)
 
@@ -288,9 +397,13 @@ def ajax_return(request):
             json_data = getSoldMean(sido)
             for i in json_data:
                 i['data'] = i['data'][0:9]
-            return_sec_tab['first'] = json_data
+            return_sec_tab['fst'] = json_data
+            temp = getSupplySize(sido)
+            list_temp = make_bar_chart_params(temp[0]['data'])
+            temp[0]['data'] = list_temp
+            return_sec_tab['snd'] = temp
             return_sec_tab = json.dumps(return_sec_tab, ensure_ascii=False)
-            print(return_sec_tab)
+            # print(return_sec_tab)
             return HttpResponse(return_sec_tab)
 
         else:

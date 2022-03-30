@@ -58,14 +58,70 @@
             var xAxis = {
                 categories: categories
             }
+            var yAxis = {
+                min: 0,
+                title: {
+                    text: 'House_Supply'
+                }
+            }
+            var tooltip = {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0"></td>' +
+                    '<td style="padding:0"><b>{point.y} 가구</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            }
             var series = [data]
             var json = {}
+            json.tooltip = tooltip
             json.title = title
             json.subtitle = subtitle
             json.xAxis = xAxis
+            json.yAxis = yAxis
             json.series = series
             return json
             }
+
+        function make_bars(chart_name, subtitle, x_cat, y_name, data) {
+                var temp = {
+                        chart: {
+                            type: 'column'
+                        },
+                        title: {
+                            text: chart_name
+                        },
+                        subtitle: {
+                            text: subtitle
+                        },
+                        xAxis: {
+                            categories: x_cat,
+                            crosshair: true
+                        },
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: y_name
+                            }
+                        },
+                        tooltip: {
+                            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                                '<td style="padding:0"><b>{point.y} 개 </b></td></tr>',
+                            footerFormat: '</table>',
+                            shared: true,
+                            useHTML: true
+                        },
+                        plotOptions: {
+                            column: {
+                                pointPadding: 0.2,
+                                borderWidth: 0
+                            }
+                        },
+                        series: data
+                    }
+                    return temp 
+                }
 
         function make_line(chart_name, subtitle, x_cat, y_name, data) {
             var json = {
@@ -138,12 +194,18 @@
         function sido_json(data_dict) {
             ajax_module(data_dict).then((data) => {
                     if(data['type'] == 'first'){
-                        temp = make_pie(data['first'], 'Total Infra Rate')
-                        $('#data1').highcharts(temp)
+                        temp1 = make_pie(data['fst'], 'Total Infra Rate')
+                        $('#data1').highcharts(temp1)
+                        temp2 = make_bars('구별 infra 개수', '', data['snd_list'], 'test', data['snd_data'])
+                        console.log(data['snd_list'], data['snd_data'])
+                        Highcharts.chart('data3', temp2)
                     }
                     if(data['type'] == 'second'){
-                        temp = make_line('매매가', '', ['2020-1q','2020-2q','2020-3q','2020-4q','2021-1q','2021-2q','2021-3q','2021-4q','2022-1q'],'sold_cost', data['first'])
+                        temp = make_line('매매가', '', ['2020-1q','2020-2q','2020-3q','2020-4q','2021-1q','2021-2q','2021-3q','2021-4q','2022-1q'],'sold_cost', data['fst'])
                         $('#data5').highcharts(temp)
+                        console.log(data)
+                        temp_2 = make_bar('구별 공급률', '', data['snd'][0]['gu_list'], data['snd'][0]['data'])
+                        $('#data6').highcharts(temp_2)
                     }
                 }).catch((data, error) => {
                     console.log(error)
@@ -155,8 +217,10 @@
             data_sido = temp[1].split('=')
             sido_name = decodeURI(data_sido[1])
             console.log(sido_name)
-            var data_dict = {'sidoname': sido_name, 'tabNo': 1}
-            sido_json(data_dict)
+            var data_dict1 = {'sidoname': sido_name, 'tabNo': 1}
+            sido_json(data_dict1)
+            var data_dict2 = {'sidoname': sido_name, 'tabNo': 2}
+            sido_json(data_dict2)
         })
     </script>
     <style>
