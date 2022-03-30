@@ -21,5 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('sido/', views.sidomap, name='sidomap'),
-    path('city/requestJsonMain/', views.ajax_return),
+    path('requestJson/', views.ajax_return),
 ]

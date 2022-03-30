@@ -93,7 +93,6 @@
                             label: {
                                 connectorAllowed: false
                             }
-                            // pointStart:
                         }
                     },
                     series: data,
@@ -115,14 +114,14 @@
         return json
         }
 
-        function ajax_main(sidoName) {
+        function ajax_module(data_dict) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 $.ajax({
-                    url:'requestJson/',
+                    url:'/requestJson/',
                     type:"POST",
                     dataType:'json',
-                    data:sidoName,
+                    data:data_dict,
                     headers:{"X-CSRFToken": "{{ csrf_token }}"},
                     success:function(data) {
                         resolve(data)
@@ -135,14 +134,20 @@
             })
         }
 
-        function sido_json(sido, name) {
-            ajax_main(sido).then((data) => {
-
+        function sido_json(data_dict) {
+            ajax_module(data_dict).then((data) => {
+                    console.log(data)
+                    temp = make_line('매매가', '', ['2020-1q','2020-2q','2020-3q','2020-4q','2021-1q','2021-2q','2021-3q','2021-4q','2022-1q'],'sold_cost', data)
+                    $('#data5').highcharts(temp)
                 }).catch((data, error) => {
                     console.log(error)
             })
         }
 
+        $(function(){
+            var data_dict = {'sidoname': '부산', 'tabNo':2}
+            sido_json(data_dict)
+        })
     </script>
     <style>
 

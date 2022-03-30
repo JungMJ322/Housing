@@ -232,7 +232,7 @@ def find_type_percent(sido, table_kind, table_data):
 
 
 def index(request):
-
+    print(getSoldMean('서울'))
     return render(request, 'index.html')
 
 
@@ -270,7 +270,19 @@ def sidomap(request):
 
 def ajax_return(request):
     if request.method == 'POST':
-        sido = request.POST['sidoname']
+        request_list = []
+        for temp, b in request.POST.items():
+            request_list.append(b)
+        print(request_list)
+        if request_list[1] == '2':
+            sido = request.POST['sidoname']
+            json_data = getSoldMean(sido)
+            json_data = json.dumps(json_data, ensure_ascii=False)
+            print(json_data)
+            return HttpResponse(json_data)
+
+        else:
+            return HttpResponse(1)
 
 
         # if request.POST['chart_kind'] == 'pie':
