@@ -84,10 +84,9 @@ def sido_competition(sido):  # 시도별 경쟁률 min max값 리턴 In : 시도
 
     return min_val, max_val
 
-def getSoldMean():
+def getSoldMean(sido):
     #[{name: '1~3', data: [얼마, 얼마, 얼마, 얼마]}, {name: 'n단위', data: [얼마, 얼마, 얼마, 얼마]},
     # {name: 'n단위', data: [얼마, 얼마, 얼마, 얼마]}]
-
     cursor = connection.cursor()
 
     ranks = [[1,2,3], [4,5,6], [7,8,9], [10,11,12], [13,14,15], [16,17,18], [19,20,21]]
@@ -102,10 +101,11 @@ def getSoldMean():
         for year in years:
             for quarter in quarters:
                 strSql = f"""SELECT avg(mean_cost)
-                            FROM sold_cost_mean 
+                            FROM sold_cost_mean join place_code on (sold_cost_mean.place_code = place_code.place_code)
                             WHERE (area_grade like '{rank[0]}__' or area_grade like '{rank[1]}__' or area_grade like '{rank[2]}__' )
-                            and (month like '__{year}{quarter[0]}' or month like '__{year}{quarter[1]}' or month like '__{year}{quarter[2]}')"""
-                result = cursor.execute(strSql)
+                            and (month like '__{year}{quarter[0]}' or month like '__{year}{quarter[1]}' or month like '__{year}{quarter[2]}')
+                            and place like '{sido}%'"""
+                success = cursor.execute(strSql)
                 sold_mean = cursor.fetchall()
                 mean = sold_mean[0][0]
                 if mean == None:
@@ -114,8 +114,7 @@ def getSoldMean():
                     mean_list.append(round(mean, 2))
         maen_dict['name'] = ran
         maen_dict['data'] = mean_list
-        print(maen_dict)
-        # result.append(maen_dict)
+        result.append(maen_dict)
 
     connection.commit()
     connection.close()
