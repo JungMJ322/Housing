@@ -6,7 +6,7 @@
 <script src="http://code.highcharts.com/highcharts.js"></script>
 </head>
 <body>
-<div id="container" style="width: 300px; height: 300px; margin: 0 auto"></div>
+<div id="container" style="width: 900px; height: 400px; margin: 0 auto"></div>
 <script language="JavaScript">
     function make_pie(data, chartName){
         var series = [data]
@@ -63,7 +63,71 @@
         return json
     }
 
-    function make_line()
+    function make_line(chart_name, subtitle, x_cat, y_name, data) {
+        var json = {
+                title: {
+                    text: chart_name
+                    },
+                subtitle: {
+                    text: subtitle
+                    },
+                yAxis: {
+                    title: {
+                        text: y_name
+                        }
+                    },
+                xAxis: {
+                    categories: x_cat
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+                plotOptions: {
+                    series: {
+                        label: {
+                            connectorAllowed: false
+                        }
+                        // pointStart:
+                    }
+                },
+                series: data,
+                // [{
+                //     name: 'test1',
+                //     data: [4000,5000,5555,8888,9999,7777,5555,6666,4444]
+                //     },
+                //     {
+                //     name: 'test2',
+                //     data: [4120,5410,5755,8588,9499,7277,5155,6366,4744]
+                //     },
+                //     {
+                //     name: 'test3',
+                //     data: [4050,5100,5535,8288,9799,7757,5455,6636,4144]
+                //     },
+                //     {
+                //     name: 'test4',
+                //     data: [4700,5700,5855,8188,9399,7177,5255,6366,4944]
+                // }],
+
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 300
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'left',
+                                verticalAlign: 'bottom'
+                        }
+                    }
+                }]
+            }
+        }
+        return json
+
+    }
     function ajax_sido(sidoName) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
@@ -87,7 +151,23 @@
     function sido_json(sido, name) {
         ajax_sido(sido).then((data) => {
             console.log(data)
-            json = make_bar('전국', '전국', ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종'], data)
+            x_data = [{
+                    name: 'test1',
+                    data: [4000,5000,5555,8888,9999,7777,5555,6666,4444]
+                    },
+                    {
+                    name: 'test2',
+                    data: [4120,5410,5755,8588,9499,7277,5155,6366,4744]
+                    },
+                    {
+                    name: 'test3',
+                    data: [4050,5100,5535,8288,9799,7757,5455,6636,4144]
+                    },
+                    {
+                    name: 'test4',
+                    data: [4700,5700,5855,8188,9399,7177,5255,6366,4944]
+                }]
+            json = make_line('전국', '전국', ['2020-1q','2020-2q','2020-3q','2020-4q', '2021-1q', '2021-2q', '2021-31q', '2021-4q', '2022-1q'], 'sold_cost', x_data)
             $("#container").highcharts(json)
         }).catch((data, error) => {
             console.log(error)
