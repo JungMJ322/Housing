@@ -7,33 +7,34 @@ import matplotlib.pyplot as plt
 
 
 
-def getRate():
+def getRateSido(sido):
     # "CMPET_RATE": "lacked"
     # 전체 데이터 개수를 구하고
     # "lacked"개수를 구하고
     # 경쟁률 있는 매물 개수 = (1) - (2)
-    # {'all': int, 'lacked': int, 'rate': int}
-    try:
-        cursor = connection.cursor()
+    # {'total': int, 'lack': int, 'non_lack': int}
+    cursor = connection.cursor()
 
-        strSql = "SELECT count(*) FROM competition WHERE compet_rate='lacked'"
-        success = cursor.execute(strSql)
-        rate_lacked = cursor.fetchall()
+    strSql = f"""select count(*)
+                from competition join detail on (competition.house_manage_no = detail.house_manage_no)
+                where address like '{sido}%'
+                and compet_rate = 'lacked'"""
+    success = cursor.execute(strSql)
+    rate_lacked = cursor.fetchall()
 
-        strSql = "SELECT count(*) FROM competition"
-        success = cursor.execute(strSql)
-        rate_all = cursor.fetchall()
+    strSql = f"""select count(*)
+                from competition join detail on (competition.house_manage_no = detail.house_manage_no)
+                where address like '{sido}%'"""
+    success = cursor.execute(strSql)
+    rate_all = cursor.fetchall()
 
-        connection.commit()
-        connection.close()
-    except:
-        connection.rollbak()
-        print('얘 db랑 연결이 잘 안됐단다')
+    connection.commit()
+    connection.close()
 
     result = dict()
-    result['all'] = int(rate_all[0][0])
-    result['lacked'] = int(rate_lacked[0][0])
-    result['rate'] = result['all'] - result['lacked']
+    result['total'] = int(rate_all[0][0])
+    result['lack'] = int(rate_lacked[0][0])
+    result['non_lack'] = result['total'] - result['lack']
 
     return result
 
@@ -325,13 +326,13 @@ def index(request):
     #     connection.rollbak()
     #     print('얘 db랑 연결이 잘 안됐단다')
     #
-    # rate_dict = getRate()
+    rate_dict = getRateSido('서울')
     # infra_dict = getInfra()
     # sold_mean = getSoldMean('대전')
     # infra_sido = getInfraSido('서울')
     # supply_size = getSupplySize('서울')
-    quarter_supply = getQuarterSupply('서울')
-    print(quarter_supply)
+    # quarter_supply = getQuarterSupply('서울')
+    print(rate_dict)
 
     return render(request, 'index.html')
 
