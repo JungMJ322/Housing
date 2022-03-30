@@ -19,5 +19,8 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.index, name='index')
+    path('',views.index, name='index'),
+    path('detail/', views.detail, name='detail'),
+    path('test/requestJson/', views.ajax_return),
+    path('test/', views.test_func),
 ]

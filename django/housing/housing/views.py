@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import Busstop, SoldCostMean, Detail, Hospital, Infra, Mart, Park, School, Subway, PlaceCode
 from .map import *
-
+from django.http import HttpResponse, HttpResponseRedirect
+import json
 
 def extract_ByKeys(key_list, data):
     return_dict = {}
@@ -35,6 +36,15 @@ def load_detail_sido(sido):  ## In = sido: 서울, 광주 etc.. / Out = sido 위
             temp_list.append(i)
 
     return temp_list
+
+def gu_count(sido):
+    detail_list = load_detail_sido(sido)
+    temp_list = []
+    count_dict = {}
+    for i in detail_list:
+        gu = i['address'].split(' ')[1]
+        temp_list.append(gu)
+    temp_list = list(set(temp_list))
 
 
 def create_place_code_list(sido):
@@ -72,8 +82,7 @@ def sido_competition(sido):  # 시도별 경쟁률 min max값 리턴 In : 시도
     return min_val, max_val
 
 
-def find_infra_count(
-        sido):  # sido 별 각 infra 갯수, In : 시도이름, Out : dict {"school":0, "subway":0, "mart":0, "park":0, "hospital":0, 'busstop':0, 'convinient': 0}꼴
+def find_infra_count(sido):  # sido 별 각 infra 갯수, In : 시도이름, Out : dict {"school":0, "subway":0, "mart":0, "park":0, "hospital":0, 'busstop':0, 'convinient': 0}꼴
     detail_list = load_detail_sido(sido)
     house_manage_list = []
     infra_list = []
@@ -122,11 +131,40 @@ def load_sold_cost(sido, area_grade):  # sido, 면적 별 매매가 정보 날�
     return sorted_list
 
 
-def test():
-    print("패스")
-    pass
+
+def make_pie_chart_params(dict_list):
+    total = 0
+    key_list = dict_list.keys()
+    series = {"type": 'pie', 'name': 'test'}
+    data_list = []
+    for i in key_list:
+        total += dict_list[i]
+    for i in key_list:
+        data_list.append([i, round((dict_list[i] / total) * 100, 1)])
+
+    print(data_list)
+    series['data'] = data_list
+    return series
 
 def index(request):
-    test()
+    gu_count('서울')
     return render(request, 'index.html')
 
+def detail(request):
+    return render(request, 'city.html')
+
+
+
+
+def ajax_return(request):
+    if request.method == 'POST':
+        sido = request.POST['sidoname']
+        temp = find_infra_count(sido)
+        series = make_pie_chart_params(temp)
+        series = json.dumps(series, ensure_ascii=False)
+        return HttpResponse(series)
+
+
+def test_func(request):
+    print(sido_competition('서울'))
+    return render(request, "test.html")
