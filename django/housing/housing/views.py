@@ -3,6 +3,7 @@ from .models import Busstop, SoldCostMean, Detail, Hospital, Infra, Mart, Park, 
 from .map import *
 from django.http import HttpResponse, HttpResponseRedirect
 import json
+from django.db import connection
 
 seven_sido_list = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종']
 
@@ -83,6 +84,44 @@ def sido_competition(sido):  # 시도별 경쟁률 min max값 리턴 In : 시도
     print(compet_list)
 
     return min_val, max_val
+
+def getSoldMean():
+    #[{name: '1~3', data: [얼마, 얼마, 얼마, 얼마]}, {name: 'n단위', data: [얼마, 얼마, 얼마, 얼마]},
+    # {name: 'n단위', data: [얼마, 얼마, 얼마, 얼마]}]
+
+    cursor = connection.cursor()
+
+    ranks = [[1,2,3], [4,5,6], [7,8,9], [10,11,12], [13,14,15], [16,17,18], [19,20,21]]
+    quarters = [['01','02','03'], ['04','05','06'], ['07','08','09'], ['10','11','12']]
+    years = [20, 21, 22]
+
+    result = list()
+    for rank in ranks:
+        ran = f'{rank[0]}~{rank[2]}'
+        maen_dict = dict()
+        mean_list = list()
+        for year in years:
+            for quarter in quarters:
+                strSql = f"""SELECT avg(mean_cost)
+                            FROM sold_cost_mean 
+                            WHERE (area_grade like '{rank[0]}__' or area_grade like '{rank[1]}__' or area_grade like '{rank[2]}__' )
+                            and (month like '__{year}{quarter[0]}' or month like '__{year}{quarter[1]}' or month like '__{year}{quarter[2]}')"""
+                result = cursor.execute(strSql)
+                sold_mean = cursor.fetchall()
+                mean = sold_mean[0][0]
+                if mean == None:
+                    mean_list.append(0)
+                else:
+                    mean_list.append(round(mean, 2))
+        maen_dict['name'] = ran
+        maen_dict['data'] = mean_list
+        print(maen_dict)
+        # result.append(maen_dict)
+
+    connection.commit()
+    connection.close()
+
+    return result
 
 
 def find_infra_count(sido):  # sido 별 각 infra 갯수, In : 시도이름, Out : dict {"school":0, "subway":0, "mart":0, "park":0, "hospital":0, 'busstop':0, 'convinient': 0}꼴
@@ -199,4 +238,5 @@ def ajax_return(request):
 
 def test_func(request):
     # print(sido_competition('서울'))
+    getSoldMean()
     return render(request, "test.html")

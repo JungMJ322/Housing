@@ -106,7 +106,7 @@ def getSoldMean():
     connection.commit()
     connection.close()
 
-    print(result)
+    return result
 
 
 def index(request):
