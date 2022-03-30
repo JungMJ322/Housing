@@ -1,0 +1,193 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../static/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+
+
+    <style>
+        #content{
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding-top: var(--ntp-one-google-bar-height);
+            position: relative;
+
+            /*background: url(../../static/Wallpaper.jpg);*/
+        }
+        #logoBox{
+            height: 350px;
+            width:300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+        }
+        #logo {
+            text-align: center;
+            margin-top: 220px;
+            height: 100px;
+            width: 450px;
+            color: white;
+            font-size: 90px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        .dropdown{
+            position: relative;
+            margin-top: 3px;
+            width: 300px;
+            height: 50px;
+            border-radius:10px;
+            box-shadow: 0px 5px 20px rgba(99,99,99,99.05);
+        }
+        .dropdown::before{
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border: 2px solid #333;
+            border-top: 2px solid #fff;
+            border-right: 2px solid #fff;
+            right: 70px;
+            top: 15px;
+            transform: rotate(-45deg);
+            z-index: 10000;
+            transform: 0.5s;
+            pointer-events: none;
+            margin-top: 3px;
+        }
+        .dropdown.active::before{
+            top: 22 px;
+            transform: rotate(-225deg);
+        }
+        #inputbox{
+            display:flex;
+            flex-direction: row;
+            z-index:1000;
+        }
+        #button{
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            background: #fff;
+            border: none;
+            outline: none;
+            padding: 12px 12px;
+            border-radius: 0px 10px 10px 0px / 0px 10px 10px 0px;
+            font-family: fontAwesome;
+        }
+
+        #tb{
+            width: 300px;
+            height: 50px;
+            cursor: pointer;
+            background: #fff;
+            border: none;
+            outline: none;
+            padding: 12px 20px;
+            border-radius: 10px 0px 0px 10px / 10px 0px 0px 10px;
+        }
+
+        .dropdown .option{
+            position: absolute;
+            top: 70px;
+            width: 100%;
+            height: 150px;
+            background: #fff;
+            box-shadow: 0 30px 30px rgba(0,0,0,0.05);
+            border-radius: 10px;
+            overflow: auto;
+            display: none;
+        }
+
+        .option::-webkit-scrollbar {
+            width: 10px;
+        }
+        .option::-webkit-scrollbar-thumb {
+            background-color: #BDBDBD;
+            background-clip: padding-box;
+            border: 2px solid transparent;
+            border-radius:3px;
+        }
+        .option::-webkit-scrollbar-track {
+            background-color: white;
+            border-radius:0px 0px 10px 0px / 0px 0px 10px 0px;
+        }
+
+        .dropdown.active .option{
+            display: block;
+        }
+
+        .dropdown .option div{
+            padding: 12px 20px;
+            cursor: pointer;
+        }
+        .dropdown .option div:hover{
+            background: #62baea;
+            color: #fff;
+        }
+        .dropdown .list{
+            position: relative;
+            top: 4px;
+            font-size: 1.2em;
+        }
+
+
+
+    </style>
+
+</head>
+<body>
+    <div id="content">
+        <div id="logoBox">
+            <div id="logo"><ion-icon name="home-outline"></ion-icon></div>
+        </div>
+        <form action="/sido/" method="get">
+            <div class="dropdown">
+                <div id="inputbox">
+                    <input type="text" name="sido" id="tb" class="textBox" placeholder="시 도 선 택"  readonly>
+                    <input id="button" value="찾기" type="submit" formmethod="get">
+                </div>
+
+                <div class="option">
+                    <div onclick="show('서울')">서울</div>
+                    <div onclick="show('부산')">부산</div>
+                    <div onclick="show('광주')">광주</div>
+                    <div onclick="show('대구')">대구</div>
+                    <div onclick="show('세종')">세종</div>
+                    <div onclick="show('광주')">인천</div>
+                    <div onclick="show('대구')">울산</div>
+                    <div onclick="show('세종')">대전</div>
+                </div>
+            </div>
+        </form>
+
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+        <script>
+            function show(anything){
+                document.querySelector('.textBox').value =
+                anything;
+            }
+
+            let dropdown = document.querySelector('.dropdown');
+            dropdown.onclick = function(){
+                dropdown.classList.toggle('active');
+            }
+
+        </script>
+
+
+
+    </div>
+</body>
+
+</html>
