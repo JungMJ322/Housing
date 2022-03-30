@@ -198,15 +198,19 @@
                     if(data['type'] == 'first'){
                         temp1 = make_pie(data['fst'], 'Total Infra Rate')
                         $('#data2').highcharts(temp1)
-                        temp2 = make_bars('구별 infra 개수', '', data['snd_list'], 'test', data['snd_data'])
+                        temp2 = make_bars('Area Infra Count', '', data['snd_list'], 'test', data['snd_data'])
                         console.log(data['snd_list'], data['snd_data'])
-                        Highcharts.chart('data13', temp2)
+                        Highcharts.chart('data10', temp2)
+                        temp3 = make_pie(data['trd'], 'School type')
+                        $('#data9').highcharts(temp3)
+                        temp4 = make_pie(data['fth'], 'Park type')
+                        $('#data8').highcharts(temp4)
                     }
                     if(data['type'] == 'second'){
-                        temp = make_line('매매가', '', ['2020-1q','2020-2q','2020-3q','2020-4q','2021-1q','2021-2q','2021-3q','2021-4q','2022-1q'],'sold_cost', data['fst'])
+                        temp = make_line('Sold Cost Mean of Quarters', '', ['2020-1q','2020-2q','2020-3q','2020-4q','2021-1q','2021-2q','2021-3q','2021-4q','2022-1q'],'sold_cost', data['fst'])
                         $('#data5').highcharts(temp)
                         console.log(data)
-                        temp_2 = make_bar('구별 공급률', '', data['snd'][0]['gu_list'], data['snd'][0]['data'])
+                        temp_2 = make_bar('Area Supply Size', '', data['snd'][0]['gu_list'], data['snd'][0]['data'])
                         $('#data6').highcharts(temp_2)
                     }
                 }).catch((data, error) => {

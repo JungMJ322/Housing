@@ -346,9 +346,8 @@ def find_type_percent(sido, table_kind, table_data):
 
 
 def index(request):
-    data = School.objects.all().values()
-    temp = find_type_percent('서울', 'school', data)
-    print(temp)
+
+    # print(temp)
     return render(request, 'index.html')
 
 
@@ -409,6 +408,16 @@ def ajax_return(request):
 
             return_first_tab['snd_data'] = list_temp
             return_first_tab['snd_list'] = temp2[0]['gu_list']
+
+
+            data_school = School.objects.all().values()
+            data_park = Park.objects.all().values()
+            temp = find_type_percent(sido, 'school', data_school)
+            temp_park = find_type_percent(sido, 'park', data_park)
+            return_school = make_pie_chart_params(temp)
+            return_park = make_pie_chart_params(temp_park)
+            return_first_tab['trd'] = return_school
+            return_first_tab['fth'] = return_park
             return_first_tab = json.dumps(return_first_tab, ensure_ascii=False)
             return HttpResponse(return_first_tab)
 
