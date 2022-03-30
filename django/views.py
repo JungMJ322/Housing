@@ -136,23 +136,6 @@ def getSoldMean(sido):
     quarters = [['01','02','03'], ['04','05','06'], ['07','08','09'], ['10','11','12']]
     years = [20, 21, 22]
 
-    # 이름 중복되지 않도록 namelist만듬
-    name_dict = dict()
-
-    strSql = f"""SELECT *
-                FROM sold_cost_mean join place_code on (sold_cost_mean.place_code = place_code.place_code)
-                where place like '{sido}%' and place like '%구 %';"""
-    success = cursor.execute(strSql)
-    convinient_list = list(cursor.fetchall())
-    # gu를 키로 갖는 gu_dict 초기화
-    for convinient in convinient_list:
-        convinient = list(convinient)
-
-        gu = convinient[0].split()[1]
-        name_dict[gu] = 0
-
-    name_list = list(name_dict.keys())
-
     result = list()
     for rank in ranks:
         ran = f'{rank[0]}~{rank[2]}'
@@ -161,9 +144,10 @@ def getSoldMean(sido):
         for year in years:
             for quarter in quarters:
                 strSql = f"""SELECT avg(mean_cost)
-                            FROM sold_cost_mean 
+                            FROM sold_cost_mean join place_code on (sold_cost_mean.place_code = place_code.place_code)
                             WHERE (area_grade like '{rank[0]}__' or area_grade like '{rank[1]}__' or area_grade like '{rank[2]}__' )
-                            and (month like '__{year}{quarter[0]}' or month like '__{year}{quarter[1]}' or month like '__{year}{quarter[2]}')"""
+                            and (month like '__{year}{quarter[0]}' or month like '__{year}{quarter[1]}' or month like '__{year}{quarter[2]}')
+                            and place like '{sido}%'"""
                 success = cursor.execute(strSql)
                 sold_mean = cursor.fetchall()
                 mean = sold_mean[0][0]
@@ -173,8 +157,7 @@ def getSoldMean(sido):
                     mean_list.append(round(mean, 2))
         maen_dict['name'] = ran
         maen_dict['data'] = mean_list
-        print(maen_dict)
-        # result.append(maen_dict)
+        result.append(maen_dict)
 
     connection.commit()
     connection.close()
@@ -200,11 +183,11 @@ def index(request):
     #
     # rate_dict = getRate()
     # infra_dict = getInfra()
-    # getSoldMean()
-    infra_sido = getInfraSido('서울')
+    sold_mean = getSoldMean('대전')
+    # infra_sido = getInfraSido('서울')
 
 
-    print(infra_sido)
+    print(sold_mean)
 
     return render(request, 'index.html')
 
