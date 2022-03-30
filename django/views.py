@@ -5,6 +5,8 @@ from django.core import serializers
 import json
 import matplotlib.pyplot as plt
 
+
+
 def getRate():
     # "CMPET_RATE": "lacked"
     # 전체 데이터 개수를 구하고
@@ -15,11 +17,11 @@ def getRate():
         cursor = connection.cursor()
 
         strSql = "SELECT count(*) FROM competition WHERE compet_rate='lacked'"
-        result = cursor.execute(strSql)
+        success = cursor.execute(strSql)
         rate_lacked = cursor.fetchall()
 
         strSql = "SELECT count(*) FROM competition"
-        result = cursor.execute(strSql)
+        success = cursor.execute(strSql)
         rate_all = cursor.fetchall()
 
         connection.commit()
@@ -70,10 +72,62 @@ def getInfra():
 
     return result
 
-def getSoldMean():
+
+def getInfraSido(sido):
+    # sido 입력받으면 그 sido에
+    # {name: 'park', gu_list:[1구, 2구, 3구], data:[1구 name개수, 2구 name개수, 3구 name개수]}
+    infra_list = ['school', 'subway', 'park', 'hospital', 'convinient']
+    cursor = connection.cursor()
+    result = list()
+
+    # 이름 중복되지 않도록 namelist만듬
+    name_dict = dict()
+    for infra in infra_list:
+        strSql = f"""select place from {infra}
+                            where place like '{sido}%' and place like '%구 %';"""
+        success = cursor.execute(strSql)
+        convinient_list = list(cursor.fetchall())
+        # gu를 키로 갖는 gu_dict 초기화
+        for convinient in convinient_list:
+            convinient = list(convinient)
+
+            gu = convinient[0].split()[1]
+            name_dict[gu] = 0
+
+    name_list = list(name_dict.keys())
+
+    # name_list에 따라 각각의 infra 카운트
+    for infra in infra_list:
+        strSql = f"""select place from {infra}
+                    where place like '{sido}%' and place like '%구 %';"""
+        success = cursor.execute(strSql)
+        convinient_list = list(cursor.fetchall())
+
+        gu_dict = dict()
+        for name in name_list:
+            gu_dict[name] = 0
+
+        # 각각의 gu cnt
+        for convinient in convinient_list:
+            convinient = list(convinient)
+            gu = convinient[0].split()[1]
+            gu_dict[gu] = gu_dict[gu] + 1
+
+        gu_dict2 = dict()
+        gu_dict2['name'] = infra
+        gu_dict2['gu_list'] = list(gu_dict.keys())
+        gu_dict2['data'] = list(gu_dict.values())
+        result.append(gu_dict2)
+
+    connection.commit()
+    connection.close()
+    return result
+
+
+
+def getSoldMean(sido):
     #[{name: '1~3', data: [얼마, 얼마, 얼마, 얼마]}, {name: 'n단위', data: [얼마, 얼마, 얼마, 얼마]},
     # {name: 'n단위', data: [얼마, 얼마, 얼마, 얼마]}]
-
     cursor = connection.cursor()
 
     ranks = [[1,2,3], [4,5,6], [7,8,9], [10,11,12], [13,14,15], [16,17,18], [19,20,21]]
@@ -91,7 +145,7 @@ def getSoldMean():
                             FROM sold_cost_mean 
                             WHERE (area_grade like '{rank[0]}__' or area_grade like '{rank[1]}__' or area_grade like '{rank[2]}__' )
                             and (month like '__{year}{quarter[0]}' or month like '__{year}{quarter[1]}' or month like '__{year}{quarter[2]}')"""
-                result = cursor.execute(strSql)
+                success = cursor.execute(strSql)
                 sold_mean = cursor.fetchall()
                 mean = sold_mean[0][0]
                 if mean == None:
@@ -115,7 +169,7 @@ def index(request):
     #     cursor = connection.cursor()
     #
     #     strSql = "SELECT count(*) FROM competition WHERE compet_rate='lacked'"
-    #     result = cursor.execute(strSql)
+    #     success = cursor.execute(strSql)
     #     print(result)
     #     infra = cursor.fetchall()
     #     print(infra)
@@ -128,7 +182,8 @@ def index(request):
     # print(list(infra[0]))
     # rate_dict = getRate()
     # infra_dict = getInfra()
-    getSoldMean()
+    # getSoldMean()
+    getInfraSido('서울')
 
     return render(request, 'index.html')
 
