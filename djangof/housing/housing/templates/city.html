@@ -382,6 +382,27 @@
             0 41.8px 33.4px rgba(0, 0, 0, 0.086),
             0 100px 80px rgba(0, 0, 0, 0.12);
         }
+        #data1{
+            display:flex;
+            flex-direction: column;
+            background-color:transparent;
+            box-shadow: none;
+        }
+        .rank{
+            border-radius: 10px;
+            flex:1;
+            margin-top:2px;
+            background-color:ghostwhite;
+            text-align: center;
+            box-shadow:
+            0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+            0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+            0 12.5px 10px rgba(0, 0, 0, 0.06),
+            0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+            0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+            0 100px 80px rgba(0, 0, 0, 0.12);
+
+        }
         #data7{
             flex:2;
         }
@@ -434,12 +455,20 @@
                 <div id="bar"></div>
                 <div class="box tab1">
                     <div class="table" id="t1">
-                        <div class="data" id="data1"></div>
                         <div id="mapbox">
                             <div class="folium-map" id="map">
                                 {{ map|safe }}
                             </div>
                         </div>
+                        <div class="data" id="data1">
+                            <div class="rank"> </div>
+                            <div class="rank"> </div>
+                            <div class="rank"> </div>
+                            <div class="rank"> </div>
+                            <div class="rank"> </div>
+                            <div class="rank"> </div>
+                        </div>
+
                         <div class="data" id="data2">plot</div>
                     </div>
 
