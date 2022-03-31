@@ -82,7 +82,8 @@ DATABASES = {
         'NAME': 'Housing', # 연동할 MySQL의 데이터베이스 이름
         'USER': 'root', # DB 접속 계정명
         'PASSWORD': '1234', # 해당 DB 접속 계정 비밀번호
-        'HOST': '220.90.220.71', # 실제 DB 주소
+        'HOST': 'localhost', # 실제 DB 주소
+        # 'HOST': '220.90.220.71',
         'PORT': '3306', # 포트번호
     }
 }
