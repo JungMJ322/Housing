@@ -410,28 +410,31 @@ def getRateSido(sido):
     return result
 
 
-def rankCompet(temp_sido):
-
-    sido = temp_sido
-
+def rankCompet(sido, max_count=5):
     cursor = connection.cursor()
 
-    strSql = f"""select rank() over (order by cast(compet_rate as signed) desc), house_name, compet_rate from competition join detail on (competition.house_manage_no = detail.house_manage_no) where address like '{sido}%' and compet_rate != 'lacked' """
+    strSql = f"""select house_name, compet_rate
+                from competition join detail on (competition.house_manage_no = detail.house_manage_no)
+                where address like '{sido}%' and compet_rate != 'lacked'"""
     success = cursor.execute(strSql)
     rank_all = list(cursor.fetchall())
 
-    temp1=[]
-    rank_cut=5
-    for r in rank_all:
-        temp2 = {}
-        if r[0] <= rank_cut:
-            temp2['rank']=r[0]
-            temp2['name']=r[1]
-            temp2['compet']=r[2]
-            temp1.append(temp2)
-    result=temp1
+    rank_list = list()
+    for rank in rank_all:
+        rank_list.append(list(rank))
 
-    #print(result)
+    for rank in rank_list:
+        rank[1] = float(rank[1])
+
+    rank_list.sort(key=lambda x: -x[1])
+
+    result = list()
+    for i in range(max_count):
+        re_dict = dict()
+        re_dict['rank'] = i + 1
+        re_dict['name'] = rank_list[i][0]
+        re_dict['compet'] = rank_list[i][1]
+        result.append(re_dict)
 
     return result
 
