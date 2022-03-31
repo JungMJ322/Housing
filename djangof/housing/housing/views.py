@@ -410,9 +410,8 @@ def getRateSido(sido):
     return result
 
 def index(request):
-
-
-    # print(temp)
+    #temp=
+    #print(temp)
     return render(request, 'index.html')
 
 
@@ -437,7 +436,7 @@ def sidomap(request):
         try:
             lat = float(h['lat'])
             lng=float(h['lot'])
-            tooltip=h['house_manage_no']
+            tooltip=h['house_name']
             color='blue' #E77E00
             folium.CircleMarker(location=[lat, lng], tooltip=tooltip, radius= 10, color=color,fill=True,fill_opacity=0.4,stroke=False ).add_to(m)
         except:
