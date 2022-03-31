@@ -21,9 +21,7 @@ def hospital_change():
         temp_dict = {}
         temp_dict['id'] = count
         temp_dict['place'] = i['dutyAddr']
-        temp_dict['duty_code'] = i['dutyDiv']
-        temp_dict['duty_Emcls_code'] = i['dutyEmcls']
-        temp_dict['dutyEryn_code'] = i['dutyEryn']
+        temp_dict['dutyDiv_NM'] = i['dutyDivNam']
         temp_dict['hname'] = i['dutyName']
         temp_dict['lat'] = i['wgs84Lat']
         temp_dict['lot'] = i['wgs84Lon']
