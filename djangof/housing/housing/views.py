@@ -472,8 +472,8 @@ def sidomap(request):
                 lat = float(h['lat'])
                 lng=float(h['lot'])
                 tooltip='<b>'+h['house_name']+'</b>'
-                color= '#4d4d4d'    #6ABBEA
-                folium.CircleMarker(location=[lat, lng], tooltip=tooltip, radius= 10, color=color,fill=True,fill_opacity=0.5,stroke=False ).add_to(m)
+                color= '#6ABBEA'    #6ABBEA
+                folium.CircleMarker(location=[lat, lng], tooltip=tooltip, radius= 10, color=color,fill=True,fill_opacity=0.5,stroke=True ).add_to(m)
             except:
                 pass
         map = m._repr_html_()
