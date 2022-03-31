@@ -416,7 +416,7 @@ def rankCompet(temp_sido):
 
     cursor = connection.cursor()
 
-    strSql = f"""select dense_rank() over (order by cast(compet_rate as signed) desc), house_name, compet_rate from competition join detail on (competition.house_manage_no = detail.house_manage_no) where address like '{sido}%' and compet_rate != 'lacked' """
+    strSql = f"""select rank() over (order by cast(compet_rate as signed) desc), house_name, compet_rate from competition join detail on (competition.house_manage_no = detail.house_manage_no) where address like '{sido}%' and compet_rate != 'lacked' """
     success = cursor.execute(strSql)
     rank_all = list(cursor.fetchall())
 
