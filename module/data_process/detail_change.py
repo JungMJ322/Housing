@@ -16,8 +16,8 @@ def change_detail():
         temp_dict = {}
         temp_dict['HOUSE_MANAGE_NO'] = i['HOUSE_MANAGE_NO']
         temp_dict['HOUSE_NAME'] = i['HOUSE_NM']
-        temp_dict['HOUSE_SECD'] = i['HOUSE_SECD']
-        temp_dict['RENT_SECD'] = i['RENT_SECD']
+        temp_dict['HOUSE_SECD_NM'] = i['HOUSE_SECD']
+        temp_dict['RENT_SECD_NM'] = i['RENT_SECD']
         temp_dict['ADDRESS'] = i['HSSPLY_ADRES']
         temp_dict['SUPPLY_SIZE'] = i['TOT_SUPLY_HSHLDCO']
         temp_dict['PLACE_CODE'] = i['place_code']
