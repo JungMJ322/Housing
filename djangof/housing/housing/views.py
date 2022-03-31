@@ -475,14 +475,15 @@ def ajax_return(request):
             return_first_tab['snd_list'] = temp2[0]['gu_list']
 
 
-            data_school = School.objects.all().values()
+            temp_quarter = getQuarterSupply(sido)
+            temp_quarter[0]['data'] = temp_quarter[0]['data'][0:10]
+            return_first_tab['trd'] = temp_quarter
+
             data_park = Park.objects.all().values()
-            temp = find_type_percent(sido, 'school', data_school)
             temp_park = find_type_percent(sido, 'park', data_park)
-            return_school = make_pie_chart_params(temp)
             return_park = make_pie_chart_params(temp_park)
-            return_first_tab['trd'] = return_school
             return_first_tab['fth'] = return_park
+
             return_first_tab = json.dumps(return_first_tab, ensure_ascii=False)
             return HttpResponse(return_first_tab)
 
@@ -500,10 +501,10 @@ def ajax_return(request):
             return_sec_tab['snd'] = temp
             # print(return_sec_tab)
 
-            temp_quarter = getQuarterSupply(sido)
-            # print(temp_quarter)
-            temp_quarter[0]['data'] = temp_quarter[0]['data'][0:10]
-            return_sec_tab['trd'] = temp_quarter
+            data_school = School.objects.all().values()
+            temp = find_type_percent(sido, 'school', data_school)
+            return_school = make_pie_chart_params(temp)
+            return_sec_tab['trd'] = return_school
 
             temp_half = getRateSido(sido)
             temp_half_pie = make_pie_chart_params(temp_half)
