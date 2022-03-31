@@ -409,16 +409,19 @@ def getRateSido(sido):
 
     return result
 
-def rankCompet(request, max_count=8):
-    sido = request.GET['sido']
+
+def rankCompet(temp_sido):
+
+    sido = temp_sido
 
     cursor = connection.cursor()
 
-    strSql = f"""select dense_rank() over(order by compet_rate desc) as rank, house_name, compet_rate
+    strSql = f"""select dense_rank() over(order by cast(compet_rate as signed) desc), house_name, compet_rate
                 from competition join detail on (competition.house_manage_no = detail.house_manage_no)
-                where address like '{sido}%' and compet_rate != 'lacked' limit {max_count}"""
+                where address like '{sido}%' and compet_rate != 'lacked'"""
     success = cursor.execute(strSql)
     rank_all = list(cursor.fetchall())
+
     temp1=[]
     rank_cut=5
     for r in rank_all:
@@ -430,23 +433,22 @@ def rankCompet(request, max_count=8):
             temp1.append(temp2)
     result=temp1
 
-    # render 로 보내려고 스트링 작업
-    rank_5=[]
-    for i in result:
-        temp3= i['rank']+i['name']+i['compet']
-        rank_5.append(temp3)
-    context = {
-        'rank1':rank_5[0],'rank2':rank_5[1], 'rank3':rank_5[2], 'rank4':rank_5[3], 'rank5':rank_5[4]
-    }
-    return render(request, 'city.html', context)
+    #print(result)
+
+    return result
+
+
 
 def index(request):
+
     #temp= rankCompet("대구")
     #print(temp)
+
     return render(request, 'index.html')
 
 
 def sidomap(request):
+
     sido = request.GET['sido']
 
     map_list = {"서울": [11, [37.53709816646034, 126.97901707971378]],
@@ -473,9 +475,14 @@ def sidomap(request):
         except:
             pass
     map = m._repr_html_()
+
+    result=rankCompet(sido)
+
     context = {
         'map': map,
+        'rank1': result[0], 'rank2': result[1], 'rank3': result[2], 'rank4': result[3], 'rank5': result[4]
     }
+
     return render(request, 'city.html', context)
 
 

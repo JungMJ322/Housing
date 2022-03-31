@@ -3,7 +3,7 @@ from django.db import connection
 from .models import *
 from django.core import serializers
 import json
-import matplotlib.pyplot as plt
+
 
 
 

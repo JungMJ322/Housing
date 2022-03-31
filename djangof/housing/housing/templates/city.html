@@ -401,8 +401,10 @@
             0 22.3px 17.9px rgba(0, 0, 0, 0.072),
             0 41.8px 33.4px rgba(0, 0, 0, 0.086),
             0 100px 80px rgba(0, 0, 0, 0.12);
-            color:black;
+            color: #3f3f3f;
             font-size: 20px;
+            font-family: Helvetica, Arial, sans-serif;
+            line-height: 62px;
         }
 
         #data7{
@@ -463,12 +465,12 @@
                             </div>
                         </div>
                         <div class="data" id="data1">
-                            <div class="rank"></div>
-                            <div class="rank">{{ rank1 }}</div>
-                            <div class="rank">{{ rank2 }}</div>
-                            <div class="rank">{{ rank3 }}</div>
-                            <div class="rank">{{ rank4 }}</div>
-                            <div class="rank">{{ rank5 }}</div>
+                            <div class="rank"> 경쟁률 TOP5</div>
+                            <div class="rank">{{ rank1.rank }}위   {{ rank1.name }} {{ rank1.compet }}</div>
+                            <div class="rank">{{ rank2.rank }}위   {{ rank2.name }} {{ rank2.compet }}</div>
+                            <div class="rank">{{ rank3.rank }}위   {{ rank3.name }} {{ rank3.compet }}</div>
+                            <div class="rank">{{ rank4.rank }}위   {{ rank4.name }} {{ rank4.compet }}</div>
+                            <div class="rank">{{ rank5.rank }}위   {{ rank5.name }} {{ rank5.compet }}</div>
                         </div>
 
                         <div class="data" id="data2">plot</div>
