@@ -461,28 +461,9 @@ def ajax_return(request):
             return_first_tab = {'type':'first'}
             return_first_tab['fst'] = make_pie_chart_params(temp)
 
-            temp2 = getInfraSido(sido)
-            list_temp = []
-            for i in temp2:
-                temp_dict = {}
-                if i['name'] == '도붕구':
-                    continue
-                temp_dict['name'] = i['name']
-                temp_dict['data'] = i['data']
-                list_temp.append(temp_dict)
-
-            return_first_tab['snd_data'] = list_temp
-            return_first_tab['snd_list'] = temp2[0]['gu_list']
-
-
             temp_quarter = getQuarterSupply(sido)
             temp_quarter[0]['data'] = temp_quarter[0]['data'][0:10]
             return_first_tab['trd'] = temp_quarter
-
-            data_park = Park.objects.all().values()
-            temp_park = find_type_percent(sido, 'park', data_park)
-            return_park = make_pie_chart_params(temp_park)
-            return_first_tab['fth'] = return_park
 
             return_first_tab = json.dumps(return_first_tab, ensure_ascii=False)
             return HttpResponse(return_first_tab)
@@ -501,18 +482,42 @@ def ajax_return(request):
             return_sec_tab['snd'] = temp
             # print(return_sec_tab)
 
-            data_school = School.objects.all().values()
-            temp = find_type_percent(sido, 'school', data_school)
-            return_school = make_pie_chart_params(temp)
-            return_sec_tab['trd'] = return_school
 
-            temp_half = getRateSido(sido)
-            temp_half_pie = make_pie_chart_params(temp_half)
-            return_sec_tab['fth'] = temp_half_pie
 
             return_sec_tab = json.dumps(return_sec_tab, ensure_ascii=False)
             return HttpResponse(return_sec_tab)
 
+        if request_list[1] == '3':
+            return_thi_tab = {'type': 'third'}
+            data_school = School.objects.all().values()
+            temp = find_type_percent(sido, 'school', data_school)
+            return_school = make_pie_chart_params(temp)
+            return_thi_tab['trd'] = return_school
+
+            temp_half = getRateSido(sido)
+            temp_half_pie = make_pie_chart_params(temp_half)
+            return_thi_tab['fth'] = temp_half_pie
+
+            data_park = Park.objects.all().values()
+            temp_park = find_type_percent(sido, 'park', data_park)
+            return_park = make_pie_chart_params(temp_park)
+            return_thi_tab['fiveth'] = return_park
+
+            temp2 = getInfraSido(sido)
+            list_temp = []
+            for i in temp2:
+                temp_dict = {}
+                if i['name'] == '도붕구':
+                    continue
+                temp_dict['name'] = i['name']
+                temp_dict['data'] = i['data']
+                list_temp.append(temp_dict)
+
+            return_thi_tab['sixth_data'] = list_temp
+            return_thi_tab['sixth_list'] = temp2[0]['gu_list']
+
+            return_thi_tab = json.dumps(return_thi_tab, ensure_ascii=False)
+            return HttpResponse(return_thi_tab)
         else:
             return HttpResponse(1)
 

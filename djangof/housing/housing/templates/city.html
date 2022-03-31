@@ -238,12 +238,10 @@
                     if(data['type'] == 'first'){
                         temp1 = make_pie(data['fst'], 'Total Infra Rate')
                         $('#data2').highcharts(temp1)
-                        temp2 = make_bars('Area Infra Count', '', data['snd_list'], 'Infra Count', data['snd_data'])
-                         Highcharts.chart('data10', temp2)
+
                         temp_3 = make_line('House Supply of Quarters', '', ['2020-1q','2020-2q','2020-3q','2020-4q','2021-1q','2021-2q','2021-3q','2021-4q','2022-1q', '2022-2q'], 'Supply size', data['trd'])
                         $('#data3').highcharts(temp_3)
-                        temp4 = make_pie(data['fth'], 'Park type')
-                        $('#data8').highcharts(temp4)
+
                     }
                     if(data['type'] == 'second'){
                         temp = make_line('Sold Cost Mean of Quarters', '', ['2020-1q','2020-2q','2020-3q','2020-4q','2021-1q','2021-2q','2021-3q','2021-4q','2022-1q'],'sold_cost', data['fst'])
@@ -251,10 +249,17 @@
                         // console.log(data)
                         temp_2 = make_bar('Area Supply Size', '', data['snd'][0]['gu_list'], data['snd'][0]['data'])
                         $('#data6').highcharts(temp_2)
+
+                    }
+                    if(data['type'] == 'third'){
                         temp3 = make_pie(data['trd'], 'School type')
                         $('#data9').highcharts(temp3)
                         temp_4 = make_half_pie(data['fth'], 'Achieved Underachieved Count')
                         $('#data7').highcharts(temp_4)
+                        temp4 = make_pie(data['fiveth'], 'Park type')
+                        $('#data8').highcharts(temp4)
+                        temp2 = make_bars('Area Infra Count', '', data['sixth_list'], 'Infra Count', data['sixth_data'])
+                        Highcharts.chart('data10', temp2)
                     }
                 }).catch((data, error) => {
                     console.log(error)
@@ -270,6 +275,8 @@
             sido_json(data_dict1)
             var data_dict2 = {'sidoname': sido_name, 'tabNo': 2}
             sido_json(data_dict2)
+            var data_dict3 = {'sidoname': sido_name, 'tabNo': 3}
+            sido_json(data_dict3)
         })
     </script>
     <style>
@@ -402,7 +409,7 @@
 </head>
 
 <body>
-    <div id="home"><a href="/"><ion-icon name="home-outline"></ion-icon></a></div>
+    <div id="home"><a href="/"></a><ion-icon name="home-outline"></ion-icon></div>
     <div id = "contentWrapper">
         <div id ="board">
             <div id="databox">
