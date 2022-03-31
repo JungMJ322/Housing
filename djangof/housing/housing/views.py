@@ -430,8 +430,8 @@ def rankCompet(sido, max_count=5):
     return result
 
 def index(request):
-    temp= rankCompet("대구")
-    print(temp)
+    # temp = rankCompet("대구")
+    # print(temp)
     return render(request, 'index.html')
 
 
