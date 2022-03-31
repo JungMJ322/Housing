@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@100;200;300;400;500;600;700;800;900&&family=Noto+Sans+KR:wght@100;400;500&display=swap" rel="stylesheet">
     <script>
         function make_pie(data, chartName){
             var series = [data]
@@ -38,7 +41,7 @@
                             }
                         },
                             showInLegend: true,
-                            innerSize:80
+                            innerSize:100
                     }
                 };
             var json = {}
@@ -70,7 +73,6 @@
                             distance: -50,
                             style: {
                                 fontWeight: 'bold',
-                                color: 'white'
                             }
                         },
                         startAngle: -90,
@@ -78,7 +80,7 @@
                         center: ['50%', '75%'],
                         size: '110%',
                         showInLegend: true,
-                        innerSize:80
+                        innerSize:100
                     }
                 };
             var json = {}
@@ -307,19 +309,20 @@
 
         #contentWrapper{
             text-align: center;
-            display:flex;
-            flex-direction: row;
             width: 100%;
-            height: 100vh;
+            height: 100%;
             background-color: rgb(211, 218, 224);
             padding: 0px 20px;
         }
 
 
         #board{
-            flex:2;
             height: 100%;
-            width:95%;
+            width:100%;
+        }
+
+        #databox{
+            height: 90%;
         }
         #bar{
             display: absolute;
@@ -329,18 +332,16 @@
             margin-top: 0px;
             margin-left: 2%;
         }
-        #databox{
-            height: 93%;
+        .box{
+            flex-direction:column;
+            margin: 0;
+            display: none;
         }
         #mapbox{
-            position: relative;
-            background-color: white;
+            display:flex;
             flex:1;
-            border:1px solid #aaa;
             border-radius: 10px;
-            margin:5px 5px 5px 5px;
-            width: 400px;
-            height: 400px;
+            margin:5px 5px 8px 5px;
             box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
             0 6.7px 5.3px rgba(0, 0, 0, 0.048),
             0 12.5px 10px rgba(0, 0, 0, 0.06),
@@ -349,21 +350,16 @@
             0 100px 80px rgba(0, 0, 0, 0.12);
         }
         #map{
+            flex:1;
             height:100%;
             width:100%;
             overflow:hidden;
         }
-        .box{
-            flex-direction:column;
-            height:100%;
-            margin: 0;
-            display: none;
-        }
+
         .table{
             flex:1;
             display: flex;
             flex-direction: row;
-            height:100%;
         }
         /*#t1{
             margin-top: 0;
@@ -372,7 +368,7 @@
             margin: 5px 5px 8px 5px;
             border-radius: 10px;
             flex:1;
-            background-color:ghostwhite;
+            background-color: whitesmoke;
             text-align: center;
             box-shadow:
             0 2.8px 2.2px rgba(0, 0, 0, 0.034),
@@ -387,12 +383,14 @@
             flex-direction: column;
             background-color:transparent;
             box-shadow: none;
+            flex:1;
         }
         .rank{
             border-radius: 10px;
             flex:1;
             margin-top:2px;
-            background-color:ghostwhite;
+            background-color: white;
+            opacity: 0.9;
             text-align: center;
             box-shadow:
             0 2.8px 2.2px rgba(0, 0, 0, 0.034),
@@ -401,20 +399,31 @@
             0 22.3px 17.9px rgba(0, 0, 0, 0.072),
             0 41.8px 33.4px rgba(0, 0, 0, 0.086),
             0 100px 80px rgba(0, 0, 0, 0.12);
-            color: #3f3f3f;
-            font-size: 20px;
-            font-family: Helvetica, Arial, sans-serif;
-            line-height: 62px;
+            color: #2c2c2c;
+            font-family: Gothic A1, sans-serfif;
+            /* font-family: 'Noto Sans KR', sans-serif; */
+            font-weight: 500;
+            line-height: 30px;
+            display:flex;
+            max-height: 75px
         }
+
+        .rtitle{margin:auto; font-weight: 600; font-size: 25px; color:#3A3A3A;}
+
+        .rt{
+            margin:auto;
+            text-align:center;
+            width:85%;
+            display: flex;
+            flex-direction:row;
+        }
+        .rt div{flex:4;}
+        span{ flex:1; }
+        .rc{color:#383F93;}
+
 
         #data7{
             flex:2;
-        }
-
-        #footer{
-            width: 100%;
-            height: 5vh;
-            background-color: gray;
         }
 
 
@@ -464,16 +473,17 @@
                                 {{ map|safe }}
                             </div>
                         </div>
-                        <div class="data" id="data1">
-                            <div class="rank"> 경쟁률 TOP5</div>
-                            <div class="rank">{{ rank1.rank }}위   {{ rank1.name }} {{ rank1.compet }}</div>
-                            <div class="rank">{{ rank2.rank }}위   {{ rank2.name }} {{ rank2.compet }}</div>
-                            <div class="rank">{{ rank3.rank }}위   {{ rank3.name }} {{ rank3.compet }}</div>
-                            <div class="rank">{{ rank4.rank }}위   {{ rank4.name }} {{ rank4.compet }}</div>
-                            <div class="rank">{{ rank5.rank }}위   {{ rank5.name }} {{ rank5.compet }}</div>
-                        </div>
 
+                        <div class="data" id="data1">
+                            <div class="rank"><div class="rtitle">청약 경쟁률 TOP 5</div></div>
+                            <div class="rank"><div class="rt"><span>{{ rank1.rank }}위</span><div>{{ rank1.name }}</div><span class="rc">{{ rank1.compet }}</span></div></div>
+                            <div class="rank"><div class="rt"><span>{{ rank2.rank }}위</span><div>{{ rank2.name }}</div><span class="rc">{{ rank2.compet }}</span></div></div>
+                            <div class="rank"><div class="rt"><span>{{ rank3.rank }}위</span><div>{{ rank3.name }}</div><span class="rc">{{ rank3.compet }}</span></div></div>
+                            <div class="rank"><div class="rt"><span>{{ rank4.rank }}위</span><div>{{ rank4.name }}</div><span class="rc">{{ rank4.compet }}</span></div></div>
+                            <div class="rank"><div class="rt"><span>{{ rank5.rank }}위</span><div>{{ rank5.name }}</div><span class="rc">{{ rank5.compet }}</span></div></div>
+                        </div>
                         <div class="data" id="data2">plot</div>
+
                     </div>
 
                     <div class="table">
@@ -498,9 +508,9 @@
                     <div class="table">
                         <div class="data" id="data10"></div>
                     </div>
-  
+
                 </div>
-            </div>    
+            </div>
         </div>
     </div>
 

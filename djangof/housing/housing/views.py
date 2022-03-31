@@ -451,39 +451,43 @@ def sidomap(request):
 
     sido = request.GET['sido']
 
-    map_list = {"서울": [11, [37.53709816646034, 126.97901707971378]],
-                "인천": [28, [37.502878144962544, 126.60311587249441]],
-                "세종": [17, [36.52148014975415, 127.25144476071442]],
-                "대전": [30, [36.35095437682017, 127.39386502081653]],
-                "대구": [27, [35.85974265376218, 128.5815381066346]],
-                "울산": [31, [35.528728550499906, 129.28214674523906]],
-                "광주": [29, [35.137331918132126, 126.84698460809767]],
-                "부산": [26, [35.17289405279072, 129.03210838811316]]}
-    center = map_list[f'{sido}'][1]
-    m = folium.Map(location=center,
-                   tiles='cartodbpositron',        #cartodbpositron
-                   zoom_start=11, width='100%', height='100%',)
-    h_list = load_detail_sido(sido)
+    if sido:
+        map_list = {"서울": [11, [37.53709816646034, 126.97901707971378]],
+                    "인천": [28, [37.502878144962544, 126.60311587249441]],
+                    "세종": [17, [36.52148014975415, 127.25144476071442]],
+                    "대전": [30, [36.35095437682017, 127.39386502081653]],
+                    "대구": [27, [35.85974265376218, 128.5815381066346]],
+                    "울산": [31, [35.528728550499906, 129.28214674523906]],
+                    "광주": [29, [35.137331918132126, 126.84698460809767]],
+                    "부산": [26, [35.17289405279072, 129.03210838811316]]}
+        center = map_list[f'{sido}'][1]
+        m = folium.Map(location=center,
+                       tiles='cartodbpositron',        #cartodbpositron
+                       zoom_start=11, width='100%', height='100%')
+        h_list = load_detail_sido(sido)
 
-    for h in h_list:
-        try:
-            lat = float(h['lat'])
-            lng=float(h['lot'])
-            tooltip=h['house_name']
-            color='blue' #E77E00
-            folium.CircleMarker(location=[lat, lng], tooltip=tooltip, radius= 10, color=color,fill=True,fill_opacity=0.4,stroke=False ).add_to(m)
-        except:
-            pass
-    map = m._repr_html_()
+        for h in h_list:
+            try:
+                lat = float(h['lat'])
+                lng=float(h['lot'])
+                tooltip='<b>'+h['house_name']+'</b>'
+                color= '#4d4d4d'    #6ABBEA
+                folium.CircleMarker(location=[lat, lng], tooltip=tooltip, radius= 10, color=color,fill=True,fill_opacity=0.5,stroke=False ).add_to(m)
+            except:
+                pass
+        map = m._repr_html_()
 
-    result=rankCompet(sido)
+        result=rankCompet(sido)
 
-    context = {
-        'map': map,
-        'rank1': result[0], 'rank2': result[1], 'rank3': result[2], 'rank4': result[3], 'rank5': result[4]
-    }
+        context = {
+            'map': map,
+            'rank1': result[0], 'rank2': result[1], 'rank3': result[2], 'rank4': result[3], 'rank5': result[4]
+        }
 
-    return render(request, 'city.html', context)
+        return render(request, 'city.html', context)
+
+    else:
+        return redirect('index')
 
 
 def ajax_return(request):
