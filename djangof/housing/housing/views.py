@@ -527,11 +527,25 @@ def sidomap(request):
                     "대구": [27, [35.85974265376218, 128.5815381066346]],
                     "울산": [31, [35.528728550499906, 129.28214674523906]],
                     "광주": [29, [35.137331918132126, 126.84698460809767]],
-                    "부산": [26, [35.17289405279072, 129.03210838811316]]}
+                    "부산": [26, [35.17289405279072, 129.03210838811316]],
+                    "경기": [00, [37.567167, 127.190292]],
+                    "강원": [00, [37.555837, 128.209315]],
+                    "경상": [00, [35.259787, 128.664734]],
+                    "충청": [00, [36.557229, 126.779757]],
+                    "전라": [00, [34.819400, 126.893113]],
+                    "제주": [00, [33.364805, 126.542671]]}
         center = map_list[f'{sido}'][1]
-        m = folium.Map(location=center,
-                       tiles='cartodbpositron',        #cartodbpositron
-                       zoom_start=11, width='100%', height='100%')
+
+        if center == 00:
+            m = folium.Map(location=center,
+                           tiles='cartodbpositron',        #cartodbpositron
+                           zoom_start=11, width='100%', height='100%')
+        else:
+            m = folium.Map(location=center,
+                           tiles='cartodbpositron',  # cartodbpositron
+                           zoom_start=9, width='100%', height='100%')
+
+
         h_list = load_detail_sido(sido)
 
         for h in h_list:
