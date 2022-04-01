@@ -252,7 +252,7 @@ def getInfraSido(sido):
     # 이름 중복되지 않도록 namelist만듬
     name_dict = dict()
     for infra in infra_list:
-        strSql = f"""select place from {infra} where place like '{sido}%' and place not like '%도붕구%';"""
+        strSql = f"""select place from {infra} where place like '{sido}%' and place not like '%도붕구%' and place not like '%구노시%';"""
         success = cursor.execute(strSql)
         convinient_list = list(cursor.fetchall())
         # gu를 키로 갖는 gu_dict 초기화
