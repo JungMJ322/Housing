@@ -139,7 +139,7 @@ def getSoldMean2(sido):
         strSql = f"""SELECT substr(month, 3, 4), avg(mean_cost)
                     FROM sold_cost_mean join place_code on (sold_cost_mean.place_code = place_code.place_code)
                     WHERE (area_grade like '{rank[0]}__' or area_grade like '{rank[1]}__' or area_grade like '{rank[2]}__' )
-                    and place like '서울%'
+                    and place like '{sido}%'
                     group by substr(month, 3, 4)"""
         success = cursor.execute(strSql)
         sold_mean = cursor.fetchall()
