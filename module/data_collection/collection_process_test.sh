@@ -18,4 +18,5 @@ sleep 5
 spark-submit ../data_process/data_process.py
 sleep 5
 
+nohup python ../../djangof/houisng/manage.py runserver 0:8000 &
 exit 0
