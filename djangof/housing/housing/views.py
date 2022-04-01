@@ -276,7 +276,7 @@ def getInfraSido(sido):
 
     # name_list에 따라 각각의 infra 카운트
     for infra in infra_list:
-        strSql = f"""select place from {infra} where place like '{sido}%' and place not like '%도붕구%';"""
+        strSql = f"""select place from {infra} where place like '{sido}%';"""
         success = cursor.execute(strSql)
         convinient_list = list(cursor.fetchall())
 
@@ -292,11 +292,13 @@ def getInfraSido(sido):
             gun_find = gu.find('군')
             si_find = gu.find('시')
             if gu_find > 0:
-                gu_dict[gu[:gu_find+1]] = gu_dict[gu[:gu_find+1]] + 1
+                if gu[:gu_find + 1] != '도붕구':
+                    gu_dict[gu[:gu_find+1]] = gu_dict[gu[:gu_find+1]] + 1
             elif gun_find > 0:
                 gu_dict[gu[:gun_find+1]] = gu_dict[gu[:gun_find+1]] + 1
             elif si_find > 0:
-                gu_dict[gu[:si_find + 1]] = gu_dict[gu[:si_find + 1]] + 1
+                if gu[:si_find + 1] != '구노시':
+                    gu_dict[gu[:si_find + 1]] = gu_dict[gu[:si_find + 1]] + 1
 
 
         gu_dict2 = dict()
