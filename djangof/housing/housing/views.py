@@ -122,6 +122,61 @@ def getSoldMean(sido):
     return result
 
 
+def getSoldMean2(sido):
+    #[{name: '1~3', data: [얼마, 얼마, 얼마, 얼마]}, {name: 'n단위', data: [얼마, 얼마, 얼마, 얼마]},
+    # {name: 'n단위', data: [얼마, 얼마, 얼마, 얼마]}]
+    cursor = connection.cursor()
+
+    ranks = [[1,2,3], [4,5,6], [7,8,9], [10,11,12], [13,14,15], [16,17,18], [19,20,21]]
+    quarters = [['01','02','03'], ['04','05','06'], ['07','08','09'], ['10','11','12']]
+    years = [20, 21, 22]
+
+    result = list()
+    for rank in ranks:
+        ran = f'{rank[0]}~{rank[2]}'
+        mean_dict = dict()
+        mean_list = list()
+        strSql = f"""SELECT substr(month, 3, 4), avg(mean_cost)
+                    FROM sold_cost_mean join place_code on (sold_cost_mean.place_code = place_code.place_code)
+                    WHERE (area_grade like '{rank[0]}__' or area_grade like '{rank[1]}__' or area_grade like '{rank[2]}__' )
+                    and place like '서울%'
+                    group by substr(month, 3, 4)"""
+        success = cursor.execute(strSql)
+        sold_mean = cursor.fetchall()
+        sold_mean = dict(sold_mean)
+        for year in years:
+            for quarter in quarters:
+                mean = 0
+                for mon in quarter:
+                    qumon = str(year)+mon
+                    try:
+                        mean = mean + sold_mean[qumon]
+                    except:
+                        pass
+                qumon0 = str(year) + quarter[0]
+                qumon1 = str(year) + quarter[1]
+                qumon2 = str(year) + quarter[2]
+                if qumon0 in sold_mean and qumon1 in sold_mean and qumon2 in sold_mean:
+                    mean = mean/3
+                elif qumon0 in sold_mean and qumon1 in sold_mean :
+                    mean = mean/2
+                    # print(qumon0, qumon1)
+
+                if mean == None:
+                    mean_list.append(0)
+                else:
+                    mean_list.append(round(mean, 2))
+
+        mean_dict['name'] = ran
+        mean_dict['data'] = mean_list
+        result.append(mean_dict)
+
+    connection.commit()
+    connection.close()
+
+    # print(result)
+    return result
+
 
 def find_infra_count(sido):  # sido 별 각 infra 갯수, In : 시도이름, Out : dict {"school":0, "subway":0, "mart":0, "park":0, "hospital":0, 'busstop':0, 'convinient': 0}꼴
     detail_list = load_detail_sido(sido)
@@ -512,7 +567,7 @@ def ajax_return(request):
 
         if request_list[1] == '2':
             return_sec_tab = {'type': 'second'}
-            json_data = getSoldMean(sido)
+            json_data = getSoldMean2(sido)
             for i in json_data:
                 i['data'] = i['data'][0:9]
             print(json_data)
