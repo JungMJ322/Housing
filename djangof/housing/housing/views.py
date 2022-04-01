@@ -262,10 +262,13 @@ def getInfraSido(sido):
             gu = convinient[0].split()[1]
             gu_find = gu.find('구')
             gun_find = gu.find('군')
+            si_find = gu.find('시')
             if gu_find > 0:
                 name_dict[gu[:gu_find+1]] = 0
             elif gun_find > 0:
                 name_dict[gu[:gun_find+1]] = 0
+            elif si_find > 0:
+                name_dict[gu[:si_find + 1]] = 0
 
     name_list = list(name_dict.keys())
 
@@ -285,10 +288,13 @@ def getInfraSido(sido):
             gu = convinient[0].split()[1]
             gu_find = gu.find('구')
             gun_find = gu.find('군')
+            si_find = gu.find('시')
             if gu_find > 0:
                 gu_dict[gu[:gu_find+1]] = gu_dict[gu[:gu_find+1]] + 1
             elif gun_find > 0:
                 gu_dict[gu[:gun_find+1]] = gu_dict[gu[:gun_find+1]] + 1
+            elif si_find > 0:
+                gu_dict[gu[:si_find + 1]] = gu_dict[gu[:si_find + 1]] + 1
 
 
         gu_dict2 = dict()
@@ -332,10 +338,13 @@ def getSupplySize(sido):
         gu = name[0].split()[1]
         gu_find = gu.find('구')
         gun_find = gu.find('군')
+        si_find = gu.find('시')
         if gu_find > 0:
             name_dict[gu[:gu_find + 1]] = 0
         elif gun_find > 0:
             name_dict[gu[:gun_find + 1]] = 0
+        elif si_find > 0:
+            name_dict[gu[:si_find + 1]] = 0
 
     name_list = list(name_dict.keys())
 
@@ -349,10 +358,13 @@ def getSupplySize(sido):
         gu = supply[0].split()[1]
         gu_find = gu.find('구')
         gun_find = gu.find('군')
+        si_find = gu.find('시')
         if gu_find > 0:
             gu_dict[gu[:gu_find + 1]] = gu_dict[gu[:gu_find + 1]] + supply[1]
         elif gun_find > 0:
             gu_dict[gu[:gun_find + 1]] = gu_dict[gu[:gun_find + 1]] + supply[1]
+        elif si_find > 0:
+            gu_dict[gu[:si_find + 1]] = gu_dict[gu[:si_find + 1]] + supply[1]
 
     gu_dict2 = dict()
     gu_dict2['gu_list'] = list(gu_dict.keys())
@@ -570,7 +582,7 @@ def ajax_return(request):
             json_data = getSoldMean2(sido)
             for i in json_data:
                 i['data'] = i['data'][0:9]
-            print(json_data)
+            # print(json_data)
             return_sec_tab['fst'] = json_data
 
             temp = getSupplySize(sido)
