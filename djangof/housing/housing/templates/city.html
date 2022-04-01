@@ -246,7 +246,7 @@
 
                     }
                     if(data['type'] == 'second'){
-                        temp = make_line('Sold Cost Mean of Quarters', '', ['2020-1q','2020-2q','2020-3q','2020-4q','2021-1q','2021-2q','2021-3q','2021-4q','2022-1q'],'sold_cost', data['fst'])
+                        temp = make_line('Sold Cost Mean of Quarters', '', ['2020-1q','2020-2q','2020-3q','2020-4q','2021-1q','2021-2q','2021-3q','2021-4q','2022-1q'],'sold_cost(10,000원)', data['fst'])
                         $('#data5').highcharts(temp)
                         // console.log(data)
                         temp_2 = make_bar('Area Supply Size', '', data['snd'][0]['gu_list'], data['snd'][0]['data'])
@@ -403,7 +403,7 @@
             color: #2c2c2c;
             font-family: Gothic A1, sans-serfif;
             /* font-family: 'Noto Sans KR', sans-serif; */
-            font-weight: 500;
+            font-weight: 600;
             line-height: 30px;
             display:flex;
 
