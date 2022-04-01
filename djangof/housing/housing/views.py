@@ -150,7 +150,7 @@ def getSoldMean2(sido):
                 for mon in quarter:
                     qumon = str(year)+mon
                     try:
-                        mean = mean + sold_mean[qumon]
+                        mean = mean + float(sold_mean[qumon])
                     except:
                         pass
                 qumon0 = str(year) + quarter[0]
